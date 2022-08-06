@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import abort, Flask
 from markupsafe import escape
 
 from reddit import get_random_submission
@@ -15,6 +15,8 @@ def hello():
 def random_submission(subreddit_name: str):
     escaped_subreddit_name = escape(subreddit_name)
     submission = get_random_submission(escaped_subreddit_name)
+    if not submission:
+        abort(404, f"No entries found for {escaped_subreddit_name}")
     return {
         "id": submission.id,
         "url": submission.url,

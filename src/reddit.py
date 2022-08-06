@@ -4,6 +4,7 @@ from random import choice
 from dotenv import load_dotenv
 from praw import Reddit
 from praw.models import Submission
+from prawcore import Redirect
 
 load_dotenv()
 _REDDIT_CLIENT_ID = getenv("REDDIT_CLIENT_ID")
@@ -18,5 +19,8 @@ _client = Reddit(
 
 
 def get_random_submission(subreddit: str, load_count: int = 100) -> Submission:
-    posts = _client.subreddit(subreddit).hot(limit=load_count)
-    return choice(list(posts))
+    try:
+        posts = _client.subreddit(subreddit).hot(limit=load_count)
+        return choice(list(posts))
+    except Redirect:
+        return None
