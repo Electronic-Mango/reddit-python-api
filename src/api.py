@@ -55,7 +55,7 @@ def _prepare_response(
         "author": submission.author.name,
         "nsfw": submission.over_18,
         "spoiler": submission.spoiler,
-        "text": submission.selftext_html,
+        "selftext": submission.selftext_html,
     }
 
 
