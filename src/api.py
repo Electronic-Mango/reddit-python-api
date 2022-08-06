@@ -1,9 +1,9 @@
-from logging import INFO, basicConfig
+from logging import INFO, basicConfig, getLogger
 from os import getenv
 from typing import Any, Callable
 
 from dotenv import load_dotenv
-from flask import abort, Flask
+from flask import abort, Flask, request
 from markupsafe import escape
 from waitress import serve
 
@@ -19,6 +19,11 @@ _API_HOST = getenv("API_HOST")
 _API_PORT = getenv("API_PORT")
 
 app = Flask(__name__)
+
+
+@app.before_request
+def log_request():
+    getLogger("waitress").info(request)
 
 
 @app.route("/submission/<subreddit_name>")
