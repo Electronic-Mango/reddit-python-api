@@ -1,5 +1,5 @@
 from os import getenv
-from random import randint
+from random import choice
 
 from dotenv import load_dotenv
 from praw import Reddit
@@ -18,7 +18,5 @@ _client = Reddit(
 
 
 def get_random_post(subreddit: str, load_count: int = 100) -> Submission:
-    random_post_index = randint(1, load_count)
-    posts = _client.subreddit(subreddit).hot(limit=random_post_index)
-    *_, picked_post = posts
-    return picked_post
+    posts = _client.subreddit(subreddit).hot(limit=load_count)
+    return choice(list(posts))
