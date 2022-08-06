@@ -1,6 +1,9 @@
+from logging import INFO, basicConfig
 from typing import Any, Callable
+
 from flask import abort, Flask
 from markupsafe import escape
+from waitress import serve
 
 from reddit import (
     get_random_media_submission,
@@ -43,3 +46,8 @@ def _prepare_response(
         "spoiler": submission.spoiler,
         "text": submission.selftext_html,
     }
+
+
+if __name__ == "__main__":
+    basicConfig(format="[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s", level=INFO)
+    serve(app, host="0.0.0.0", port=8080)
