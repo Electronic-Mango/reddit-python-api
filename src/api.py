@@ -12,11 +12,6 @@ from reddit import (
 app = Flask(__name__)
 
 
-@app.route("/")
-def hello():
-    return "<p>Hello!</p>"
-
-
 @app.route("/submission/<subreddit_name>")
 def random_submission(subreddit_name: str) -> dict[str, Any]:
     return _prepare_response(subreddit_name, get_random_submission)
