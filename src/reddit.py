@@ -17,6 +17,6 @@ _client = Reddit(
 )
 
 
-def get_random_post(subreddit: str, load_count: int = 100) -> Submission:
+def get_random_submission(subreddit: str, load_count: int = 100) -> Submission:
     posts = _client.subreddit(subreddit).hot(limit=load_count)
     return choice(list(posts))
