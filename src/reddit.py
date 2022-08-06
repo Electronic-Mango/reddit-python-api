@@ -1,5 +1,6 @@
 from os import getenv
 from random import choice
+from typing import Callable
 
 from dotenv import load_dotenv
 from praw import Reddit
@@ -21,16 +22,25 @@ _client = Reddit(
 
 
 def get_random_submission(subreddit: str, load_count: int = _LOAD_COUNT) -> Submission:
-    submissions = _get_submissions(subreddit, load_count)
-    return choice(submissions) if submissions else None
+    return _get_submission_with_filtering(subreddit, load_count, lambda _: True)
 
 
 def get_random_media_submission(subreddit: str, load_count: int = _LOAD_COUNT) -> Submission:
+    return _get_submission_with_filtering(subreddit, load_count, _submission_is_media)
+
+
+def get_random_text_submission(subreddit: str, load_count: int = _LOAD_COUNT) -> Submission:
+    return _get_submission_with_filtering(subreddit, load_count, _submission_is_text)
+
+
+def _get_submission_with_filtering(
+    subreddit: str, load_count: int, submission_filter: Callable[[Submission], bool] = None
+) -> Submission:
     submissions = _get_submissions(subreddit, load_count)
-    media_submissions = [
-        submission for submission in submissions if _submission_is_media(submission)
+    filtered_submissions = [
+        submission for submission in submissions if submission_filter(submission)
     ]
-    return choice(media_submissions) if media_submissions else None
+    return choice(filtered_submissions) if filtered_submissions else None
 
 
 def _get_submissions(subreddit: str, load_count: int) -> list[Submission]:
@@ -42,3 +52,7 @@ def _get_submissions(subreddit: str, load_count: int) -> list[Submission]:
 
 def _submission_is_media(submission: Submission) -> bool:
     return submission.url.endswith(_MEDIA_SUBMISSION_URL_SUFFIXES)
+
+
+def _submission_is_text(submission: Submission) -> bool:
+    return submission.selftext_html is not None
