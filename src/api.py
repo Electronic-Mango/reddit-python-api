@@ -1,6 +1,8 @@
 from logging import INFO, basicConfig
+from os import getenv
 from typing import Any, Callable
 
+from dotenv import load_dotenv
 from flask import abort, Flask
 from markupsafe import escape
 from waitress import serve
@@ -11,6 +13,10 @@ from reddit import (
     get_random_text_submission,
     Submission,
 )
+
+load_dotenv()
+_API_HOST = getenv("API_HOST")
+_API_PORT = getenv("API_PORT")
 
 app = Flask(__name__)
 
@@ -50,4 +56,4 @@ def _prepare_response(
 
 if __name__ == "__main__":
     basicConfig(format="[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s", level=INFO)
-    serve(app, host="0.0.0.0", port=8080)
+    serve(app, host=_API_HOST, port=_API_PORT)
