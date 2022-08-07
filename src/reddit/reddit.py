@@ -212,4 +212,4 @@ def _submission_is_image(submission: Submission) -> bool:
 
 
 def _submission_is_text(submission: Submission) -> bool:
-    return submission.selftext is not None
+    return submission.selftext
