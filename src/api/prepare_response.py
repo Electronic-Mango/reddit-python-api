@@ -7,7 +7,7 @@ from typing import Any, Callable
 
 from flask import abort
 
-from reddit.reddit import jsonify_submission, Submission
+from reddit.jsonify import jsonify_submission, Submission
 
 
 def prepare_list_response(
