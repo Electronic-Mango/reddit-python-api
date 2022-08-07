@@ -1,9 +1,10 @@
+from enum import Enum
 from os import getenv
 from typing import Callable
 
 from dotenv import load_dotenv
 from praw import Reddit
-from praw.models import Submission
+from praw.models import ListingGenerator, Submission, Subreddit
 from prawcore import Redirect
 
 load_dotenv()
@@ -18,29 +19,53 @@ _client = Reddit(
     user_agent=_REDDIT_CLIENT_USER_AGENT,
 )
 
-
-def get_submissions(subreddit: str, load_count: int) -> list[Submission]:
-    return _get_submissions_with_filtering(subreddit, load_count, lambda _: True)
+SortType = Enum("SortType", ["HOT", "NEW", "RISING", "TOP", "CONTROVERSIAL"])
 
 
-def get_media_submissions(subreddit: str, load_count: int) -> list[Submission]:
-    return _get_submissions_with_filtering(subreddit, load_count, _submission_is_media)
+def get_submissions(subreddit: str, load_count: int, sort_type) -> list[Submission]:
+    return _get_submissions_with_filtering(subreddit, load_count, sort_type, lambda _: True)
 
 
-def get_text_submissions(subreddit: str, load_count: int) -> list[Submission]:
-    return _get_submissions_with_filtering(subreddit, load_count, _submission_is_text)
+def get_media_submissions(subreddit: str, load_count: int, sort_type) -> list[Submission]:
+    return _get_submissions_with_filtering(subreddit, load_count, sort_type, _submission_is_media)
+
+
+def get_text_submissions(subreddit: str, load_count: int, sort_type) -> list[Submission]:
+    return _get_submissions_with_filtering(subreddit, load_count, sort_type, _submission_is_text)
 
 
 def _get_submissions_with_filtering(
-    subreddit: str, load_count: int, submission_filter: Callable[[Submission], bool]
+    subreddit: str,
+    load_count: int,
+    sort_type: SortType,
+    submission_filter: Callable[[Submission], bool],
 ) -> list[Submission]:
-    submissions = _get_submissions(subreddit, load_count)
+    subreddit = _client.subreddit(subreddit)
+    submissions_generator = _get_submissions_generator(subreddit, sort_type)
+    submissions_generator.limit = load_count
+    submissions = _load_submissions(submissions_generator)
     return [submission for submission in submissions if submission_filter(submission)]
 
 
-def _get_submissions(subreddit: str, load_count: int) -> list[Submission]:
+def _get_submissions_generator(subreddit: Subreddit, sort_type: SortType) -> ListingGenerator:
+    match sort_type:
+        case SortType.HOT:
+            return subreddit.hot()
+        case SortType.NEW:
+            return subreddit.new()
+        case SortType.RISING:
+            return subreddit.rising()
+        case SortType.TOP:
+            return subreddit.top()
+        case SortType.CONTROVERSIAL:
+            return subreddit.controversial()
+        case _:
+            return subreddit.hot()
+
+
+def _load_submissions(submissions_generator: ListingGenerator) -> list[Submission]:
     try:
-        return list(_client.subreddit(subreddit).hot(limit=load_count))
+        return list(submissions_generator)
     except Redirect:
         return []
 
