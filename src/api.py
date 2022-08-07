@@ -6,7 +6,6 @@ from typing import Any, Callable
 from dotenv import load_dotenv
 from flask import abort, Flask, request
 from waitress import serve
-from werkzeug.routing import BaseConverter
 
 from reddit import (
     get_media_submissions,
@@ -16,7 +15,6 @@ from reddit import (
     get_user_submissions,
     get_user_text_submissions,
     jsonify_submission,
-    SortType,
     Submission,
 )
 
@@ -25,23 +23,9 @@ _API_HOST = getenv("API_HOST")
 _API_PORT = getenv("API_PORT")
 _DEFAULT_SUBREDDIT = getenv("DEFAULT_SUBREDDIT")
 _DEFAULT_LOAD_COUNT = int(getenv("DEFAULT_LOAD_COUNT"))
-_DEFAULT_SORT_TYPE = SortType.HOT
-
-
-class SortTypeConverter(BaseConverter):
-    def to_python(self, value: str) -> SortType:
-        try:
-            return SortType[value.upper()]
-        except KeyError:
-            return SortType.HOT
-
-    def to_url(self, sort_type: SortType) -> str:
-        return sort_type.name.lower()
-
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
-app.url_map.converters["sort"] = SortTypeConverter
 
 
 @app.before_request
@@ -54,16 +38,16 @@ def log_request():
 @app.route("/submission")
 @app.route("/submission/<subreddit_name>")
 @app.route("/submission/<subreddit_name>/<int:load_count>")
-@app.route("/submission/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/submission/<subreddit_name>/<int:load_count>/<sort>")
 @app.route("/subreddit")
 @app.route("/subreddit/submission")
 @app.route("/subreddit/submission/<subreddit_name>")
 @app.route("/subreddit/submission/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/submission/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/subreddit/submission/<subreddit_name>/<int:load_count>/<sort>")
 def submission(
     subreddit_name: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
-    sort: SortType = _DEFAULT_SORT_TYPE,
+    sort: str = None,
 ) -> dict[str, Any]:
     return _prepare_list_response(subreddit_name, load_count, sort, get_submissions)
 
@@ -71,15 +55,15 @@ def submission(
 @app.route("/media")
 @app.route("/media/<subreddit_name>")
 @app.route("/media/<subreddit_name>/<int:load_count>")
-@app.route("/media/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/media/<subreddit_name>/<int:load_count>/<sort>")
 @app.route("/subreddit/media")
 @app.route("/subreddit/media/<subreddit_name>")
 @app.route("/subreddit/media/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/media/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/subreddit/media/<subreddit_name>/<int:load_count>/<sort>")
 def media_submission(
     subreddit_name: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
-    sort: SortType = _DEFAULT_SORT_TYPE,
+    sort: str = None,
 ) -> dict[str, Any]:
     return _prepare_list_response(subreddit_name, load_count, sort, get_media_submissions)
 
@@ -87,15 +71,15 @@ def media_submission(
 @app.route("/text")
 @app.route("/text/<subreddit_name>")
 @app.route("/text/<subreddit_name>/<int:load_count>")
-@app.route("/text/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/text/<subreddit_name>/<int:load_count>/<sort>")
 @app.route("/subreddit/text")
 @app.route("/subreddit/text/<subreddit_name>")
 @app.route("/subreddit/text/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/text/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/subreddit/text/<subreddit_name>/<int:load_count>/<sort>")
 def text_submission(
     subreddit_name: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
-    sort: SortType = _DEFAULT_SORT_TYPE,
+    sort: str = None,
 ) -> dict[str, Any]:
     return _prepare_list_response(subreddit_name, load_count, sort, get_text_submissions)
 
@@ -104,16 +88,16 @@ def text_submission(
 @app.route("/random/<subreddit_name>")
 @app.route("/random/submission/<subreddit_name>")
 @app.route("/random/submission/<subreddit_name>/<int:load_count>")
-@app.route("/random/submission/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/random/submission/<subreddit_name>/<int:load_count>/<sort>")
 @app.route("/subreddit/random")
 @app.route("/subreddit/random/<subreddit_name>")
 @app.route("/subreddit/random/submission/<subreddit_name>")
 @app.route("/subreddit/random/submission/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/random/submission/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/subreddit/random/submission/<subreddit_name>/<int:load_count>/<sort>")
 def random_submission(
     subreddit_name: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
-    sort: SortType = _DEFAULT_SORT_TYPE,
+    sort: str = None,
 ) -> dict[str, Any]:
     return _prepare_random_response(subreddit_name, load_count, sort, get_submissions)
 
@@ -121,15 +105,15 @@ def random_submission(
 @app.route("/random/media")
 @app.route("/random/media/<subreddit_name>")
 @app.route("/random/media/<subreddit_name>/<int:load_count>")
-@app.route("/random/media/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/random/media/<subreddit_name>/<int:load_count>/<sort>")
 @app.route("/subreddit/random/media")
 @app.route("/subreddit/random/media/<subreddit_name>")
 @app.route("/subreddit/random/media/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/random/media/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/subreddit/random/media/<subreddit_name>/<int:load_count>/<sort>")
 def random_media_submission(
     subreddit_name: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
-    sort: SortType = _DEFAULT_SORT_TYPE,
+    sort: str = None,
 ) -> dict[str, Any]:
     return _prepare_random_response(subreddit_name, load_count, sort, get_media_submissions)
 
@@ -137,81 +121,81 @@ def random_media_submission(
 @app.route("/random/text")
 @app.route("/random/text/<subreddit_name>")
 @app.route("/random/text/<subreddit_name>/<int:load_count>")
-@app.route("/random/text/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/random/text/<subreddit_name>/<int:load_count>/<sort>")
 @app.route("/subreddit/random/text")
 @app.route("/subreddit/random/text/<subreddit_name>")
 @app.route("/subreddit/random/text/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/random/text/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/subreddit/random/text/<subreddit_name>/<int:load_count>/<sort>")
 def random_text_submission(
     subreddit_name: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
-    sort: SortType = _DEFAULT_SORT_TYPE,
+    sort: str = None,
 ) -> dict[str, Any]:
     return _prepare_random_response(subreddit_name, load_count, sort, get_text_submissions)
 
 
 @app.route("/user/submission/<username>")
 @app.route("/user/submission/<username>/<int:load_count>")
-@app.route("/user/submission/<username>/<int:load_count>/<sort:sort>")
+@app.route("/user/submission/<username>/<int:load_count>/<sort>")
 def user_submission(
     username: str,
     load_count: int = _DEFAULT_LOAD_COUNT,
-    sort: SortType = _DEFAULT_SORT_TYPE,
+    sort: str = None,
 ) -> dict[str, Any]:
     return _prepare_list_response(username, load_count, sort, get_user_submissions)
 
 
 @app.route("/user/media/<username>")
 @app.route("/user/media/<username>/<int:load_count>")
-@app.route("/user/media/<username>/<int:load_count>/<sort:sort>")
+@app.route("/user/media/<username>/<int:load_count>/<sort>")
 def user_media_submission(
     username: str,
     load_count: int = _DEFAULT_LOAD_COUNT,
-    sort: SortType = _DEFAULT_SORT_TYPE,
+    sort: str = None,
 ) -> dict[str, Any]:
     return _prepare_list_response(username, load_count, sort, get_user_media_submissions)
 
 
 @app.route("/user/text/<username>")
 @app.route("/user/text/<username>/<int:load_count>")
-@app.route("/user/text/<username>/<int:load_count>/<sort:sort>")
+@app.route("/user/text/<username>/<int:load_count>/<sort>")
 def user_text_submission(
     username: str,
     load_count: int = _DEFAULT_LOAD_COUNT,
-    sort: SortType = _DEFAULT_SORT_TYPE,
+    sort: str = None,
 ) -> dict[str, Any]:
     return _prepare_list_response(username, load_count, sort, get_user_text_submissions)
 
 
 @app.route("/user/random/submission/<username>")
 @app.route("/user/random/submission/<username>/<int:load_count>")
-@app.route("/user/random/submission/<username>/<int:load_count>/<sort:sort>")
+@app.route("/user/random/submission/<username>/<int:load_count>/<sort>")
 def user_random_submission(
     username: str,
     load_count: int = _DEFAULT_LOAD_COUNT,
-    sort: SortType = _DEFAULT_SORT_TYPE,
+    sort: str = None,
 ) -> dict[str, Any]:
     return _prepare_random_response(username, load_count, sort, get_user_submissions)
 
 
 @app.route("/user/random/media/<username>")
 @app.route("/user/random/media/<username>/<int:load_count>")
-@app.route("/user/random/media/<username>/<int:load_count>/<sort:sort>")
+@app.route("/user/random/media/<username>/<int:load_count>/<sort>")
 def user_random_media_submission(
     username: str,
     load_count: int = _DEFAULT_LOAD_COUNT,
-    sort: SortType = _DEFAULT_SORT_TYPE,
+    sort: str = None,
 ) -> dict[str, Any]:
     return _prepare_random_response(username, load_count, sort, get_user_media_submissions)
 
 
 @app.route("/user/random/text/<username>")
 @app.route("/user/random/text/<username>/<int:load_count>")
-@app.route("/user/random/text/<username>/<int:load_count>/<sort:sort>")
+@app.route("/user/random/text/<username>/<int:load_count>/<sort>")
 def user_random_text_submission(
     username: str,
     load_count: int = _DEFAULT_LOAD_COUNT,
-    sort: SortType = _DEFAULT_SORT_TYPE,
+    sort: str = None,
 ) -> dict[str, Any]:
     return _prepare_random_response(username, load_count, sort, get_user_text_submissions)
 
@@ -219,7 +203,7 @@ def user_random_text_submission(
 def _prepare_list_response(
     source_name: str,
     load_count: int,
-    sort: SortType,
+    sort: str,
     submissions_generator: Callable[[str, int], list[Submission]],
 ) -> dict[str, Any]:
     submissions = _get_submissions_or_abort(source_name, load_count, sort, submissions_generator)
@@ -230,8 +214,8 @@ def _prepare_list_response(
 def _prepare_random_response(
     source_name: str,
     load_count: int,
-    sort: SortType,
-    submissions_generator: Callable[[str, int, SortType], list[Submission]],
+    sort: str,
+    submissions_generator: Callable[[str, int, str], list[Submission]],
 ) -> dict[str, Any]:
     submissions = _get_submissions_or_abort(source_name, load_count, sort, submissions_generator)
     random_submission = choice(submissions)
@@ -241,8 +225,8 @@ def _prepare_random_response(
 def _get_submissions_or_abort(
     source_name: str,
     load_count: int,
-    sort: SortType,
-    submissions_generator: Callable[[str, int, SortType], list[Submission]],
+    sort: str,
+    submissions_generator: Callable[[str, int, str], list[Submission]],
 ) -> list[Submission]:
     submissions = submissions_generator(source_name, load_count, sort)
     if not submissions:

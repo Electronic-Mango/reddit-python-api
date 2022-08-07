@@ -1,5 +1,4 @@
 from datetime import datetime
-from enum import Enum
 from os import getenv
 from typing import Any, Callable
 
@@ -22,8 +21,6 @@ _client = Reddit(
     user_agent=_REDDIT_CLIENT_USER_AGENT,
 )
 
-SortType = Enum("SortType", ["HOT", "NEW", "TOP", "CONTROVERSIAL"])
-
 
 def jsonify_submission(submission: Submission) -> dict[str, Any]:
     return {
@@ -42,27 +39,27 @@ def jsonify_submission(submission: Submission) -> dict[str, Any]:
     }
 
 
-def get_submissions(subreddit: str, limit: int, sort_type) -> list[Submission]:
+def get_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, lambda _: True)
 
 
-def get_media_submissions(subreddit: str, limit: int, sort_type) -> list[Submission]:
+def get_media_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_media)
 
 
-def get_text_submissions(subreddit: str, limit: int, sort_type) -> list[Submission]:
+def get_text_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_text)
 
 
-def get_user_submissions(username: str, limit: int, sort_type) -> list[Submission]:
+def get_user_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
     return _get_submissions(_get_redditor_source(username), limit, sort_type, lambda _: True)
 
 
-def get_user_media_submissions(username: str, limit: int, sort_type) -> list[Submission]:
+def get_user_media_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
     return _get_submissions(_get_redditor_source(username), limit, sort_type, _submission_is_media)
 
 
-def get_user_text_submissions(username: str, limit: int, sort_type) -> list[Submission]:
+def get_user_text_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
     return _get_submissions(_get_redditor_source(username), limit, sort_type, _submission_is_text)
 
 
@@ -73,7 +70,7 @@ def _get_redditor_source(username: str) -> SubListing:
 def _get_submissions(
     source: BaseListingMixin,
     limit: int,
-    sort_type: SortType,
+    sort_type: str,
     submission_filter: Callable[[Submission], bool],
 ) -> list[Submission]:
     submissions_generator = _get_submissions_generator(source, sort_type)
@@ -82,15 +79,13 @@ def _get_submissions(
     return [submission for submission in submissions if submission_filter(submission)]
 
 
-def _get_submissions_generator(source: BaseListingMixin, sort_type: SortType) -> ListingGenerator:
+def _get_submissions_generator(source: BaseListingMixin, sort_type: str) -> ListingGenerator:
     match sort_type:
-        case SortType.HOT:
-            return source.hot()
-        case SortType.NEW:
+        case "new":
             return source.new()
-        case SortType.TOP:
+        case "top":
             return source.top()
-        case SortType.CONTROVERSIAL:
+        case "controversial":
             return source.controversial()
         case _:
             return source.hot()
