@@ -1,6 +1,7 @@
+from datetime import datetime
 from enum import Enum
 from os import getenv
-from typing import Callable
+from typing import Any, Callable
 
 from dotenv import load_dotenv
 from praw import Reddit
@@ -20,6 +21,22 @@ _client = Reddit(
 )
 
 SortType = Enum("SortType", ["HOT", "NEW", "RISING", "TOP", "CONTROVERSIAL"])
+
+
+def jsonify_submission(submission: Submission) -> dict[str, Any]:
+    return {
+        "id": submission.id,
+        "url": submission.url,
+        "title": submission.title,
+        "author": submission.author.name if submission.author else None,
+        "nsfw": submission.over_18,
+        "spoiler": submission.spoiler,
+        "selftext": submission.selftext,
+        "score": submission.score,
+        "created_utc": datetime.utcfromtimestamp(submission.created_utc),
+        "shortlink": submission.shortlink,
+        "subreddit": submission.subreddit.display_name,
+    }
 
 
 def get_submissions(subreddit: str, load_count: int, sort_type) -> list[Submission]:

@@ -1,4 +1,3 @@
-from datetime import datetime
 from logging import INFO, basicConfig, getLogger
 from os import getenv
 from random import choice
@@ -13,6 +12,7 @@ from reddit import (
     get_media_submissions,
     get_submissions,
     get_text_submissions,
+    jsonify_submission,
     SortType,
     Submission,
 )
@@ -128,7 +128,7 @@ def _prepare_list_response(
     submissions_generator: Callable[[str, int], list[Submission]],
 ) -> dict[str, Any]:
     submissions = _get_submissions_or_abort(subreddit_name, load_count, sort, submissions_generator)
-    submissions = [_jsonify_submission(submission) for submission in submissions]
+    submissions = [jsonify_submission(submission) for submission in submissions]
     return {"count": len(submissions), "submissions": submissions}
 
 
@@ -140,7 +140,7 @@ def _prepare_random_response(
 ) -> dict[str, Any]:
     submissions = _get_submissions_or_abort(subreddit_name, load_count, sort, submissions_generator)
     random_submission = choice(submissions)
-    return _jsonify_submission(random_submission)
+    return jsonify_submission(random_submission)
 
 
 def _get_submissions_or_abort(
@@ -153,22 +153,6 @@ def _get_submissions_or_abort(
     if not submissions:
         abort(404, f"No entries found for {subreddit_name}")
     return submissions
-
-
-def _jsonify_submission(submission: Submission) -> dict[str, Any]:
-    return {
-        "id": submission.id,
-        "url": submission.url,
-        "title": submission.title,
-        "author": submission.author.name if submission.author else None,
-        "nsfw": submission.over_18,
-        "spoiler": submission.spoiler,
-        "selftext": submission.selftext,
-        "score": submission.score,
-        "created_utc": datetime.utcfromtimestamp(submission.created_utc),
-        "shortlink": submission.shortlink,
-        "subreddit": submission.subreddit.display_name,
-    }
 
 
 if __name__ == "__main__":
