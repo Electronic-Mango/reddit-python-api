@@ -1,10 +1,11 @@
+from datetime import datetime
 from logging import INFO, basicConfig, getLogger
 from os import getenv
 from random import choice
 from typing import Any, Callable
 
 from dotenv import load_dotenv
-from flask import abort, Flask, request
+from flask import abort, Flask, jsonify, request
 from waitress import serve
 
 from reddit import get_media_submissions, get_submissions, get_text_submissions, Submission
@@ -98,6 +99,9 @@ def _jsonify_submission(submission: Submission) -> dict[str, Any]:
         "nsfw": submission.over_18,
         "spoiler": submission.spoiler,
         "selftext": submission.selftext,
+        "score": submission.score,
+        "created_utc": datetime.utcfromtimestamp(submission.created_utc),
+        "shortlink": submission.shortlink,
     }
 
 
