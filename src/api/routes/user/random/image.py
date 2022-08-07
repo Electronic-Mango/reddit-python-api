@@ -12,6 +12,7 @@ from settings import DEFAULT_LOAD_COUNT
 
 blueprint = Blueprint("user/image/random", __name__)
 
+
 @blueprint.route("/user/image/random/<username>")
 @blueprint.route("/user/image/random/<username>/<int:load_count>")
 @blueprint.route("/user/image/random/<username>/<int:load_count>/<sort>")

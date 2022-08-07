@@ -12,6 +12,7 @@ from settings import DEFAULT_LOAD_COUNT, DEFAULT_SUBREDDIT
 
 blueprint = Blueprint("/subreddit/text", __name__)
 
+
 @blueprint.route("/subreddit/text")
 @blueprint.route("/subreddit/text/<subreddit>")
 @blueprint.route("/subreddit/text/<subreddit>/<int:load_count>")

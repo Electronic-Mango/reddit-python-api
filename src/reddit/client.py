@@ -2,8 +2,7 @@
 Module responsible for accessing Reddit API via PRAW.
 """
 
-from datetime import datetime
-from typing import Any, Callable
+from typing import Callable
 
 from praw import Reddit
 from praw.models import ListingGenerator, Submission

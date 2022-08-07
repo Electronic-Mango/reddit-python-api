@@ -12,6 +12,7 @@ from settings import DEFAULT_LOAD_COUNT, DEFAULT_SUBREDDIT
 
 blueprint = Blueprint("/subreddit/submission", __name__)
 
+
 @blueprint.route("/subreddit/submission")
 @blueprint.route("/subreddit/submission/<subreddit>")
 @blueprint.route("/subreddit/submission/<subreddit>/<int:load_count>")
