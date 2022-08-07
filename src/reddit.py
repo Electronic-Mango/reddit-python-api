@@ -1,3 +1,7 @@
+"""
+Module responsible for accessing Reddit API via PRAW.
+"""
+
 from datetime import datetime
 from os import getenv
 from typing import Any, Callable
@@ -23,6 +27,7 @@ _client = Reddit(
 
 
 def jsonify_submission(submission: Submission) -> dict[str, Any]:
+    """Change Reddit submission to a JSON-like dict."""
     return {
         "id": submission.id,
         "url": submission.url,
@@ -40,26 +45,32 @@ def jsonify_submission(submission: Submission) -> dict[str, Any]:
 
 
 def get_subreddit_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
+    """Get a list of submissions from the given subreddit."""
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, lambda _: True)
 
 
 def get_subreddit_media_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
+    """Get a list of media submissions (images, GIFs) from the given subreddit."""
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_media)
 
 
 def get_subreddit_text_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
+    """Get a list of text submissions from the given subreddit."""
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_text)
 
 
 def get_user_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
+    """Get a list of submissions from the given user."""
     return _get_submissions(_get_redditor_source(username), limit, sort_type, lambda _: True)
 
 
 def get_user_media_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
+    """Get a list of media submissions (images, GIFs) from the given user."""
     return _get_submissions(_get_redditor_source(username), limit, sort_type, _submission_is_media)
 
 
 def get_user_text_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
+    """Get a list of text submissions from the given user."""
     return _get_submissions(_get_redditor_source(username), limit, sort_type, _submission_is_text)
 
 

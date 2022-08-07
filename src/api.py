@@ -1,3 +1,7 @@
+"""
+Module responsible for API itself, holds all endpoint routes.
+"""
+
 from logging import INFO, basicConfig, getLogger
 from os import getenv
 from random import choice
@@ -42,6 +46,7 @@ def submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
+    """Endpoint returning a list of submissions from the given subreddit."""
     return _prepare_list_response(subreddit, load_count, sort, get_subreddit_submissions)
 
 
@@ -54,6 +59,7 @@ def media_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
+    """Endpoint returning a list of media submissions (images, GIFs) from the given subreddit."""
     return _prepare_list_response(subreddit, load_count, sort, get_subreddit_media_submissions)
 
 
@@ -66,6 +72,7 @@ def text_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
+    """Endpoint returning a list of text submissions from the given subreddit."""
     return _prepare_list_response(subreddit, load_count, sort, get_subreddit_text_submissions)
 
 
@@ -78,6 +85,7 @@ def random_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
+    """Endpoint returning a random submission from the given subreddit."""
     return _prepare_random_response(subreddit, load_count, sort, get_subreddit_submissions)
 
 
@@ -90,6 +98,7 @@ def random_media_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
+    """Endpoint returning a random media submission (image, GIF) from the given subreddit."""
     return _prepare_random_response(subreddit, load_count, sort, get_subreddit_media_submissions)
 
 
@@ -102,6 +111,7 @@ def random_text_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
+    """Endpoint returning a random text submission from the given subreddit."""
     return _prepare_random_response(subreddit, load_count, sort, get_subreddit_text_submissions)
 
 
@@ -113,6 +123,7 @@ def user_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
+    """Endpoint returning a list of submissions from the given user."""
     return _prepare_list_response(username, load_count, sort, get_user_submissions)
 
 
@@ -124,6 +135,7 @@ def user_media_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
+    """Endpoint returning a list of media submissions (images, GIFs) from the given user."""
     return _prepare_list_response(username, load_count, sort, get_user_media_submissions)
 
 
@@ -135,6 +147,7 @@ def user_text_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
+    """Endpoint returning a list of text submissions from the given user."""
     return _prepare_list_response(username, load_count, sort, get_user_text_submissions)
 
 
@@ -146,6 +159,7 @@ def user_random_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
+    """Endpoint returning a random submission from the given user."""
     return _prepare_random_response(username, load_count, sort, get_user_submissions)
 
 
@@ -157,6 +171,7 @@ def user_random_media_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
+    """Endpoint returning a random media submission (image, GIF) from the given user."""
     return _prepare_random_response(username, load_count, sort, get_user_media_submissions)
 
 
@@ -168,6 +183,7 @@ def user_random_text_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
+    """Endpoint returning a random text submission from the given user."""
     return _prepare_random_response(username, load_count, sort, get_user_text_submissions)
 
 
