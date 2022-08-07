@@ -117,7 +117,7 @@ def _jsonify_submission(submission: Submission) -> dict[str, Any]:
         "id": submission.id,
         "url": submission.url,
         "title": submission.title,
-        "author": submission.author.name,
+        "author": submission.author.name if submission.author else None,
         "nsfw": submission.over_18,
         "spoiler": submission.spoiler,
         "selftext": submission.selftext,
