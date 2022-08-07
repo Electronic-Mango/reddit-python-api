@@ -39,15 +39,15 @@ def jsonify_submission(submission: Submission) -> dict[str, Any]:
     }
 
 
-def get_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
+def get_subreddit_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, lambda _: True)
 
 
-def get_media_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
+def get_subreddit_media_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_media)
 
 
-def get_text_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
+def get_subreddit_text_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_text)
 
 

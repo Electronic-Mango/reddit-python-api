@@ -8,9 +8,9 @@ from flask import abort, Flask, request
 from waitress import serve
 
 from reddit import (
-    get_media_submissions,
-    get_submissions,
-    get_text_submissions,
+    get_subreddit_media_submissions,
+    get_subreddit_submissions,
+    get_subreddit_text_submissions,
     get_user_media_submissions,
     get_user_submissions,
     get_user_text_submissions,
@@ -34,113 +34,113 @@ def log_request():
 
 
 @app.route("/")
-@app.route("/<subreddit_name>")
-@app.route("/<subreddit_name>/<int:load_count>")
-@app.route("/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/<subreddit>")
+@app.route("/<subreddit>/<int:load_count>")
+@app.route("/<subreddit>/<int:load_count>/<sort>")
 @app.route("/submission")
-@app.route("/submission/<subreddit_name>")
-@app.route("/submission/<subreddit_name>/<int:load_count>")
-@app.route("/submission/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/submission/<subreddit>")
+@app.route("/submission/<subreddit>/<int:load_count>")
+@app.route("/submission/<subreddit>/<int:load_count>/<sort>")
 @app.route("/subreddit")
-@app.route("/subreddit/<subreddit_name>")
-@app.route("/subreddit/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/subreddit/<subreddit>")
+@app.route("/subreddit/<subreddit>/<int:load_count>")
+@app.route("/subreddit/<subreddit>/<int:load_count>/<sort>")
 @app.route("/subreddit/submission")
-@app.route("/subreddit/submission/<subreddit_name>")
-@app.route("/subreddit/submission/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/submission/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/subreddit/submission/<subreddit>")
+@app.route("/subreddit/submission/<subreddit>/<int:load_count>")
+@app.route("/subreddit/submission/<subreddit>/<int:load_count>/<sort>")
 def submission(
-    subreddit_name: str = _DEFAULT_SUBREDDIT,
+    subreddit: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    return _prepare_list_response(subreddit_name, load_count, sort, get_submissions)
+    return _prepare_list_response(subreddit, load_count, sort, get_subreddit_submissions)
 
 
 @app.route("/media")
-@app.route("/media/<subreddit_name>")
-@app.route("/media/<subreddit_name>/<int:load_count>")
-@app.route("/media/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/media/<subreddit>")
+@app.route("/media/<subreddit>/<int:load_count>")
+@app.route("/media/<subreddit>/<int:load_count>/<sort>")
 @app.route("/subreddit/media")
-@app.route("/subreddit/media/<subreddit_name>")
-@app.route("/subreddit/media/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/media/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/subreddit/media/<subreddit>")
+@app.route("/subreddit/media/<subreddit>/<int:load_count>")
+@app.route("/subreddit/media/<subreddit>/<int:load_count>/<sort>")
 def media_submission(
-    subreddit_name: str = _DEFAULT_SUBREDDIT,
+    subreddit: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    return _prepare_list_response(subreddit_name, load_count, sort, get_media_submissions)
+    return _prepare_list_response(subreddit, load_count, sort, get_subreddit_media_submissions)
 
 
 @app.route("/text")
-@app.route("/text/<subreddit_name>")
-@app.route("/text/<subreddit_name>/<int:load_count>")
-@app.route("/text/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/text/<subreddit>")
+@app.route("/text/<subreddit>/<int:load_count>")
+@app.route("/text/<subreddit>/<int:load_count>/<sort>")
 @app.route("/subreddit/text")
-@app.route("/subreddit/text/<subreddit_name>")
-@app.route("/subreddit/text/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/text/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/subreddit/text/<subreddit>")
+@app.route("/subreddit/text/<subreddit>/<int:load_count>")
+@app.route("/subreddit/text/<subreddit>/<int:load_count>/<sort>")
 def text_submission(
-    subreddit_name: str = _DEFAULT_SUBREDDIT,
+    subreddit: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    return _prepare_list_response(subreddit_name, load_count, sort, get_text_submissions)
+    return _prepare_list_response(subreddit, load_count, sort, get_subreddit_text_submissions)
 
 
 @app.route("/random")
-@app.route("/random/<subreddit_name>")
-@app.route("/random/<subreddit_name>/<int:load_count>")
-@app.route("/random/<subreddit_name>/<int:load_count>/<sort>")
-@app.route("/random/submission/<subreddit_name>")
-@app.route("/random/submission/<subreddit_name>/<int:load_count>")
-@app.route("/random/submission/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/random/<subreddit>")
+@app.route("/random/<subreddit>/<int:load_count>")
+@app.route("/random/<subreddit>/<int:load_count>/<sort>")
+@app.route("/random/submission/<subreddit>")
+@app.route("/random/submission/<subreddit>/<int:load_count>")
+@app.route("/random/submission/<subreddit>/<int:load_count>/<sort>")
 @app.route("/subreddit/random")
-@app.route("/subreddit/random/<subreddit_name>")
-@app.route("/subreddit/random/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/random/<subreddit_name>/<int:load_count>/<sort>")
-@app.route("/subreddit/random/submission/<subreddit_name>")
-@app.route("/subreddit/random/submission/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/random/submission/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/subreddit/random/<subreddit>")
+@app.route("/subreddit/random/<subreddit>/<int:load_count>")
+@app.route("/subreddit/random/<subreddit>/<int:load_count>/<sort>")
+@app.route("/subreddit/random/submission/<subreddit>")
+@app.route("/subreddit/random/submission/<subreddit>/<int:load_count>")
+@app.route("/subreddit/random/submission/<subreddit>/<int:load_count>/<sort>")
 def random_submission(
-    subreddit_name: str = _DEFAULT_SUBREDDIT,
+    subreddit: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    return _prepare_random_response(subreddit_name, load_count, sort, get_submissions)
+    return _prepare_random_response(subreddit, load_count, sort, get_subreddit_submissions)
 
 
 @app.route("/random/media")
-@app.route("/random/media/<subreddit_name>")
-@app.route("/random/media/<subreddit_name>/<int:load_count>")
-@app.route("/random/media/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/random/media/<subreddit>")
+@app.route("/random/media/<subreddit>/<int:load_count>")
+@app.route("/random/media/<subreddit>/<int:load_count>/<sort>")
 @app.route("/subreddit/random/media")
-@app.route("/subreddit/random/media/<subreddit_name>")
-@app.route("/subreddit/random/media/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/random/media/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/subreddit/random/media/<subreddit>")
+@app.route("/subreddit/random/media/<subreddit>/<int:load_count>")
+@app.route("/subreddit/random/media/<subreddit>/<int:load_count>/<sort>")
 def random_media_submission(
-    subreddit_name: str = _DEFAULT_SUBREDDIT,
+    subreddit: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    return _prepare_random_response(subreddit_name, load_count, sort, get_media_submissions)
+    return _prepare_random_response(subreddit, load_count, sort, get_subreddit_media_submissions)
 
 
 @app.route("/random/text")
-@app.route("/random/text/<subreddit_name>")
-@app.route("/random/text/<subreddit_name>/<int:load_count>")
-@app.route("/random/text/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/random/text/<subreddit>")
+@app.route("/random/text/<subreddit>/<int:load_count>")
+@app.route("/random/text/<subreddit>/<int:load_count>/<sort>")
 @app.route("/subreddit/random/text")
-@app.route("/subreddit/random/text/<subreddit_name>")
-@app.route("/subreddit/random/text/<subreddit_name>/<int:load_count>")
-@app.route("/subreddit/random/text/<subreddit_name>/<int:load_count>/<sort>")
+@app.route("/subreddit/random/text/<subreddit>")
+@app.route("/subreddit/random/text/<subreddit>/<int:load_count>")
+@app.route("/subreddit/random/text/<subreddit>/<int:load_count>/<sort>")
 def random_text_submission(
-    subreddit_name: str = _DEFAULT_SUBREDDIT,
+    subreddit: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    return _prepare_random_response(subreddit_name, load_count, sort, get_text_submissions)
+    return _prepare_random_response(subreddit, load_count, sort, get_subreddit_text_submissions)
 
 
 @app.route("/user/<username>")
