@@ -5,7 +5,7 @@ from random import choice
 from typing import Any, Callable
 
 from dotenv import load_dotenv
-from flask import abort, Flask, jsonify, request
+from flask import abort, Flask, request
 from waitress import serve
 
 from reddit import get_media_submissions, get_submissions, get_text_submissions, Submission
