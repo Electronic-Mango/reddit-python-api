@@ -3,11 +3,9 @@ Module responsible for API itself, holds all endpoint routes.
 """
 
 from logging import INFO, basicConfig, getLogger
-from os import getenv
 from random import choice
 from typing import Any, Callable
 
-from dotenv import load_dotenv
 from flask import abort, Flask, request
 from waitress import serve
 
@@ -21,12 +19,7 @@ from reddit import (
     jsonify_submission,
     Submission,
 )
-
-load_dotenv()
-_API_HOST = getenv("API_HOST")
-_API_PORT = getenv("API_PORT")
-_DEFAULT_SUBREDDIT = getenv("DEFAULT_SUBREDDIT")
-_DEFAULT_LOAD_COUNT = int(getenv("DEFAULT_LOAD_COUNT"))
+from settings import API_HOST, API_PORT, DEFAULT_LOAD_COUNT, DEFAULT_SUBREDDIT
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -42,8 +35,8 @@ def log_request():
 @app.route("/subreddit/submission/<subreddit>/<int:load_count>")
 @app.route("/subreddit/submission/<subreddit>/<int:load_count>/<sort>")
 def submissions(
-    subreddit: str = _DEFAULT_SUBREDDIT,
-    load_count: int = _DEFAULT_LOAD_COUNT,
+    subreddit: str = DEFAULT_SUBREDDIT,
+    load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
     """Endpoint returning a list of submissions from the given subreddit
@@ -71,8 +64,8 @@ def submissions(
 @app.route("/subreddit/media/<subreddit>/<int:load_count>")
 @app.route("/subreddit/media/<subreddit>/<int:load_count>/<sort>")
 def media_submissions(
-    subreddit: str = _DEFAULT_SUBREDDIT,
-    load_count: int = _DEFAULT_LOAD_COUNT,
+    subreddit: str = DEFAULT_SUBREDDIT,
+    load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
     """Endpoint returning a list of media submissions (images, GIFs) from the given subreddit
@@ -100,8 +93,8 @@ def media_submissions(
 @app.route("/subreddit/text/<subreddit>/<int:load_count>")
 @app.route("/subreddit/text/<subreddit>/<int:load_count>/<sort>")
 def text_submissions(
-    subreddit: str = _DEFAULT_SUBREDDIT,
-    load_count: int = _DEFAULT_LOAD_COUNT,
+    subreddit: str = DEFAULT_SUBREDDIT,
+    load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
     """Endpoint returning a list of text submissions from the given subreddit
@@ -129,8 +122,8 @@ def text_submissions(
 @app.route("/subreddit/submission/random/<subreddit>/<int:load_count>")
 @app.route("/subreddit/submission/random/<subreddit>/<int:load_count>/<sort>")
 def random_submission(
-    subreddit: str = _DEFAULT_SUBREDDIT,
-    load_count: int = _DEFAULT_LOAD_COUNT,
+    subreddit: str = DEFAULT_SUBREDDIT,
+    load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
     """Endpoint returning a random submission from the given subreddit
@@ -157,8 +150,8 @@ def random_submission(
 @app.route("/subreddit/media/random/<subreddit>/<int:load_count>")
 @app.route("/subreddit/media/random/<subreddit>/<int:load_count>/<sort>")
 def random_media_submission(
-    subreddit: str = _DEFAULT_SUBREDDIT,
-    load_count: int = _DEFAULT_LOAD_COUNT,
+    subreddit: str = DEFAULT_SUBREDDIT,
+    load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
     """Endpoint returning a random media submission (image, GIF) from the given subreddit
@@ -188,8 +181,8 @@ def random_media_submission(
 @app.route("/subreddit/text/random/<subreddit>/<int:load_count>")
 @app.route("/subreddit/text/random/<subreddit>/<int:load_count>/<sort>")
 def random_text_submission(
-    subreddit: str = _DEFAULT_SUBREDDIT,
-    load_count: int = _DEFAULT_LOAD_COUNT,
+    subreddit: str = DEFAULT_SUBREDDIT,
+    load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
     """Endpoint returning a random text submission from the given subreddit
@@ -219,7 +212,7 @@ def random_text_submission(
 @app.route("/user/submission/<username>/<int:load_count>/<sort>")
 def user_submissions(
     username: str,
-    load_count: int = _DEFAULT_LOAD_COUNT,
+    load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
     """Endpoint returning a list of submissions from the given user
@@ -246,7 +239,7 @@ def user_submissions(
 @app.route("/user/media/<username>/<int:load_count>/<sort>")
 def user_media_submissions(
     username: str,
-    load_count: int = _DEFAULT_LOAD_COUNT,
+    load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
     """Endpoint returning a list of media submissions (images, GIFs) from the given user
@@ -273,7 +266,7 @@ def user_media_submissions(
 @app.route("/user/text/<username>/<int:load_count>/<sort>")
 def user_text_submissions(
     username: str,
-    load_count: int = _DEFAULT_LOAD_COUNT,
+    load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
     """Endpoint returning a list of text submissions from the given user
@@ -300,7 +293,7 @@ def user_text_submissions(
 @app.route("/user/submission/random/<username>/<int:load_count>/<sort>")
 def user_random_submission(
     username: str,
-    load_count: int = _DEFAULT_LOAD_COUNT,
+    load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
     """Endpoint returning a random submission from the given user
@@ -326,7 +319,7 @@ def user_random_submission(
 @app.route("/user/media/random/<username>/<int:load_count>/<sort>")
 def user_random_media_submission(
     username: str,
-    load_count: int = _DEFAULT_LOAD_COUNT,
+    load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
     """Endpoint returning a random media submission (image, GIF) from the given user
@@ -355,7 +348,7 @@ def user_random_media_submission(
 @app.route("/user/text/random/<username>/<int:load_count>/<sort>")
 def user_random_text_submission(
     username: str,
-    load_count: int = _DEFAULT_LOAD_COUNT,
+    load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
     """Endpoint returning a random text submission from the given user
@@ -415,4 +408,4 @@ def _get_submissions_or_abort(
 
 if __name__ == "__main__":
     basicConfig(format="[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s", level=INFO)
-    serve(app, host=_API_HOST, port=_API_PORT)
+    serve(app, host=API_HOST, port=API_PORT)

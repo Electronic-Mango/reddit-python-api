@@ -3,26 +3,22 @@ Module responsible for accessing Reddit API via PRAW.
 """
 
 from datetime import datetime
-from os import getenv
 from typing import Any, Callable
 
-from dotenv import load_dotenv
 from praw import Reddit
 from praw.models import ListingGenerator, Submission
 from praw.models.listing.mixins import BaseListingMixin
 from praw.models.listing.mixins.redditor import SubListing
 from prawcore import Redirect
 
-load_dotenv()
-_REDDIT_CLIENT_ID = getenv("REDDIT_CLIENT_ID")
-_REDDIT_CLIENT_SECRET = getenv("REDDIT_CLIENT_SECRET")
-_REDDIT_CLIENT_USER_AGENT = getenv("REDDIT_CLIENT_USER_AGENT")
+from settings import REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_CLIENT_USER_AGENT
+
 _MEDIA_SUBMISSION_URL_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif")
 
 _client = Reddit(
-    client_id=_REDDIT_CLIENT_ID,
-    client_secret=_REDDIT_CLIENT_SECRET,
-    user_agent=_REDDIT_CLIENT_USER_AGENT,
+    client_id=REDDIT_CLIENT_ID,
+    client_secret=REDDIT_CLIENT_SECRET,
+    user_agent=REDDIT_CLIENT_USER_AGENT,
 )
 
 
