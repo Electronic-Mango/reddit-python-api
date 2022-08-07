@@ -5,7 +5,9 @@ from typing import Any, Callable
 
 from dotenv import load_dotenv
 from praw import Reddit
-from praw.models import ListingGenerator, Submission, Subreddit
+from praw.models import ListingGenerator, Submission
+from praw.models.listing.mixins import BaseListingMixin
+from praw.models.listing.mixins.redditor import SubListing
 from prawcore import Redirect
 
 load_dotenv()
@@ -20,7 +22,7 @@ _client = Reddit(
     user_agent=_REDDIT_CLIENT_USER_AGENT,
 )
 
-SortType = Enum("SortType", ["HOT", "NEW", "RISING", "TOP", "CONTROVERSIAL"])
+SortType = Enum("SortType", ["HOT", "NEW", "TOP", "CONTROVERSIAL"])
 
 
 def jsonify_submission(submission: Submission) -> dict[str, Any]:
@@ -36,48 +38,62 @@ def jsonify_submission(submission: Submission) -> dict[str, Any]:
         "created_utc": datetime.utcfromtimestamp(submission.created_utc),
         "shortlink": submission.shortlink,
         "subreddit": submission.subreddit.display_name,
+        "stickied": submission.stickied,
     }
 
 
-def get_submissions(subreddit: str, load_count: int, sort_type) -> list[Submission]:
-    return _get_submissions_with_filtering(subreddit, load_count, sort_type, lambda _: True)
+def get_submissions(subreddit: str, limit: int, sort_type) -> list[Submission]:
+    return _get_submissions(_client.subreddit(subreddit), limit, sort_type, lambda _: True)
 
 
-def get_media_submissions(subreddit: str, load_count: int, sort_type) -> list[Submission]:
-    return _get_submissions_with_filtering(subreddit, load_count, sort_type, _submission_is_media)
+def get_media_submissions(subreddit: str, limit: int, sort_type) -> list[Submission]:
+    return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_media)
 
 
-def get_text_submissions(subreddit: str, load_count: int, sort_type) -> list[Submission]:
-    return _get_submissions_with_filtering(subreddit, load_count, sort_type, _submission_is_text)
+def get_text_submissions(subreddit: str, limit: int, sort_type) -> list[Submission]:
+    return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_text)
 
 
-def _get_submissions_with_filtering(
-    subreddit: str,
-    load_count: int,
+def get_user_submissions(username: str, limit: int, sort_type) -> list[Submission]:
+    return _get_submissions(_get_redditor_source(username), limit, sort_type, lambda _: True)
+
+
+def get_user_media_submissions(username: str, limit: int, sort_type) -> list[Submission]:
+    return _get_submissions(_get_redditor_source(username), limit, sort_type, _submission_is_media)
+
+
+def get_user_text_submissions(username: str, limit: int, sort_type) -> list[Submission]:
+    return _get_submissions(_get_redditor_source(username), limit, sort_type, _submission_is_text)
+
+
+def _get_redditor_source(username: str) -> SubListing:
+    return _client.redditor(username).submissions
+
+
+def _get_submissions(
+    source: BaseListingMixin,
+    limit: int,
     sort_type: SortType,
     submission_filter: Callable[[Submission], bool],
 ) -> list[Submission]:
-    subreddit = _client.subreddit(subreddit)
-    submissions_generator = _get_submissions_generator(subreddit, sort_type)
-    submissions_generator.limit = load_count
+    submissions_generator = _get_submissions_generator(source, sort_type)
+    submissions_generator.limit = limit
     submissions = _load_submissions(submissions_generator)
     return [submission for submission in submissions if submission_filter(submission)]
 
 
-def _get_submissions_generator(subreddit: Subreddit, sort_type: SortType) -> ListingGenerator:
+def _get_submissions_generator(source: BaseListingMixin, sort_type: SortType) -> ListingGenerator:
     match sort_type:
         case SortType.HOT:
-            return subreddit.hot()
+            return source.hot()
         case SortType.NEW:
-            return subreddit.new()
-        case SortType.RISING:
-            return subreddit.rising()
+            return source.new()
         case SortType.TOP:
-            return subreddit.top()
+            return source.top()
         case SortType.CONTROVERSIAL:
-            return subreddit.controversial()
+            return source.controversial()
         case _:
-            return subreddit.hot()
+            return source.hot()
 
 
 def _load_submissions(submissions_generator: ListingGenerator) -> list[Submission]:
