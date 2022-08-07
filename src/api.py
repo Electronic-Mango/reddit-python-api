@@ -23,6 +23,7 @@ def log_request():
     getLogger("waitress").info(request)
 
 
+@app.route("/<subreddit_name>", defaults={"load_count": _DEFAULT_LOAD_COUNT})
 @app.route("/submission/<subreddit_name>", defaults={"load_count": _DEFAULT_LOAD_COUNT})
 @app.route("/submission/<subreddit_name>/<int:load_count>")
 def submission(subreddit_name: str, load_count: int) -> dict[str, Any]:
@@ -41,6 +42,7 @@ def text_submission(subreddit_name: str, load_count: int) -> dict[str, Any]:
     return _prepare_list_response(subreddit_name, load_count, get_text_submissions)
 
 
+@app.route("/random/<subreddit_name>", defaults={"load_count": _DEFAULT_LOAD_COUNT})
 @app.route("/random/submission/<subreddit_name>", defaults={"load_count": _DEFAULT_LOAD_COUNT})
 @app.route("/random/submission/<subreddit_name>/<int:load_count>")
 def random_submission(subreddit_name: str, load_count: int) -> dict[str, Any]:
