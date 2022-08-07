@@ -7,7 +7,7 @@ from typing import Any
 from flask import Blueprint
 
 from api.prepare_response import prepare_list_response
-from reddit.reddit import get_subreddit_submissions
+from reddit.client import get_subreddit_submissions
 from settings import DEFAULT_LOAD_COUNT, DEFAULT_SUBREDDIT
 
 blueprint = Blueprint("/subreddit/submission", __name__)

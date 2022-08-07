@@ -7,7 +7,7 @@ from typing import Any
 from flask import Blueprint
 
 from api.prepare_response import prepare_random_response
-from reddit.reddit import get_user_text_submissions
+from reddit.client import get_user_text_submissions
 from settings import DEFAULT_LOAD_COUNT
 
 blueprint = Blueprint("user/text/random", __name__)
