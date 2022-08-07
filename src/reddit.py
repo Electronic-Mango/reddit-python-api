@@ -1,5 +1,4 @@
 from os import getenv
-from random import choice
 from typing import Callable
 
 from dotenv import load_dotenv
@@ -20,26 +19,23 @@ _client = Reddit(
 )
 
 
-def get_random_submission(subreddit: str, load_count: int) -> Submission:
-    return _get_submission_with_filtering(subreddit, load_count, lambda _: True)
+def get_submissions(subreddit: str, load_count: int) -> list[Submission]:
+    return _get_submissions_with_filtering(subreddit, load_count, lambda _: True)
 
 
-def get_random_media_submission(subreddit: str, load_count: int) -> Submission:
-    return _get_submission_with_filtering(subreddit, load_count, _submission_is_media)
+def get_media_submissions(subreddit: str, load_count: int) -> list[Submission]:
+    return _get_submissions_with_filtering(subreddit, load_count, _submission_is_media)
 
 
-def get_random_text_submission(subreddit: str, load_count: int) -> Submission:
-    return _get_submission_with_filtering(subreddit, load_count, _submission_is_text)
+def get_text_submissions(subreddit: str, load_count: int) -> list[Submission]:
+    return _get_submissions_with_filtering(subreddit, load_count, _submission_is_text)
 
 
-def _get_submission_with_filtering(
-    subreddit: str, load_count: int, submission_filter: Callable[[Submission], bool] = None
-) -> Submission:
+def _get_submissions_with_filtering(
+    subreddit: str, load_count: int, submission_filter: Callable[[Submission], bool]
+) -> list[Submission]:
     submissions = _get_submissions(subreddit, load_count)
-    filtered_submissions = [
-        submission for submission in submissions if submission_filter(submission)
-    ]
-    return choice(filtered_submissions) if filtered_submissions else None
+    return [submission for submission in submissions if submission_filter(submission)]
 
 
 def _get_submissions(subreddit: str, load_count: int) -> list[Submission]:
