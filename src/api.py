@@ -29,19 +29,19 @@ def log_request():
 
 @app.route("/submission/<subreddit_name>", defaults={"load_count": _DEFAULT_LOAD_COUNT})
 @app.route("/submission/<subreddit_name>/<int:load_count>")
-def random_submission_load_count(subreddit_name: str, load_count: int) -> dict[str, Any]:
+def random_submission(subreddit_name: str, load_count: int) -> dict[str, Any]:
     return _prepare_response(subreddit_name, load_count, get_random_submission)
 
 
 @app.route("/media/<subreddit_name>", defaults={"load_count": _DEFAULT_LOAD_COUNT})
 @app.route("/media/<subreddit_name>/<int:load_count>")
-def random_media_submission_load_count(subreddit_name: str, load_count: int) -> dict[str, Any]:
+def random_media_submission(subreddit_name: str, load_count: int) -> dict[str, Any]:
     return _prepare_response(subreddit_name, load_count, get_random_media_submission)
 
 
 @app.route("/text/<subreddit_name>", defaults={"load_count": _DEFAULT_LOAD_COUNT})
 @app.route("/text/<subreddit_name>/<int:load_count>")
-def random_text_submission_load_count(subreddit_name: str, load_count: int) -> dict[str, Any]:
+def random_text_submission(subreddit_name: str, load_count: int) -> dict[str, Any]:
     return _prepare_response(subreddit_name, load_count, get_random_text_submission)
 
 
