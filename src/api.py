@@ -41,12 +41,28 @@ def log_request():
 @app.route("/subreddit/submission/<subreddit>")
 @app.route("/subreddit/submission/<subreddit>/<int:load_count>")
 @app.route("/subreddit/submission/<subreddit>/<int:load_count>/<sort>")
-def submission(
+def submissions(
     subreddit: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a list of submissions from the given subreddit."""
+    """Endpoint returning a list of submissions from the given subreddit
+
+    Argument "load_count" specifies only how many submissions are loaded from subreddit.
+    Final count of submissions can be lower than "load_count" argument if given subreddit has fewer
+    submissions.
+
+    Args:
+        subreddit (str, optional): subreddit to load data from.
+                                   Defaults to DEFAULT_SUBREDDIT from .env.
+        load_count (int, optional): how many submissions should be loaded.
+                                    Defaults to DEFAULT_LOAD_COUNT from .env.
+        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
+                              Defaults to None, which will be interpreter as "hot".
+
+    Returns:
+        dict[str, Any]: JSON storing list of loaded submissions and total submission count.
+    """
     return _prepare_list_response(subreddit, load_count, sort, get_subreddit_submissions)
 
 
@@ -54,12 +70,28 @@ def submission(
 @app.route("/subreddit/media/<subreddit>")
 @app.route("/subreddit/media/<subreddit>/<int:load_count>")
 @app.route("/subreddit/media/<subreddit>/<int:load_count>/<sort>")
-def media_submission(
+def media_submissions(
     subreddit: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a list of media submissions (images, GIFs) from the given subreddit."""
+    """Endpoint returning a list of media submissions (images, GIFs) from the given subreddit
+
+    Argument "load_count" specifies only how many submissions are loaded from subreddit.
+    Final count of submissions can be lower than "load_count" argument if given subreddit has fewer
+    submissions and due to filtering only media submissions.
+
+    Args:
+        subreddit (str, optional): subreddit to load data from.
+                                   Defaults to DEFAULT_SUBREDDIT from .env.
+        load_count (int, optional): how many submissions should be loaded.
+                                    Defaults to DEFAULT_LOAD_COUNT from .env.
+        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
+                              Defaults to None, which will be interpreter as "hot".
+
+    Returns:
+        dict[str, Any]: JSON storing list of loaded media submissions and total submission count.
+    """
     return _prepare_list_response(subreddit, load_count, sort, get_subreddit_media_submissions)
 
 
@@ -67,12 +99,28 @@ def media_submission(
 @app.route("/subreddit/text/<subreddit>")
 @app.route("/subreddit/text/<subreddit>/<int:load_count>")
 @app.route("/subreddit/text/<subreddit>/<int:load_count>/<sort>")
-def text_submission(
+def text_submissions(
     subreddit: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a list of text submissions from the given subreddit."""
+    """Endpoint returning a list of text submissions from the given subreddit
+
+    Argument "load_count" specifies only how many submissions are loaded from subreddit.
+    Final count of submissions can be lower than "load_count" argument if given subreddit has fewer
+    submissions and due to filtering only text submissions.
+
+    Args:
+        subreddit (str, optional): subreddit to load data from.
+                                   Defaults to DEFAULT_SUBREDDIT from .env.
+        load_count (int, optional): how many submissions should be loaded.
+                                    Defaults to DEFAULT_LOAD_COUNT from .env.
+        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
+                              Defaults to None, which will be interpreter as "hot".
+
+    Returns:
+        dict[str, Any]: JSON storing list of loaded text submissions and total submission count.
+    """
     return _prepare_list_response(subreddit, load_count, sort, get_subreddit_text_submissions)
 
 
@@ -85,7 +133,22 @@ def random_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a random submission from the given subreddit."""
+    """Endpoint returning a random submission from the given subreddit
+
+    Up to "load_count" submissions are loaded from subreddit, then a random one is selected.
+    Number of loaded submissions can be lower if subreddit has fewer submissions.
+
+    Args:
+        subreddit (str, optional): subreddit to load data from.
+                                   Defaults to DEFAULT_SUBREDDIT from .env.
+        load_count (int, optional): how many submissions should be loaded before one is selected.
+                                    Defaults to DEFAULT_LOAD_COUNT from .env.
+        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
+                              Defaults to None, which will be interpreter as "hot".
+
+    Returns:
+        dict[str, Any]: JSON storing data of one random submission from given subreddit.
+    """
     return _prepare_random_response(subreddit, load_count, sort, get_subreddit_submissions)
 
 
@@ -98,7 +161,25 @@ def random_media_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a random media submission (image, GIF) from the given subreddit."""
+    """Endpoint returning a random media submission (image, GIF) from the given subreddit
+
+    Up to "load_count" media submissions are loaded from subreddit, then a random one is selected.
+    Number of loaded submissions can be lower if subreddit has fewer submissions and due to
+    filtering only media submissions from the loaded ones.
+    Still, the higher the "load_count" the lower the chance of returning the same submission
+    on repeated calls.
+
+    Args:
+        subreddit (str, optional): subreddit to load data from.
+                                   Defaults to DEFAULT_SUBREDDIT from .env.
+        load_count (int, optional): how many submissions should be loaded before one is selected.
+                                    Defaults to DEFAULT_LOAD_COUNT from .env.
+        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
+                              Defaults to None, which will be interpreter as "hot".
+
+    Returns:
+        dict[str, Any]: JSON storing data of one random media submission from given subreddit.
+    """
     return _prepare_random_response(subreddit, load_count, sort, get_subreddit_media_submissions)
 
 
@@ -111,43 +192,106 @@ def random_text_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a random text submission from the given subreddit."""
+    """Endpoint returning a random text submission from the given subreddit
+
+    Up to "load_count" text submissions are loaded from subreddit, then a random one is selected.
+    Number of loaded submissions can be lower if subreddit has fewer submissions and due to
+    filtering only text submissions from the loaded ones.
+    Still, the higher the "load_count" the lower the chance of returning the same submission
+    on repeated calls.
+
+    Args:
+        subreddit (str, optional): subreddit to load data from.
+                                   Defaults to DEFAULT_SUBREDDIT from .env.
+        load_count (int, optional): how many submissions should be loaded before one is selected.
+                                    Defaults to DEFAULT_LOAD_COUNT from .env.
+        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
+                              Defaults to None, which will be interpreter as "hot".
+
+    Returns:
+        dict[str, Any]: JSON storing data of one random text submission from given subreddit.
+    """
     return _prepare_random_response(subreddit, load_count, sort, get_subreddit_text_submissions)
 
 
 @app.route("/user/submission/<username>")
 @app.route("/user/submission/<username>/<int:load_count>")
 @app.route("/user/submission/<username>/<int:load_count>/<sort>")
-def user_submission(
+def user_submissions(
     username: str,
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a list of submissions from the given user."""
+    """Endpoint returning a list of submissions from the given user
+
+    Argument "load_count" specifies only how many submissions are loaded from user.
+    Final count of submissions can be lower than "load_count" argument if given user has fewer
+    submissions.
+
+    Args:
+        username (str): user to load data from.
+        load_count (int, optional): how many submissions should be loaded.
+                                    Defaults to DEFAULT_LOAD_COUNT from .env.
+        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
+                              Defaults to None, which will be interpreter as "hot".
+
+    Returns:
+        dict[str, Any]: JSON storing list of loaded submissions and total submission count
+    """
     return _prepare_list_response(username, load_count, sort, get_user_submissions)
 
 
 @app.route("/user/media/<username>")
 @app.route("/user/media/<username>/<int:load_count>")
 @app.route("/user/media/<username>/<int:load_count>/<sort>")
-def user_media_submission(
+def user_media_submissions(
     username: str,
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a list of media submissions (images, GIFs) from the given user."""
+    """Endpoint returning a list of media submissions (images, GIFs) from the given user
+
+    Argument "load_count" specifies only how many submissions are loaded from user.
+    Final count of submissions can be lower than "load_count" argument if given user has fewer
+    submissions and due to filtering only media submissions.
+
+    Args:
+        username (str): user to load data from.
+        load_count (int, optional): how many submissions should be loaded.
+                                    Defaults to DEFAULT_LOAD_COUNT from .env.
+        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
+                              Defaults to None, which will be interpreter as "hot".
+
+    Returns:
+        dict[str, Any]: JSON storing list of loaded media submissions and total submission count.
+    """
     return _prepare_list_response(username, load_count, sort, get_user_media_submissions)
 
 
 @app.route("/user/text/<username>")
 @app.route("/user/text/<username>/<int:load_count>")
 @app.route("/user/text/<username>/<int:load_count>/<sort>")
-def user_text_submission(
+def user_text_submissions(
     username: str,
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a list of text submissions from the given user."""
+    """Endpoint returning a list of text submissions from the given user
+
+    Argument "load_count" specifies only how many submissions are loaded from user.
+    Final count of submissions can be lower than "load_count" argument if given user has fewer
+    submissions and due to filtering only text submissions.
+
+    Args:
+        username (str): user to load data from.
+        load_count (int, optional): how many submissions should be loaded.
+                                    Defaults to DEFAULT_LOAD_COUNT from .env.
+        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
+                              Defaults to None, which will be interpreter as "hot".
+
+    Returns:
+        dict[str, Any]: JSON storing list of loaded text submissions and total submission count.
+    """
     return _prepare_list_response(username, load_count, sort, get_user_text_submissions)
 
 
@@ -159,7 +303,21 @@ def user_random_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a random submission from the given user."""
+    """Endpoint returning a random submission from the given user
+
+    Up to "load_count" submissions are loaded from user, then a random one is selected.
+    Number of loaded submissions can be lower if user has fewer submissions.
+
+    Args:
+        username (str): user to load data from.
+        load_count (int, optional): how many submissions should be loaded before one is selected.
+                                    Defaults to DEFAULT_LOAD_COUNT from .env.
+        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
+                              Defaults to None, which will be interpreter as "hot".
+
+    Returns:
+        dict[str, Any]: JSON storing data of one random submission from given user.
+    """
     return _prepare_random_response(username, load_count, sort, get_user_submissions)
 
 
@@ -171,7 +329,24 @@ def user_random_media_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a random media submission (image, GIF) from the given user."""
+    """Endpoint returning a random media submission (image, GIF) from the given user
+
+    Up to "load_count" media submissions are loaded from user, then a random one is selected.
+    Number of loaded submissions can be lower if user has fewer submissions and due to filtering
+    only media submissions from the loaded ones.
+    Still, the higher the "load_count" the lower the chance of returning the same submission
+    on repeated calls.
+
+    Args:
+        username (str): user to load data from.
+        load_count (int, optional): how many submissions should be loaded before one is selected.
+                                    Defaults to DEFAULT_LOAD_COUNT from .env.
+        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
+                              Defaults to None, which will be interpreter as "hot".
+
+    Returns:
+        dict[str, Any]: JSON storing data of one random media submission from given user.
+    """
     return _prepare_random_response(username, load_count, sort, get_user_media_submissions)
 
 
@@ -183,7 +358,24 @@ def user_random_text_submission(
     load_count: int = _DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a random text submission from the given user."""
+    """Endpoint returning a random text submission from the given user
+
+    Up to "load_count" text submissions are loaded from user, then a random one is selected.
+    Number of loaded submissions can be lower if user has fewer submissions and due to filtering
+    only text submissions from the loaded ones.
+    Still, the higher the "load_count" the lower the chance of returning the same submission
+    on repeated calls.
+
+    Args:
+        username (str): user to load data from.
+        load_count (int, optional): how many submissions should be loaded before one is selected.
+                                    Defaults to DEFAULT_LOAD_COUNT from .env.
+        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
+                              Defaults to None, which will be interpreter as "hot".
+
+    Returns:
+        dict[str, Any]: JSON storing data of one random text submission from given user.
+    """
     return _prepare_random_response(username, load_count, sort, get_user_text_submissions)
 
 

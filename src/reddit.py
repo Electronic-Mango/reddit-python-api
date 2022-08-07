@@ -27,7 +27,28 @@ _client = Reddit(
 
 
 def jsonify_submission(submission: Submission) -> dict[str, Any]:
-    """Change Reddit submission to a JSON-like dict."""
+    """Change Reddit submission to a JSON-like dict
+
+    Only a selected values are present in resulting JSON:
+     - id
+     - url
+     - title
+     - author, or None if author is unavailable
+     - nsfw
+     - spoiler
+     - selftext
+     - score
+     - created_utc
+     - shortlink
+     - subreddit
+     - stickied
+
+    Args:
+        submission (Submission): Reddit submission to JSONify
+
+    Returns:
+        dict[str, Any]: dict containing JSONified submission
+    """
     return {
         "id": submission.id,
         "url": submission.url,
@@ -45,32 +66,110 @@ def jsonify_submission(submission: Submission) -> dict[str, Any]:
 
 
 def get_subreddit_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
-    """Get a list of submissions from the given subreddit."""
+    """Get a list of submissions from the given subreddit
+
+    Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
+
+    Args:
+        subreddit (str): name of subreddit to get data from
+        limit (int): how many submissions should be loaded
+        sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
+
+    Returns:
+        list[Submission]: list of all loaded submissions from given subreddit.
+    """
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, lambda _: True)
 
 
 def get_subreddit_media_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
-    """Get a list of media submissions (images, GIFs) from the given subreddit."""
+    """Get a list of media submissions (images, GIFs) from the given subreddit
+
+    Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
+    Additionally "limit" only defines how many submissions are loaded from given subreddit,
+    more submissions will be dropped as part of "media" filtering.
+    Submissions are classified as "media" based on their URL extension.
+
+    Args:
+        subreddit (str): name of subreddit to get data from
+        limit (int): how many submissions should be loaded
+        sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
+
+    Returns:
+        list[Submission]: list of all loaded media submissions from given subreddit.
+    """
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_media)
 
 
 def get_subreddit_text_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
-    """Get a list of text submissions from the given subreddit."""
+    """Get a list of text submissions from the given subreddit
+
+    Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
+    Additionally "limit" only defines how many submissions are loaded from given subreddit,
+    more submissions will be dropped as part of "text" filtering.
+    Submissions are classified as "text" if their "selftext" field is not empty.
+
+    Args:
+        subreddit (str): name of subreddit to get data from
+        limit (int): how many submissions should be loaded
+        sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
+
+    Returns:
+        list[Submission]: list of all loaded text submissions from given subreddit.
+    """
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_text)
 
 
 def get_user_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
-    """Get a list of submissions from the given user."""
+    """Get a list of submissions from the given user
+
+    Resulting list can be shorter than "limit" argument if given user has fewer submissions.
+
+    Args:
+        username (str): name of user to get data from
+        limit (int): how many submissions should be loaded
+        sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
+
+    Returns:
+        list[Submission]: list of all loaded submissions from given user.
+    """
     return _get_submissions(_get_redditor_source(username), limit, sort_type, lambda _: True)
 
 
 def get_user_media_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
-    """Get a list of media submissions (images, GIFs) from the given user."""
+    """Get a list of media submissions (images, GIFs) from the given user
+
+    Resulting list can be shorter than "limit" argument if given user has fewer submissions.
+    Additionally "limit" only defines how many submissions are loaded from given user,
+    more submissions will be dropped as part of "media" filtering.
+    Submissions are classified as "media" based on their URL extension.
+
+    Args:
+        username (str): name of user to get data from
+        limit (int): how many submissions should be loaded
+        sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
+
+    Returns:
+        list[Submission]: list of all loaded media submissions from given user.
+    """
     return _get_submissions(_get_redditor_source(username), limit, sort_type, _submission_is_media)
 
 
 def get_user_text_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
-    """Get a list of text submissions from the given user."""
+    """Get a list of text submissions from the given user
+
+    Resulting list can be shorter than "limit" argument if given user has fewer submissions.
+    Additionally "limit" only defines how many submissions are loaded from given user,
+    more submissions will be dropped as part of "text" filtering.
+    Submissions are classified as "text" if their "selftext" field is not empty.
+
+    Args:
+        username (str): name of user to get data from
+        limit (int): how many submissions should be loaded
+        sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
+
+    Returns:
+        list[Submission]: list of all loaded text submissions from given user.
+    """
     return _get_submissions(_get_redditor_source(username), limit, sort_type, _submission_is_text)
 
 
