@@ -11,9 +11,12 @@ from praw.models.listing.mixins import BaseListingMixin
 from praw.models.listing.mixins.redditor import SubListing
 from prawcore import Redirect
 
-from settings import REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_CLIENT_USER_AGENT
-
-_MEDIA_SUBMISSION_URL_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif")
+from settings import (
+    REDDIT_CLIENT_ID,
+    REDDIT_CLIENT_SECRET,
+    REDDIT_CLIENT_USER_AGENT,
+    REDDIT_MEDIA_URL_SUFFIXES,
+)
 
 _client = Reddit(
     client_id=REDDIT_CLIENT_ID,
@@ -83,7 +86,7 @@ def get_subreddit_media_submissions(subreddit: str, limit: int, sort_type: str) 
     Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
     Additionally "limit" only defines how many submissions are loaded from given subreddit,
     more submissions will be dropped as part of "media" filtering.
-    Submissions are classified as "media" based on their URL extension.
+    Submissions are classified as "media" based on their URL suffix.
 
     Args:
         subreddit (str): name of subreddit to get data from
@@ -137,7 +140,7 @@ def get_user_media_submissions(username: str, limit: int, sort_type: str) -> lis
     Resulting list can be shorter than "limit" argument if given user has fewer submissions.
     Additionally "limit" only defines how many submissions are loaded from given user,
     more submissions will be dropped as part of "media" filtering.
-    Submissions are classified as "media" based on their URL extension.
+    Submissions are classified as "media" based on their URL suffix.
 
     Args:
         username (str): name of user to get data from
@@ -205,7 +208,7 @@ def _load_submissions(submissions_generator: ListingGenerator) -> list[Submissio
 
 
 def _submission_is_media(submission: Submission) -> bool:
-    return submission.url.endswith(_MEDIA_SUBMISSION_URL_SUFFIXES)
+    return submission.url.endswith(REDDIT_MEDIA_URL_SUFFIXES)
 
 
 def _submission_is_text(submission: Submission) -> bool:

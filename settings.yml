@@ -1,7 +1,7 @@
 # YAML configuration file with some sensible defaults, except Reddit app secrets.
 # Each value can be replaced by environment variable (or variable in .env),
 # of all nested keys separated by an "_", like "api_host", "api_reddit_default_load_count",
-# "reddit_client_id", "reddit_client_secret" etc.
+# "reddit_client_id", "reddit_client_secret", "reddit_media_url_suffixes" etc.
 
 api:
   # Host where API will listen to requests
@@ -21,3 +21,9 @@ reddit:
     secret:
     # User agent used by Reddit client
     user_agent: api
+  # Submissions with URLs ending with these will be classified as "media"
+  media_url_suffixes:
+    - .png
+    - .jpg
+    - .jpeg
+    - .gif
