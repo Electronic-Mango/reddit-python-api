@@ -103,4 +103,4 @@ def _submission_is_media(submission: Submission) -> bool:
 
 
 def _submission_is_text(submission: Submission) -> bool:
-    return submission.selftext_html is not None
+    return submission.selftext is not None
