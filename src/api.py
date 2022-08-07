@@ -17,6 +17,7 @@ from reddit import (
 load_dotenv()
 _API_HOST = getenv("API_HOST")
 _API_PORT = getenv("API_PORT")
+_DEFAULT_LOAD_COUNT = int(getenv("DEFAULT_LOAD_COUNT"))
 
 app = Flask(__name__)
 
@@ -26,26 +27,29 @@ def log_request():
     getLogger("waitress").info(request)
 
 
-@app.route("/submission/<subreddit_name>")
-def random_submission(subreddit_name: str) -> dict[str, Any]:
-    return _prepare_response(subreddit_name, get_random_submission)
+@app.route("/submission/<subreddit_name>", defaults={"load_count": _DEFAULT_LOAD_COUNT})
+@app.route("/submission/<subreddit_name>/<int:load_count>")
+def random_submission_load_count(subreddit_name: str, load_count: int) -> dict[str, Any]:
+    return _prepare_response(subreddit_name, load_count, get_random_submission)
 
 
-@app.route("/media/<subreddit_name>")
-def random_media_submission(subreddit_name: str) -> dict[str, Any]:
-    return _prepare_response(subreddit_name, get_random_media_submission)
+@app.route("/media/<subreddit_name>", defaults={"load_count": _DEFAULT_LOAD_COUNT})
+@app.route("/media/<subreddit_name>/<int:load_count>")
+def random_media_submission_load_count(subreddit_name: str, load_count: int) -> dict[str, Any]:
+    return _prepare_response(subreddit_name, load_count, get_random_media_submission)
 
 
-@app.route("/text/<subreddit_name>")
-def random_text_submission(subreddit_name: str) -> dict[str, Any]:
-    return _prepare_response(subreddit_name, get_random_text_submission)
+@app.route("/text/<subreddit_name>", defaults={"load_count": _DEFAULT_LOAD_COUNT})
+@app.route("/text/<subreddit_name>/<int:load_count>")
+def random_text_submission_load_count(subreddit_name: str, load_count: int) -> dict[str, Any]:
+    return _prepare_response(subreddit_name, load_count, get_random_text_submission)
 
 
 def _prepare_response(
-    subreddit_name: str, submission_generator: Callable[[str], Submission]
+    subreddit_name: str, load_count: int, submission_generator: Callable[[str, int], Submission]
 ) -> dict[str, Any]:
     escaped_subreddit_name = escape(subreddit_name)
-    submission = submission_generator(escaped_subreddit_name)
+    submission = submission_generator(escaped_subreddit_name, load_count)
     if not submission:
         abort(404, f"No entries found for {escaped_subreddit_name}")
     return {

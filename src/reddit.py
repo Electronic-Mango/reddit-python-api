@@ -11,7 +11,6 @@ load_dotenv()
 _REDDIT_CLIENT_ID = getenv("REDDIT_CLIENT_ID")
 _REDDIT_CLIENT_SECRET = getenv("REDDIT_CLIENT_SECRET")
 _REDDIT_CLIENT_USER_AGENT = getenv("REDDIT_CLIENT_USER_AGENT")
-_LOAD_COUNT = int(getenv("DEFAULT_LOAD_COUNT"))
 _MEDIA_SUBMISSION_URL_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif")
 
 _client = Reddit(
@@ -21,15 +20,15 @@ _client = Reddit(
 )
 
 
-def get_random_submission(subreddit: str, load_count: int = _LOAD_COUNT) -> Submission:
+def get_random_submission(subreddit: str, load_count: int) -> Submission:
     return _get_submission_with_filtering(subreddit, load_count, lambda _: True)
 
 
-def get_random_media_submission(subreddit: str, load_count: int = _LOAD_COUNT) -> Submission:
+def get_random_media_submission(subreddit: str, load_count: int) -> Submission:
     return _get_submission_with_filtering(subreddit, load_count, _submission_is_media)
 
 
-def get_random_text_submission(subreddit: str, load_count: int = _LOAD_COUNT) -> Submission:
+def get_random_text_submission(subreddit: str, load_count: int) -> Submission:
     return _get_submission_with_filtering(subreddit, load_count, _submission_is_text)
 
 
