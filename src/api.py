@@ -124,6 +124,7 @@ def _jsonify_submission(submission: Submission) -> dict[str, Any]:
         "score": submission.score,
         "created_utc": datetime.utcfromtimestamp(submission.created_utc),
         "shortlink": submission.shortlink,
+        "subreddit": submission.subreddit.display_name,
     }
 
 
