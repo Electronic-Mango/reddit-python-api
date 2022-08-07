@@ -10,10 +10,10 @@ from flask import abort, Flask, request
 from waitress import serve
 
 from reddit import (
-    get_subreddit_media_submissions,
+    get_subreddit_image_submissions,
     get_subreddit_submissions,
     get_subreddit_text_submissions,
-    get_user_media_submissions,
+    get_user_image_submissions,
     get_user_submissions,
     get_user_text_submissions,
     jsonify_submission,
@@ -59,20 +59,20 @@ def submissions(
     return _prepare_list_response(subreddit, load_count, sort, get_subreddit_submissions)
 
 
-@app.route("/subreddit/media")
-@app.route("/subreddit/media/<subreddit>")
-@app.route("/subreddit/media/<subreddit>/<int:load_count>")
-@app.route("/subreddit/media/<subreddit>/<int:load_count>/<sort>")
-def media_submissions(
+@app.route("/subreddit/image")
+@app.route("/subreddit/image/<subreddit>")
+@app.route("/subreddit/image/<subreddit>/<int:load_count>")
+@app.route("/subreddit/image/<subreddit>/<int:load_count>/<sort>")
+def image_submissions(
     subreddit: str = DEFAULT_SUBREDDIT,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a list of media submissions (images, GIFs) from the given subreddit
+    """Endpoint returning a list of image submissions (images, GIFs) from the given subreddit
 
     Argument "load_count" specifies only how many submissions are loaded from subreddit.
     Final count of submissions can be lower than "load_count" argument if given subreddit has fewer
-    submissions and due to filtering only media submissions.
+    submissions and due to filtering only image submissions.
 
     Args:
         subreddit (str, optional): subreddit to load data from.
@@ -83,9 +83,9 @@ def media_submissions(
                               Defaults to None, which will be interpreter as "hot".
 
     Returns:
-        dict[str, Any]: JSON storing list of loaded media submissions and total submission count.
+        dict[str, Any]: JSON storing list of loaded image submissions and total submission count.
     """
-    return _prepare_list_response(subreddit, load_count, sort, get_subreddit_media_submissions)
+    return _prepare_list_response(subreddit, load_count, sort, get_subreddit_image_submissions)
 
 
 @app.route("/subreddit/text")
@@ -145,20 +145,20 @@ def random_submission(
     return _prepare_random_response(subreddit, load_count, sort, get_subreddit_submissions)
 
 
-@app.route("/subreddit/media/random")
-@app.route("/subreddit/media/random/<subreddit>")
-@app.route("/subreddit/media/random/<subreddit>/<int:load_count>")
-@app.route("/subreddit/media/random/<subreddit>/<int:load_count>/<sort>")
-def random_media_submission(
+@app.route("/subreddit/image/random")
+@app.route("/subreddit/image/random/<subreddit>")
+@app.route("/subreddit/image/random/<subreddit>/<int:load_count>")
+@app.route("/subreddit/image/random/<subreddit>/<int:load_count>/<sort>")
+def random_image_submission(
     subreddit: str = DEFAULT_SUBREDDIT,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a random media submission (image, GIF) from the given subreddit
+    """Endpoint returning a random image submission (image, GIF) from the given subreddit
 
-    Up to "load_count" media submissions are loaded from subreddit, then a random one is selected.
+    Up to "load_count" image submissions are loaded from subreddit, then a random one is selected.
     Number of loaded submissions can be lower if subreddit has fewer submissions and due to
-    filtering only media submissions from the loaded ones.
+    filtering only image submissions from the loaded ones.
     Still, the higher the "load_count" the lower the chance of returning the same submission
     on repeated calls.
 
@@ -171,9 +171,9 @@ def random_media_submission(
                               Defaults to None, which will be interpreter as "hot".
 
     Returns:
-        dict[str, Any]: JSON storing data of one random media submission from given subreddit.
+        dict[str, Any]: JSON storing data of one random image submission from given subreddit.
     """
-    return _prepare_random_response(subreddit, load_count, sort, get_subreddit_media_submissions)
+    return _prepare_random_response(subreddit, load_count, sort, get_subreddit_image_submissions)
 
 
 @app.route("/subreddit/text/random")
@@ -234,19 +234,19 @@ def user_submissions(
     return _prepare_list_response(username, load_count, sort, get_user_submissions)
 
 
-@app.route("/user/media/<username>")
-@app.route("/user/media/<username>/<int:load_count>")
-@app.route("/user/media/<username>/<int:load_count>/<sort>")
-def user_media_submissions(
+@app.route("/user/image/<username>")
+@app.route("/user/image/<username>/<int:load_count>")
+@app.route("/user/image/<username>/<int:load_count>/<sort>")
+def user_image_submissions(
     username: str,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a list of media submissions (images, GIFs) from the given user
+    """Endpoint returning a list of image submissions (images, GIFs) from the given user
 
     Argument "load_count" specifies only how many submissions are loaded from user.
     Final count of submissions can be lower than "load_count" argument if given user has fewer
-    submissions and due to filtering only media submissions.
+    submissions and due to filtering only image submissions.
 
     Args:
         username (str): user to load data from.
@@ -256,9 +256,9 @@ def user_media_submissions(
                               Defaults to None, which will be interpreter as "hot".
 
     Returns:
-        dict[str, Any]: JSON storing list of loaded media submissions and total submission count.
+        dict[str, Any]: JSON storing list of loaded image submissions and total submission count.
     """
-    return _prepare_list_response(username, load_count, sort, get_user_media_submissions)
+    return _prepare_list_response(username, load_count, sort, get_user_image_submissions)
 
 
 @app.route("/user/text/<username>")
@@ -314,19 +314,19 @@ def user_random_submission(
     return _prepare_random_response(username, load_count, sort, get_user_submissions)
 
 
-@app.route("/user/media/random/<username>")
-@app.route("/user/media/random/<username>/<int:load_count>")
-@app.route("/user/media/random/<username>/<int:load_count>/<sort>")
-def user_random_media_submission(
+@app.route("/user/image/random/<username>")
+@app.route("/user/image/random/<username>/<int:load_count>")
+@app.route("/user/image/random/<username>/<int:load_count>/<sort>")
+def user_random_image_submission(
     username: str,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: str = None,
 ) -> dict[str, Any]:
-    """Endpoint returning a random media submission (image, GIF) from the given user
+    """Endpoint returning a random image submission (image, GIF) from the given user
 
-    Up to "load_count" media submissions are loaded from user, then a random one is selected.
+    Up to "load_count" image submissions are loaded from user, then a random one is selected.
     Number of loaded submissions can be lower if user has fewer submissions and due to filtering
-    only media submissions from the loaded ones.
+    only image submissions from the loaded ones.
     Still, the higher the "load_count" the lower the chance of returning the same submission
     on repeated calls.
 
@@ -338,9 +338,9 @@ def user_random_media_submission(
                               Defaults to None, which will be interpreter as "hot".
 
     Returns:
-        dict[str, Any]: JSON storing data of one random media submission from given user.
+        dict[str, Any]: JSON storing data of one random image submission from given user.
     """
-    return _prepare_random_response(username, load_count, sort, get_user_media_submissions)
+    return _prepare_random_response(username, load_count, sort, get_user_image_submissions)
 
 
 @app.route("/user/text/random/<username>")

@@ -15,7 +15,7 @@ from settings import (
     REDDIT_CLIENT_ID,
     REDDIT_CLIENT_SECRET,
     REDDIT_CLIENT_USER_AGENT,
-    REDDIT_MEDIA_URL_SUFFIXES,
+    REDDIT_IMAGE_URL_SUFFIXES,
 )
 
 _client = Reddit(
@@ -80,13 +80,13 @@ def get_subreddit_submissions(subreddit: str, limit: int, sort_type: str) -> lis
     return _get_submissions(_client.subreddit(subreddit), limit, sort_type, lambda _: True)
 
 
-def get_subreddit_media_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
-    """Get a list of media submissions (images, GIFs) from the given subreddit
+def get_subreddit_image_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
+    """Get a list of image submissions (images, GIFs) from the given subreddit
 
     Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
     Additionally "limit" only defines how many submissions are loaded from given subreddit,
-    more submissions will be dropped as part of "media" filtering.
-    Submissions are classified as "media" based on their URL suffix.
+    more submissions will be dropped as part of "image" filtering.
+    Submissions are classified as "image" based on their URL suffix.
 
     Args:
         subreddit (str): name of subreddit to get data from
@@ -94,9 +94,9 @@ def get_subreddit_media_submissions(subreddit: str, limit: int, sort_type: str) 
         sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
 
     Returns:
-        list[Submission]: list of all loaded media submissions from given subreddit.
+        list[Submission]: list of all loaded image submissions from given subreddit.
     """
-    return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_media)
+    return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_image)
 
 
 def get_subreddit_text_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
@@ -134,13 +134,13 @@ def get_user_submissions(username: str, limit: int, sort_type: str) -> list[Subm
     return _get_submissions(_get_redditor_source(username), limit, sort_type, lambda _: True)
 
 
-def get_user_media_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
-    """Get a list of media submissions (images, GIFs) from the given user
+def get_user_image_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
+    """Get a list of image submissions (images, GIFs) from the given user
 
     Resulting list can be shorter than "limit" argument if given user has fewer submissions.
     Additionally "limit" only defines how many submissions are loaded from given user,
-    more submissions will be dropped as part of "media" filtering.
-    Submissions are classified as "media" based on their URL suffix.
+    more submissions will be dropped as part of "image" filtering.
+    Submissions are classified as "image" based on their URL suffix.
 
     Args:
         username (str): name of user to get data from
@@ -148,9 +148,9 @@ def get_user_media_submissions(username: str, limit: int, sort_type: str) -> lis
         sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
 
     Returns:
-        list[Submission]: list of all loaded media submissions from given user.
+        list[Submission]: list of all loaded image submissions from given user.
     """
-    return _get_submissions(_get_redditor_source(username), limit, sort_type, _submission_is_media)
+    return _get_submissions(_get_redditor_source(username), limit, sort_type, _submission_is_image)
 
 
 def get_user_text_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
@@ -207,8 +207,8 @@ def _load_submissions(submissions_generator: ListingGenerator) -> list[Submissio
         return []
 
 
-def _submission_is_media(submission: Submission) -> bool:
-    return submission.url.endswith(REDDIT_MEDIA_URL_SUFFIXES)
+def _submission_is_image(submission: Submission) -> bool:
+    return submission.url.endswith(REDDIT_IMAGE_URL_SUFFIXES)
 
 
 def _submission_is_text(submission: Submission) -> bool:
