@@ -55,6 +55,11 @@ def log_request():
 @app.route("/submission/<subreddit_name>")
 @app.route("/submission/<subreddit_name>/<int:load_count>")
 @app.route("/submission/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/subreddit")
+@app.route("/subreddit/submission")
+@app.route("/subreddit/submission/<subreddit_name>")
+@app.route("/subreddit/submission/<subreddit_name>/<int:load_count>")
+@app.route("/subreddit/submission/<subreddit_name>/<int:load_count>/<sort:sort>")
 def submission(
     subreddit_name: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
@@ -67,6 +72,10 @@ def submission(
 @app.route("/media/<subreddit_name>")
 @app.route("/media/<subreddit_name>/<int:load_count>")
 @app.route("/media/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/subreddit/media")
+@app.route("/subreddit/media/<subreddit_name>")
+@app.route("/subreddit/media/<subreddit_name>/<int:load_count>")
+@app.route("/subreddit/media/<subreddit_name>/<int:load_count>/<sort:sort>")
 def media_submission(
     subreddit_name: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
@@ -79,6 +88,10 @@ def media_submission(
 @app.route("/text/<subreddit_name>")
 @app.route("/text/<subreddit_name>/<int:load_count>")
 @app.route("/text/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/subreddit/text")
+@app.route("/subreddit/text/<subreddit_name>")
+@app.route("/subreddit/text/<subreddit_name>/<int:load_count>")
+@app.route("/subreddit/text/<subreddit_name>/<int:load_count>/<sort:sort>")
 def text_submission(
     subreddit_name: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
@@ -92,6 +105,11 @@ def text_submission(
 @app.route("/random/submission/<subreddit_name>")
 @app.route("/random/submission/<subreddit_name>/<int:load_count>")
 @app.route("/random/submission/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/subreddit/random")
+@app.route("/subreddit/random/<subreddit_name>")
+@app.route("/subreddit/random/submission/<subreddit_name>")
+@app.route("/subreddit/random/submission/<subreddit_name>/<int:load_count>")
+@app.route("/subreddit/random/submission/<subreddit_name>/<int:load_count>/<sort:sort>")
 def random_submission(
     subreddit_name: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
@@ -104,6 +122,10 @@ def random_submission(
 @app.route("/random/media/<subreddit_name>")
 @app.route("/random/media/<subreddit_name>/<int:load_count>")
 @app.route("/random/media/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/subreddit/random/media")
+@app.route("/subreddit/random/media/<subreddit_name>")
+@app.route("/subreddit/random/media/<subreddit_name>/<int:load_count>")
+@app.route("/subreddit/random/media/<subreddit_name>/<int:load_count>/<sort:sort>")
 def random_media_submission(
     subreddit_name: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
@@ -116,6 +138,10 @@ def random_media_submission(
 @app.route("/random/text/<subreddit_name>")
 @app.route("/random/text/<subreddit_name>/<int:load_count>")
 @app.route("/random/text/<subreddit_name>/<int:load_count>/<sort:sort>")
+@app.route("/subreddit/random/text")
+@app.route("/subreddit/random/text/<subreddit_name>")
+@app.route("/subreddit/random/text/<subreddit_name>/<int:load_count>")
+@app.route("/subreddit/random/text/<subreddit_name>/<int:load_count>/<sort:sort>")
 def random_text_submission(
     subreddit_name: str = _DEFAULT_SUBREDDIT,
     load_count: int = _DEFAULT_LOAD_COUNT,
