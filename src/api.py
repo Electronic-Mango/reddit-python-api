@@ -35,11 +35,16 @@ def log_request():
 
 @app.route("/")
 @app.route("/<subreddit_name>")
+@app.route("/<subreddit_name>/<int:load_count>")
+@app.route("/<subreddit_name>/<int:load_count>/<sort>")
 @app.route("/submission")
 @app.route("/submission/<subreddit_name>")
 @app.route("/submission/<subreddit_name>/<int:load_count>")
 @app.route("/submission/<subreddit_name>/<int:load_count>/<sort>")
 @app.route("/subreddit")
+@app.route("/subreddit/<subreddit_name>")
+@app.route("/subreddit/<subreddit_name>/<int:load_count>")
+@app.route("/subreddit/<subreddit_name>/<int:load_count>/<sort>")
 @app.route("/subreddit/submission")
 @app.route("/subreddit/submission/<subreddit_name>")
 @app.route("/subreddit/submission/<subreddit_name>/<int:load_count>")
@@ -86,11 +91,15 @@ def text_submission(
 
 @app.route("/random")
 @app.route("/random/<subreddit_name>")
+@app.route("/random/<subreddit_name>/<int:load_count>")
+@app.route("/random/<subreddit_name>/<int:load_count>/<sort>")
 @app.route("/random/submission/<subreddit_name>")
 @app.route("/random/submission/<subreddit_name>/<int:load_count>")
 @app.route("/random/submission/<subreddit_name>/<int:load_count>/<sort>")
 @app.route("/subreddit/random")
 @app.route("/subreddit/random/<subreddit_name>")
+@app.route("/subreddit/random/<subreddit_name>/<int:load_count>")
+@app.route("/subreddit/random/<subreddit_name>/<int:load_count>/<sort>")
 @app.route("/subreddit/random/submission/<subreddit_name>")
 @app.route("/subreddit/random/submission/<subreddit_name>/<int:load_count>")
 @app.route("/subreddit/random/submission/<subreddit_name>/<int:load_count>/<sort>")
@@ -134,6 +143,9 @@ def random_text_submission(
     return _prepare_random_response(subreddit_name, load_count, sort, get_text_submissions)
 
 
+@app.route("/user/<username>")
+@app.route("/user/<username>/<int:load_count>")
+@app.route("/user/<username>/<int:load_count>/<sort>")
 @app.route("/user/submission/<username>")
 @app.route("/user/submission/<username>/<int:load_count>")
 @app.route("/user/submission/<username>/<int:load_count>/<sort>")
@@ -167,6 +179,9 @@ def user_text_submission(
     return _prepare_list_response(username, load_count, sort, get_user_text_submissions)
 
 
+@app.route("/user/random/<username>")
+@app.route("/user/random/<username>/<int:load_count>")
+@app.route("/user/random/<username>/<int:load_count>/<sort>")
 @app.route("/user/random/submission/<username>")
 @app.route("/user/random/submission/<username>/<int:load_count>")
 @app.route("/user/random/submission/<username>/<int:load_count>/<sort>")
