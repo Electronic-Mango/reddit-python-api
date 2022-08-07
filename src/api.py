@@ -14,6 +14,7 @@ load_dotenv()
 _API_HOST = getenv("API_HOST")
 _API_PORT = getenv("API_PORT")
 _DEFAULT_LOAD_COUNT = int(getenv("DEFAULT_LOAD_COUNT"))
+_DEFAULT_SUBREDDIT = getenv("DEFAULT_SUBREDDIT")
 
 app = Flask(__name__)
 
@@ -23,44 +24,59 @@ def log_request():
     getLogger("waitress").info(request)
 
 
+@app.route("/")
 @app.route("/<subreddit_name>")
+@app.route("/submission")
 @app.route("/submission/<subreddit_name>")
 @app.route("/submission/<subreddit_name>/<int:load_count>")
-def submission(subreddit_name: str, load_count: int = _DEFAULT_LOAD_COUNT) -> dict[str, Any]:
+def submission(
+    subreddit_name: str = _DEFAULT_SUBREDDIT, load_count: int = _DEFAULT_LOAD_COUNT
+) -> dict[str, Any]:
     return _prepare_list_response(subreddit_name, load_count, get_submissions)
 
 
+@app.route("/media")
 @app.route("/media/<subreddit_name>")
 @app.route("/media/<subreddit_name>/<int:load_count>")
-def media_submission(subreddit_name: str, load_count: int = _DEFAULT_LOAD_COUNT) -> dict[str, Any]:
+def media_submission(
+    subreddit_name: str = _DEFAULT_SUBREDDIT, load_count: int = _DEFAULT_LOAD_COUNT
+) -> dict[str, Any]:
     return _prepare_list_response(subreddit_name, load_count, get_media_submissions)
 
 
+@app.route("/text")
 @app.route("/text/<subreddit_name>")
 @app.route("/text/<subreddit_name>/<int:load_count>")
-def text_submission(subreddit_name: str, load_count: int = _DEFAULT_LOAD_COUNT) -> dict[str, Any]:
+def text_submission(
+    subreddit_name: str = _DEFAULT_SUBREDDIT, load_count: int = _DEFAULT_LOAD_COUNT
+) -> dict[str, Any]:
     return _prepare_list_response(subreddit_name, load_count, get_text_submissions)
 
 
+@app.route("/random")
 @app.route("/random/<subreddit_name>")
 @app.route("/random/submission/<subreddit_name>")
 @app.route("/random/submission/<subreddit_name>/<int:load_count>")
-def random_submission(subreddit_name: str, load_count: int = _DEFAULT_LOAD_COUNT) -> dict[str, Any]:
+def random_submission(
+    subreddit_name: str = _DEFAULT_SUBREDDIT, load_count: int = _DEFAULT_LOAD_COUNT
+) -> dict[str, Any]:
     return _prepare_random_response(subreddit_name, load_count, get_submissions)
 
 
+@app.route("/random/media")
 @app.route("/random/media/<subreddit_name>")
 @app.route("/random/media/<subreddit_name>/<int:load_count>")
 def random_media_submission(
-    subreddit_name: str, load_count: int = _DEFAULT_LOAD_COUNT
+    subreddit_name: str = _DEFAULT_SUBREDDIT, load_count: int = _DEFAULT_LOAD_COUNT
 ) -> dict[str, Any]:
     return _prepare_random_response(subreddit_name, load_count, get_media_submissions)
 
 
+@app.route("/random/text")
 @app.route("/random/text/<subreddit_name>")
 @app.route("/random/text/<subreddit_name>/<int:load_count>")
 def random_text_submission(
-    subreddit_name: str, load_count: int = _DEFAULT_LOAD_COUNT
+    subreddit_name: str = _DEFAULT_SUBREDDIT, load_count: int = _DEFAULT_LOAD_COUNT
 ) -> dict[str, Any]:
     return _prepare_random_response(subreddit_name, load_count, get_text_submissions)
 
