@@ -107,4 +107,5 @@ def _jsonify_submission(submission: Submission) -> dict[str, Any]:
 
 if __name__ == "__main__":
     basicConfig(format="[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s", level=INFO)
+    app.url_map.strict_slashes = False
     serve(app, host=_API_HOST, port=_API_PORT)
