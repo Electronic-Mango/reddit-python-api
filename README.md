@@ -30,7 +30,8 @@ A simple Reddit REST API allowing accessing both subreddit and user submissions,
 
 ## Introduction and requirements
 
-This REST API was built using `Python 3.10` and it requires at least version `3.10` due to used `match-case` statement.
+This REST API was built using [`PRAW`](https://github.com/praw-dev/praw), [`Flask`](https://github.com/pallets/flask/) and `Python 3.10`.
+Python version at least `3.10` is required.
 
 Full list of Python requirements is in `requirements.txt` file.
 
@@ -54,7 +55,7 @@ Their names have to match all keys leading to specific value separated by `_`.
 For example, values for `reddit` - `client` - `id` and `secret` can be configured via `reddit_client_id` and `reddit_client_secret` environment variables, without modifying used `settings.yml`.
 
 Variables can also be loaded from `.env` file from the project root.
-You can put all your custom configuration, like Reddit app configuration, into `.env` and keep it without modifying project files.
+You can put all your custom configuration, like Reddit app configuration, into `.env` without modifying project files.
 
 
 ### Reddit app & required parameters
@@ -77,7 +78,6 @@ Compose will use `.env` file in project root for any additional configuration, l
 
 By default Docker Compose will set port where API is listening for requests to `80`.
 This port is also mapped to local port `3001`.
-You can use it to access to API running in a container.
 
 
 
@@ -89,7 +89,7 @@ First you need to register a Reddit app and note its ID and secret.
 ###  From source
 
  1. Install all packages from `requirements.txt`
- 1. Fill Reddit app ID and secret either in `settings.yml` in `.env` or as environment variables
+ 1. Fill Reddit app ID and secret either in `settings.yml`, in `.env` or as environment variables
  1. Run `src/main.py` via Python
 
 
@@ -121,9 +121,9 @@ Endpoint:
 |Parameter|Description|Optional|Default value|
 |-|-|-|-|
 |`{submission_type}`|Whether to load all submissions, only text or only images|No||
-|`{subreddit_name}`|Name of subreddit to load submission from, can also be `all`|No||
-|`{load_count}`|How many submissions to load|Yes|50|
-|`{sort_type}`|Which Reddit sorting to use when loading submissions|Yes|`hot`|
+|`{subreddit_name}`|Name of subreddit to load submissions from, including `all` and `popular`|No||
+|`{load_count}`|How many submissions to load|Yes|`50`|
+|`{sort_type}`|Which Reddit sorting type to use when loading submissions|Yes|`hot`|
 
 `{submission_type}` can be one of the following:
 
@@ -323,7 +323,7 @@ Example response:
 }
 ```
 
-Since both `{load_count}` and `{sort_type}` was omitted the default values of `50` and `hot` were used.
+Since both `{load_count}` and `{sort_type}` were omitted, the default values of `50` and `hot` were used.
 
 
 ## Filtering and submission types
@@ -344,7 +344,7 @@ For all submissions this can occur if a given subreddit or user has less submiss
 
 For text and image submissions the passed value only determines how many submissions are loaded from Reddit overall.
 This value can be later lowered as only specific type of submissions are filtered from the list of all submissions.
-Not additional submission are loaded after filtering.
+Not additional submissions are loaded after filtering.
 
 Load count also impacts retrieving one random submission.
 This one random submission is picked from a loaded selection, instead of sending all of them.
