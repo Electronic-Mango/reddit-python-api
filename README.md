@@ -36,3 +36,18 @@ You can put all your custom configuration, like Reddit app configuration, into `
 To run the API you need to first register a Reddit app at https://old.reddit.com/prefs/apps/.
 There are two fields which need to be filled in `reddit` - `client` section in `settings.yml` based on your app - `id` and `secret`.
 No other data is necessary, since the API works in `read-only` mode.
+
+### Docker
+
+There's a `Dockerfile` in the repo, which will build a Docker image for the API using `python:3.10-slim` as base.
+You can set all configuration parameters using environment variables for Docker container, rather than modifying project files before building.
+
+You can also use `docker-compose.yml` to build and start the container via:
+```
+docker compose up -d --build
+```
+Compose will use `.env` file in project root for any additional configuration, like [Reddit app ID and secret](#reddit-app-&-required-parameters).
+
+By default Docker Compose will set port where API is listening for requests to `80`.
+This port is also mapped to local port `3001`.
+You can use it to access to API running in a container.
