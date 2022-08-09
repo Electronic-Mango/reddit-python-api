@@ -121,7 +121,7 @@ Endpoint:
 |Parameter|Description|Optional|Default value|
 |-|-|-|-|
 |`{submission_type}`|Whether to load all submissions, only text or only images|No||
-|`{subreddit_name}`|Name of subreddit to load submissions from, including `all` and `popular`|No||
+|`{subreddit_name}`|Name of subreddit to load submissions from, including `all` and `popular`|Yes|`all`|
 |`{load_count}`|How many submissions to load|Yes|`50`|
 |`{sort_type}`|Which Reddit sorting type to use when loading submissions|Yes|`hot`|
 
@@ -242,6 +242,7 @@ Endpoint:
 ```
 
 All parameters are the same as for [loading a list of submissions for a subreddit](#get-a-list-of-submissions-from-a-subreddit), except for providing a Reddit username instead of subreddit name.
+Username parameter is required, unlike subreddit.
 
 Example request:
 ```
