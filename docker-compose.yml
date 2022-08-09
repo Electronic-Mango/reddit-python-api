@@ -4,10 +4,10 @@
 
 version: "3.9"
 services:
-  reddit_api:
-    image: reddit_api:latest
+  reddit-api:
+    image: reddit-api:latest
     build: .
-    container_name: reddit_api
+    container_name: reddit-api
     restart: unless-stopped
     ports:
       - 3001:80
@@ -17,5 +17,5 @@ services:
       - api_port=80
 networks:
   default:
-    name: reddit_api_network
+    name: reddit-api-network
     driver: bridge
