@@ -14,7 +14,7 @@ services:
     env_file:
       - ./.env
     environment:
-      - API_PORT=80
+      - api_port=80
 networks:
   default:
     name: reddit_api_network
