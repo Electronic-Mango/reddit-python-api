@@ -15,6 +15,7 @@ This API was built using `Python 3.10` and it requires at least version `3.10` d
 Full list of Python requirements is in `requirements.txt` file.
 
 
+
 ## Configuration
 
 ### API parameters
@@ -55,15 +56,18 @@ This port is also mapped to local port `3001`.
 You can use it to access to API running in a container.
 
 
+
 ## Running the API
 
 First you need to register a Reddit app and note its ID and secret.
+
 
 ###  From source
 
  1. Install all packages from `requirements.txt`
  1. Fill Reddit app ID and secret either in `settings.yml` in `.env` or as environment variables
  1. Run `src/main.py` via Python
+
 
 ### Docker
 
@@ -75,3 +79,31 @@ You can skip `--build` flag on subsequent runs if you didn't change the source c
 `.env` is not added to the Docker image, just used as a source for environment variables.
 So if you make any changes there, just restart the container.
 There's no need to rebuild the image.
+
+
+
+## Filtering and submission types
+
+Other than all submissions, API allows for filtering submission types.
+The two filters are:
+
+ - `text` - all submissions where `selftext` is not empty
+ - `image` - all submissions where URL ends with values from `settings.yml`, by default `.jpg`, `.jpeg`, `.png` and `.gif`
+
+
+
+## Load count
+
+When specifying how many submissions should be loaded the final count can be lower.
+
+For all submissions this can occur if a given subreddit or user has less submissions than specified.
+
+For text and image submissions the passed value only determines how many submissions are loaded from Reddit overall.
+This value can be later lowered as only specific type of submissions are filtered from the list of all submissions.
+Not additional submission are loaded after filtering.
+
+Load count also impacts retrieving one random submission.
+This one random submission is picked from a loaded selection, instead of sending all of them.
+Actual count of submissions to pick from can be lowered due to additional filtering, as before.
+
+Still, the higher the load count the lower the odds of selecting the same random submission on subsequent API calls.
