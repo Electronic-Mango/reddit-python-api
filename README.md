@@ -31,11 +31,13 @@ For example, values for `reddit` - `client` - `id` and `secret` can be configure
 Variables can also be loaded from `.env` file from the project root.
 You can put all your custom configuration, like Reddit app configuration, into `.env` and keep it without modifying project files.
 
+
 ### Reddit app & required parameters
 
 To run the API you need to first register a Reddit app at https://old.reddit.com/prefs/apps/.
 There are two fields which need to be filled in `reddit` - `client` section in `settings.yml` based on your app - `id` and `secret`.
 No other data is necessary, since the API works in `read-only` mode.
+
 
 ### Docker
 
@@ -51,3 +53,25 @@ Compose will use `.env` file in project root for any additional configuration, l
 By default Docker Compose will set port where API is listening for requests to `80`.
 This port is also mapped to local port `3001`.
 You can use it to access to API running in a container.
+
+
+## Running the API
+
+First you need to register a Reddit app and note its ID and secret.
+
+###  From source
+
+ 1. Install all packages from `requirements.txt`
+ 1. Fill Reddit app ID and secret either in `settings.yml` in `.env` or as environment variables
+ 1. Run `src/main.py` via Python
+
+### Docker
+
+ 1. Fill Reddit app ID and secret in `.env` in project root
+ 1. Run `docker compose up -d --build`
+
+You can skip `--build` flag on subsequent runs if you didn't change the source code.
+
+`.env` is not added to the Docker image, just used as a source for environment variables.
+So if you make any changes there, just restart the container.
+There's no need to rebuild the image.
