@@ -8,6 +8,26 @@ A simple Reddit REST API allowing accessing both subreddit and user submissions,
 
 
 
+## Table of contents
+
+ - [Introduction and requirements](#introduction-and-requirements)
+ - [Configuration](#configuration)
+   - [API parameters](#api-parameters)
+   - [Reddit app & required parameters](#reddit-app---required-parameters)
+   - [Docker](#docker)
+ - [Running the API](#running-the-api)
+   - [From source](#from-source)
+   - [Docker](#docker-1)
+ - [API endpoints](#api-endpoints)
+   - [Get a list of submissions from a subreddit](#get-a-list-of-submissions-from-a-subreddit)
+   - [Get one random submission from a subreddit](#get-one-random-submission-from-a-subreddit)
+   - [Get a list of submissions from a Reddit user](#get-a-list-of-submissions-from-a-reddit-user)
+   - [Get a random submission from a Reddit user](#get-a-random-submission-from-a-reddit-user)
+ - [Filtering and submission types](#filtering-and-submission-types)
+ - [Load count](#load-count)
+
+
+
 ## Introduction and requirements
 
 This REST API was built using `Python 3.10` and it requires at least version `3.10` due to used `match-case` statement.
