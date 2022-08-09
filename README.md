@@ -82,6 +82,226 @@ There's no need to rebuild the image.
 
 
 
+## API endpoints
+
+All endpoints are accessible via `GET` requests.
+No additional headers are necessary, API has no authentication or authorization mechanisms, it's always open to everyone (with access to API IP).
+
+### Get a list of submissions from a subreddit
+
+Endpoint:
+```
+/subreddit/{submission_type}/{subreddit_name}/{load_count}/{sort_type}
+```
+
+|Parameter|Description|Optional|Default value|
+|-|-|-|-|
+|`{submission_type}`|Whether to load all submissions, only text or only images|No||
+|`{subreddit_name}`|Name of subreddit to load submission from, can also be `all`|No||
+|`{load_count}`|How many submissions to load|Yes|50|
+|`{sort_type}`|Which Reddit sorting to use when loading submissions|Yes|`hot`|
+
+`{submission_type}` can be one of the following:
+
+ - `submission` - all submissions
+ - `image` - only image submissions, submissions are classified as `image` based on URL suffixes defined in `settings.yml`
+ - `text` - only submissions where `selftext` is not empty
+
+`{sort_type}` can be one of the following:
+
+ - `top`
+ - `new`
+ - `controversial`
+ - anything else will get interpreted as `hot`
+
+`{load_count}` and `{sort_type}` can be ommited, but both have to be specified when you want to specify `{sort_type}`.
+
+
+Example request:
+```
+GET /subreddit/submission/wholesomememes/3/top
+```
+
+Example response:
+```json
+{
+  "count": 3,
+  "submissions": [
+    {
+      "author": "VictorJ45",
+      "created_utc": "Mon, 23 Sep 2019 19:51:51 GMT",
+      "id": "d8bvvm",
+      "nsfw": false,
+      "score": 206153,
+      "selftext": "",
+      "shortlink": "https://redd.it/d8bvvm",
+      "spoiler": false,
+      "stickied": false,
+      "subreddit": "wholesomememes",
+      "title": "What a considerate man",
+      "url": "https://i.redd.it/eihhjg3veeo31.jpg"
+    },
+    {
+      "author": "TisAubrey",
+      "created_utc": "Sat, 14 Mar 2020 11:51:52 GMT",
+      "id": "fih6k8",
+      "nsfw": false,
+      "score": 183474,
+      "selftext": "",
+      "shortlink": "https://redd.it/fih6k8",
+      "spoiler": false,
+      "stickied": false,
+      "subreddit": "wholesomememes",
+      "title": "Wholesome meeting from Tumblr",
+      "url": "https://i.redd.it/l9kr8x9xmmm41.jpg"
+    },
+    {
+      "author": "GolfDadNotes",
+      "created_utc": "Fri, 20 Nov 2020 04:05:54 GMT",
+      "id": "jxi6p6",
+      "nsfw": false,
+      "score": 180824,
+      "selftext": "",
+      "shortlink": "https://redd.it/jxi6p6",
+      "spoiler": false,
+      "stickied": false,
+      "subreddit": "wholesomememes",
+      "title": "As real as it gets : )",
+      "url": "https://i.redd.it/jr4p03glkb061.jpg"
+    }
+  ]
+}
+```
+
+
+### Get one random submission from a subreddit
+
+Endpoint:
+```
+/subreddit/{submission_type}/random/{subreddit_name}/{load_count}/{sort_type}
+```
+
+All parameters are the same as for [loading a list of submissions for a subreddit](#get-a-list-of-submissions-from-a-subreddit).
+
+`{load_count}` determines how many submissions will be loaded, a random one will be selected from them.
+
+
+Example request:
+```
+GET /subreddit/text/random/all/100/top
+```
+
+Example response:
+```json
+{
+  "author": "Yorkshire45",
+  "created_utc": "Sat, 09 Feb 2019 01:43:40 GMT",
+  "id": "aonp75",
+  "nsfw": false,
+  "score": 219186,
+  "selftext": "Damn... this got big...",
+  "shortlink": "https://redd.it/aonp75",
+  "spoiler": false,
+  "stickied": false,
+  "subreddit": "Showerthoughts",
+  "title": "Whoever created the tradition of not seeing the bride in the wedding dress beforehand saved countless husbands everywhere from hours of dress shopping and will forever be a hero to all men.",
+  "url": "https://www.reddit.com/r/Showerthoughts/comments/aonp75/whoever_created_the_tradition_of_not_seeing_the/"
+}
+```
+
+
+### Get a list of submissions from a Reddit user
+
+Endpoint:
+```
+/user/{submission_type}/{user_name}/{load_count}/{sort_type}
+```
+
+All parameters are the same as for [loading a list of submissions for a subreddit](#get-a-list-of-submissions-from-a-subreddit), except for providing a Reddit username instead of subreddit name.
+
+Example request:
+```
+GET /user/image/cme_t/3
+```
+
+Example response:
+```json
+{
+  "count": 2,
+  "submissions": [
+    {
+      "author": "CME_T",
+      "created_utc": "Mon, 25 Jul 2022 16:08:12 GMT",
+      "id": "w7stzz",
+      "nsfw": false,
+      "score": 5284,
+      "selftext": "",
+      "shortlink": "https://redd.it/w7stzz",
+      "spoiler": false,
+      "stickied": false,
+      "subreddit": "TheWeeklyRoll",
+      "title": "Ch. 124. \"Common knowledge\"",
+      "url": "https://i.redd.it/fzworhhimqd91.jpg"
+    },
+    {
+      "author": "CME_T",
+      "created_utc": "Mon, 25 Jul 2022 16:08:00 GMT",
+      "id": "w7stti",
+      "nsfw": false,
+      "score": 1901,
+      "selftext": "",
+      "shortlink": "https://redd.it/w7stti",
+      "spoiler": false,
+      "stickied": false,
+      "subreddit": "DnD",
+      "title": "[Art][OC] The Weekly Roll Ch. 124. \"Common knowledge\"",
+      "url": "https://i.redd.it/4kid37rjmqd91.jpg"
+    }
+  ]
+}
+```
+
+Notice that 3 image submissions were requested, but response only contains 2.
+It's because out of 3 loaded submissions only 2 were images.
+
+Also, since `{sort_type}` was omitted default value of `hot` was used.
+
+
+### Get a random submission from a Reddit user
+
+Endpoint:
+```
+/user/{submission_type}/random/{user_name}/{load_count}/{sort_type}
+```
+
+All parameters are the same as for [loading a list of submissions for a Reddit user](#get-a-list-of-submissions-from-a-reddit-user).
+
+Example request:
+```
+GET /user/image/random/cme_t/
+```
+
+Example response:
+```json
+{
+  "author": "CME_T",
+  "created_utc": "Mon, 25 Jul 2022 16:08:00 GMT",
+  "id": "w7stti",
+  "nsfw": false,
+  "score": 1900,
+  "selftext": "",
+  "shortlink": "https://redd.it/w7stti",
+  "spoiler": false,
+  "stickied": false,
+  "subreddit": "DnD",
+  "title": "[Art][OC] The Weekly Roll Ch. 124. \"Common knowledge\"",
+  "url": "https://i.redd.it/4kid37rjmqd91.jpg"
+}
+```
+
+Since both `{load_count}` and `{sort_type}` was omitted the default values of `50` and `hot` were used.
+
+
 ## Filtering and submission types
 
 Other than all submissions, API allows for filtering submission types.
