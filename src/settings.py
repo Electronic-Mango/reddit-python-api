@@ -11,6 +11,7 @@ In order to overwrite values from YAML the varialbe must follow a specific namin
 of all nested keys separated by an "_", like "api_host", "api_reddit_default_load_count", etc.
 """
 
+from functools import reduce
 from os import getenv
 from typing import Any
 
@@ -26,10 +27,7 @@ with open(_SETTINGS_YAML_PATH) as settings_yaml:
 
 
 def _load_config_from_yaml(*keys: tuple[str]) -> Any:
-    value = _SETTINGS_YAML
-    for key in keys:
-        value = value[key]
-    return value
+    return reduce(lambda table, key: table[key], keys, _SETTINGS_YAML)
 
 
 def _load_config(*keys: tuple[str]) -> Any:
@@ -44,6 +42,7 @@ API_AUTHORIZATION_HEADER_NAME = _load_config("api", "authorization_header", "nam
 API_AUTHORIZATION_HEADER_VALUE = _load_config("api", "authorization_header", "expected_value")
 DEFAULT_LOAD_COUNT = int(_load_config("api", "reddit", "default_load_count"))
 DEFAULT_SUBREDDIT = _load_config("api", "reddit", "default_subreddit")
+
 REDDIT_CLIENT_ID = _load_config("reddit", "client", "id")
 REDDIT_CLIENT_SECRET = _load_config("reddit", "client", "secret")
 REDDIT_CLIENT_USER_AGENT = _load_config("reddit", "client", "user_agent")
