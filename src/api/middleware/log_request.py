@@ -1,6 +1,5 @@
 """
-Module holding blueprint firing before each app request.
-This blueprint is used for logging each request.
+Module holding middleware blueprint logging every API request.
 """
 
 from logging import getLogger
@@ -11,6 +10,6 @@ blueprint = Blueprint("before_request", __name__)
 
 
 @blueprint.before_app_request
-def log_request():
+def log_request() -> None:
     """Log all app requests"""
     getLogger("waitress").info(request)

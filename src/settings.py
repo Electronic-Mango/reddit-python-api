@@ -40,6 +40,8 @@ def _load_config(*keys: tuple[str]) -> Any:
 
 API_HOST = _load_config("api", "host")
 API_PORT = _load_config("api", "port")
+API_AUTHORIZATION_HEADER_NAME = _load_config("api", "authorization_header", "name")
+API_AUTHORIZATION_HEADER_VALUE = _load_config("api", "authorization_header", "expected_value")
 DEFAULT_LOAD_COUNT = int(_load_config("api", "reddit", "default_load_count"))
 DEFAULT_SUBREDDIT = _load_config("api", "reddit", "default_subreddit")
 REDDIT_CLIENT_ID = _load_config("reddit", "client", "id")
