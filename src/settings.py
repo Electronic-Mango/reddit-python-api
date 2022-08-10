@@ -12,6 +12,7 @@ of all nested keys separated by an "_", like "api_host", "api_reddit_default_loa
 """
 
 from os import getenv
+from typing import Any
 
 from dotenv import load_dotenv
 from yaml import safe_load
@@ -24,14 +25,14 @@ with open(_SETTINGS_YAML_PATH) as settings_yaml:
     _SETTINGS_YAML = safe_load(settings_yaml)
 
 
-def _load_config_from_yaml(*keys: tuple[str]) -> str:
+def _load_config_from_yaml(*keys: tuple[str]) -> Any:
     value = _SETTINGS_YAML
     for key in keys:
         value = value[key]
     return value
 
 
-def _load_config(*keys: tuple[str]) -> str:
+def _load_config(*keys: tuple[str]) -> Any:
     env_name = "_".join(keys)
     env_value = getenv(env_name)
     return env_value if env_value else _load_config_from_yaml(*keys)
