@@ -15,6 +15,7 @@ A simple Reddit REST API allowing accessing both subreddit and user submissions,
    - [API parameters](#api-parameters)
    - [Reddit app & required parameters](#reddit-app---required-parameters)
    - [Docker](#docker)
+ - [Authorization](#authorization)
  - [Running the API](#running-the-api)
    - [From source](#from-source)
    - [Docker](#docker-1)
@@ -37,7 +38,7 @@ Full list of Python requirements is in `requirements.txt` file.
 
 No data is stored by the API.
 Reddit is accessed in `read-only` mode.
-API requests are not authenticated and don't require any headers.
+API requests can optionally be authenticated based on request header.
 
 
 
@@ -81,6 +82,19 @@ This port is also mapped to local port `3001`.
 
 
 
+## Authorization
+
+Api has a basic authorization mechanism based on request header.
+You can set authorization header name and expected value in `settings.yml` in `api` - `authorization_header` - `name` and `expected_value`.
+
+If either of them is empty authorization will be disabled and all requests will be accepted.
+
+If both fields are filled, then any request which doesn't have a header named `name` with value `expected_value` will be rejected with code `401`.
+
+By default, without any changes to `settings.yml` authorization is disabled.
+
+
+
 ## Running the API
 
 First you need to register a Reddit app and note its ID and secret.
@@ -109,7 +123,7 @@ There's no need to rebuild the image.
 ## API endpoints
 
 All endpoints are accessible via `GET` requests.
-No additional headers are necessary, API has no authentication or authorization mechanisms, it's always open to everyone (with access to API IP).
+If request authorization is configured incoming requests needs to have correct header and its value.
 
 ### Get a list of submissions from a subreddit
 
