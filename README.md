@@ -56,7 +56,6 @@ Their names have to match all keys leading to specific value separated by `_`.
 For example, values for `reddit` - `client` - `id` and `secret` can be configured via `reddit_client_id` and `reddit_client_secret` environment variables, without modifying used `settings.yml`.
 
 Variables can also be loaded from `.env` file from the project root.
-You can put all your custom configuration, like Reddit app configuration, into `.env` without modifying project files.
 
 
 ### Reddit app & required parameters
@@ -76,6 +75,7 @@ You can also use `docker-compose.yml` to build and start the container via:
 docker compose up -d --build
 ```
 Compose will use `.env` file in project root for any additional configuration, like [Reddit app ID and secret](#reddit-app-&-required-parameters).
+`.env` won't be loaded into the Docker image directly, it's just used by Compose as a source of environment variables.
 
 By default Docker Compose will set port where API is listening for requests to `80`.
 This port is also mapped to local port `3001`.
