@@ -1,14 +1,10 @@
 """
-Module storing all configuration data used by the API.
+Module storing all configuration data used by the API, read from a settings YAML file.
+Default settings YAML - "settings.yml" - is loaded from the execution environment root.
 
-All information can be either read from a "settings.yml" file, or from environment variables,
-where environment variables will be used with higher priority.
-
-"settings.yml" is loaded either from the execution environment root,
-or from a path given by "SETTINGS_YAML_PATH" environment variable.
-
-In order to overwrite values from YAML the varialbe must follow a specific naming convention
-of all nested keys separated by an "_", like "api_host", "api_reddit_default_load_count", etc.
+All information can be either read from the default "settings.yml" file, or from overriding custom
+one from path under "CUSTOM_SETTINGS_PATH" environment variable.
+This custom one doesn't need to specify all parameters, just the new ones.
 """
 
 from functools import reduce
@@ -16,24 +12,28 @@ from os import getenv
 from typing import Any
 
 from dotenv import load_dotenv
+from mergedeep import merge
 from yaml import safe_load
 
 load_dotenv()
-
-_DEFAULT_SETTINGS_YAML_PATH = "settings.yml"
-_SETTINGS_YAML_PATH = getenv("SETTINGS_YAML_PATH", _DEFAULT_SETTINGS_YAML_PATH)
-with open(_SETTINGS_YAML_PATH) as settings_yaml:
-    _SETTINGS_YAML = safe_load(settings_yaml)
+_DEFAULT_SETTINGS_PATH = "settings.yml"
+_CUSTOM_SETTINGS_PATH_VARIABLE_NAME = "CUSTOM_SETTINGS_PATH"
+_CUSTOM_SETTINGS_PATH = getenv(_CUSTOM_SETTINGS_PATH_VARIABLE_NAME)
 
 
-def _load_config_from_yaml(*keys: tuple[str]) -> Any:
-    return reduce(lambda table, key: table[key], keys, _SETTINGS_YAML)
+def _load_settings(settings_path: str) -> dict[str, Any]:
+    with open(settings_path) as settings_yaml:
+        return safe_load(settings_yaml)
+
+
+_SETTINGS = merge(
+    _load_settings(_DEFAULT_SETTINGS_PATH),
+    _load_settings(_CUSTOM_SETTINGS_PATH) if _CUSTOM_SETTINGS_PATH else {},
+)
 
 
 def _load_config(*keys: tuple[str]) -> Any:
-    env_name = "_".join(keys)
-    env_value = getenv(env_name)
-    return env_value if env_value else _load_config_from_yaml(*keys)
+    return reduce(lambda table, key: table[key], keys, _SETTINGS)
 
 
 API_HOST = _load_config("api", "host")

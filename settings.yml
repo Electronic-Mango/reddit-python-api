@@ -1,7 +1,8 @@
 # YAML configuration file with some sensible defaults, except Reddit app secrets.
-# Each value can be replaced by environment variable (or variable in .env),
-# of all nested keys separated by an "_", like "api_host", "api_reddit_default_load_count",
-# "reddit_client_id", "reddit_client_secret", "reddit_image_url_suffixes" etc.
+# Each value can be overwritten by a custom YAML file which path is under "CUSTOM_SETTINGS_PATH"
+# environment variable.
+# In this custom YAML you don't need to specify all parameters, if a parameter is absent in the
+# custom one a default value from this file will be used.
 
 api:
   # Host where API will listen to requests

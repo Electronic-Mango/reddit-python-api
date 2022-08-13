@@ -1,6 +1,7 @@
 # Basic docker-compose.yml running the project as docker container.
-# Configuration of needed parameters can be done via ./.env file.
-# This file isn't loaded into the image, just used as a source for environment variables.
+# Configuration of needed parameters can be done via custom_settings.yml file.
+# By default this file will be added to the image.
+# To avoid this you can use custom settings YAML in a mounted volume.
 
 version: "3.9"
 services:
@@ -10,11 +11,9 @@ services:
     container_name: reddit-api
     restart: unless-stopped
     ports:
-      - 3001:80
-    env_file:
-      - ./.env
+      - 3001:8080
     environment:
-      - api_port=80
+      - CUSTOM_SETTINGS_PATH=custom_settings.yml
 networks:
   default:
     name: reddit-api-network
