@@ -4,6 +4,7 @@ Using a wrapper simplifies accessing the API, mostly due to handling OAuth.
 """
 
 from enum import Enum, auto
+from logging import getLogger
 from time import time_ns
 from typing import Any
 
@@ -44,8 +45,10 @@ class RedditApiWrapper:
         self._client_auth = BasicAuth(username=client_id, password=client_secret)
         self._auth_headers = {"User-agent": user_agent}
         self._access_token_expires_in = 0
+        self._logger = getLogger(__name__)
 
     async def _authorize(self) -> None:
+        self._logger.info("Authorizing")
         response = post(
             url=self._ACCESS_TOKEN_URL,
             params={"grant_type": "client_credentials"},
@@ -72,6 +75,7 @@ class RedditApiWrapper:
         Returns:
             list[Submission]: list of loaded submissions from the given subreddit
         """
+        self._logger.info(f"Loading subreddit submissions [{subreddit}] [{limit}] [{sort}]")
         url = self._SUBREDDIT_SUBMISSIONS_URL.format(subreddit=subreddit, sort=sort.name)
         params = {"limit": limit}
         return await self._get_submissions(url, params)
@@ -87,15 +91,18 @@ class RedditApiWrapper:
         Returns:
             list[Submission]: list of loaded submissions from the Reddit user
         """
+        self._logger.info(f"Loading user submissions [{user}] [{limit}] [{sort}]")
         url = self._USER_SUBMISSIONS_URL.format(user=user)
         params = {"limit": limit, "sort": sort.name}
         return await self._get_submissions(url, params)
 
     async def _get_submissions(self, url: str, params: dict[str, Any]) -> list[Submission]:
         if self._access_token_expires_in <= time_ns():
+            self._logger.info("Access token expired, requesting new one")
             await self._authorize()
         response = get(url, params=params, headers=self._auth_headers)
         if response.status_code in [401, 403]:
+            self._logger.info(f"Response returned code [{response.status_code}], re-authorizing")
             await self._authorize()
             response = get(url, params=params, headers=self._auth_headers)
         assert response.status_code == 200
