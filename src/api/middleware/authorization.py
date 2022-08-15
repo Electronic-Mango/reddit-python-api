@@ -14,7 +14,7 @@ blueprint = Blueprint("authorization", __name__)
 def authorize_request() -> None:
     """Authorize app requests based on a authorization header from settings.yml"""
     if not API_AUTHORIZATION_HEADER_NAME or not API_AUTHORIZATION_HEADER_VALUE:
-        getLogger("waitress").info("Authorization disabled")
+        getLogger("waitress").info("Additional internal authorization disabled")
         return
     auth_header_value = request.headers.get(API_AUTHORIZATION_HEADER_NAME)
     if auth_header_value != API_AUTHORIZATION_HEADER_VALUE:
