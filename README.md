@@ -1,4 +1,4 @@
-# Reddit API
+# Reddit API API
 
 [![CodeQL](https://github.com/Electronic-Mango/reddit-api/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api/actions/workflows/codeql-analysis.yml)
 [![Black](https://github.com/Electronic-Mango/reddit-api/actions/workflows/black.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api/actions/workflows/black.yml)
@@ -35,6 +35,11 @@ This REST API was built using [`Flask`](https://github.com/pallets/flask/) and `
 Python version at least `3.10` is required.
 
 Full list of Python requirements is in `requirements.txt` file.
+
+Technically this API only *wraps* parts of official Reddit API, thus *Reddit API **API***.
+However, accessing Reddit API itself through external services is quite cumbersome, due to necessary OAuth 2.0 authorization.
+This API allows external services to access API through simple HTTP requests, without worrying about access tokens, Reddit app client, etc.
+It also allows for simple access to specific services, like reading only one random submission or reading only media or text submissions, without any additional processing.
 
 No data is stored by the API.
 Reddit is accessed in `read-only` mode.
