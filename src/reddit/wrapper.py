@@ -75,7 +75,7 @@ class RedditApiWrapper:
         Returns:
             list[Submission]: list of loaded submissions from the given subreddit
         """
-        self._logger.info(f"Loading subreddit submissions [{subreddit}] [{limit}] [{sort}]")
+        self._logger.info(f"Loading subreddit submissions [{subreddit}] [{limit}] [{sort.name}]")
         url = self._SUBREDDIT_SUBMISSIONS_URL.format(subreddit=subreddit, sort=sort.name)
         params = {"limit": limit}
         return await self._get_submissions(url, params)
@@ -91,7 +91,7 @@ class RedditApiWrapper:
         Returns:
             list[Submission]: list of loaded submissions from the Reddit user
         """
-        self._logger.info(f"Loading user submissions [{user}] [{limit}] [{sort}]")
+        self._logger.info(f"Loading user submissions [{user}] [{limit}] [{sort.name}]")
         url = self._USER_SUBMISSIONS_URL.format(user=user)
         params = {"limit": limit, "sort": sort.name}
         return await self._get_submissions(url, params)
