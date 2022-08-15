@@ -15,7 +15,7 @@ A simple Reddit REST API allowing accessing both subreddit and user submissions,
    - [API parameters](#api-parameters)
    - [Reddit app & required parameters](#reddit-app---required-parameters)
    - [Docker](#docker)
- - [Authorization](#authorization)
+ - [Additional authorization](#additional-authorization)
  - [Running the API](#running-the-api)
    - [From source](#from-source)
    - [Docker](#docker-1)
@@ -68,6 +68,8 @@ Value for `CUSTOM_SETTINGS_PATH` can also be provided via `.env` file in the pro
 
 To run the API you need to first register a Reddit app at https://old.reddit.com/prefs/apps/.
 There are two fields which need to be filled in `reddit` - `client` section in `settings.yml` based on your app - `id` and `secret`.
+Those values will be used to acquire OAuth 2.0 token from Reddit API itself. 
+
 No other data is necessary, since the API works in `read-only` mode.
 
 
@@ -91,9 +93,9 @@ Default port where API requests are handled is `8080`, which is mapped to local 
 
 
 
-## Authorization
+## Additional authorization
 
-Api has a basic authorization mechanism based on request header.
+Api has a basic authorization mechanism based on request header, separate from Reddit API OAuth 2.0.
 You can set authorization header name and expected value in `settings.yml` in `api` - `authorization_header` - `name` and `expected_value`.
 
 If either of them is empty authorization will be disabled and all requests will be accepted.
