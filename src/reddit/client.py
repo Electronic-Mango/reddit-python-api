@@ -2,22 +2,16 @@
 Module responsible for accessing Reddit API via PRAW.
 """
 
-from typing import Callable
-
-from praw import Reddit
-from praw.models import ListingGenerator, Submission
-from praw.models.listing.mixins import BaseListingMixin
-from praw.models.listing.mixins.redditor import SubListing
-from prawcore import Redirect
+from reddit.jsonify import jsonify_submission
+from reddit.wrapper import RedditApiWrapper, Submission
 
 from settings import (
     REDDIT_CLIENT_ID,
     REDDIT_CLIENT_SECRET,
     REDDIT_CLIENT_USER_AGENT,
-    REDDIT_IMAGE_URL_SUFFIXES,
 )
 
-_client = Reddit(
+_wrapper = RedditApiWrapper(
     client_id=REDDIT_CLIENT_ID,
     client_secret=REDDIT_CLIENT_SECRET,
     user_agent=REDDIT_CLIENT_USER_AGENT,
@@ -37,7 +31,8 @@ def get_subreddit_submissions(subreddit: str, limit: int, sort_type: str) -> lis
     Returns:
         list[Submission]: list of all loaded submissions from given subreddit.
     """
-    return _get_submissions(_client.subreddit(subreddit), limit, sort_type, lambda _: True)
+    submissions = _wrapper.subreddit_submissions(subreddit, limit, sort_type)
+    return list(map(jsonify_submission, submissions))
 
 
 def get_subreddit_image_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
@@ -56,7 +51,9 @@ def get_subreddit_image_submissions(subreddit: str, limit: int, sort_type: str) 
     Returns:
         list[Submission]: list of all loaded image submissions from given subreddit.
     """
-    return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_image)
+    submissions = _wrapper.subreddit_submissions(subreddit, limit, sort_type)
+    submissions = map(jsonify_submission, submissions)
+    return list(filter(lambda submission: submission["media_url"], submissions))
 
 
 def get_subreddit_text_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
@@ -75,7 +72,9 @@ def get_subreddit_text_submissions(subreddit: str, limit: int, sort_type: str) -
     Returns:
         list[Submission]: list of all loaded text submissions from given subreddit.
     """
-    return _get_submissions(_client.subreddit(subreddit), limit, sort_type, _submission_is_text)
+    submissions = _wrapper.subreddit_submissions(subreddit, limit, sort_type)
+    submissions = map(jsonify_submission, submissions)
+    return list(filter(lambda submission: submission["selftext"], submissions))
 
 
 def get_user_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
@@ -91,7 +90,8 @@ def get_user_submissions(username: str, limit: int, sort_type: str) -> list[Subm
     Returns:
         list[Submission]: list of all loaded submissions from given user.
     """
-    return _get_submissions(_get_redditor_source(username), limit, sort_type, lambda _: True)
+    submissions = _wrapper.user_submissions(username, limit, sort_type)
+    return list(map(jsonify_submission, submissions))
 
 
 def get_user_image_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
@@ -110,7 +110,9 @@ def get_user_image_submissions(username: str, limit: int, sort_type: str) -> lis
     Returns:
         list[Submission]: list of all loaded image submissions from given user.
     """
-    return _get_submissions(_get_redditor_source(username), limit, sort_type, _submission_is_image)
+    submissions = _wrapper.user_submissions(username, limit, sort_type)
+    submissions = map(jsonify_submission, submissions)
+    return list(filter(lambda submission: submission["media_url"], submissions))
 
 
 def get_user_text_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
@@ -129,47 +131,6 @@ def get_user_text_submissions(username: str, limit: int, sort_type: str) -> list
     Returns:
         list[Submission]: list of all loaded text submissions from given user.
     """
-    return _get_submissions(_get_redditor_source(username), limit, sort_type, _submission_is_text)
-
-
-def _get_redditor_source(username: str) -> SubListing:
-    return _client.redditor(username).submissions
-
-
-def _get_submissions(
-    source: BaseListingMixin,
-    limit: int,
-    sort_type: str,
-    submission_filter: Callable[[Submission], bool],
-) -> list[Submission]:
-    submissions_generator = _get_submissions_generator(source, sort_type)
-    submissions_generator.limit = limit
-    submissions = _load_submissions(submissions_generator)
-    return [submission for submission in submissions if submission_filter(submission)]
-
-
-def _get_submissions_generator(source: BaseListingMixin, sort_type: str) -> ListingGenerator:
-    match sort_type:
-        case "new":
-            return source.new()
-        case "top":
-            return source.top()
-        case "controversial":
-            return source.controversial()
-        case _:
-            return source.hot()
-
-
-def _load_submissions(submissions_generator: ListingGenerator) -> list[Submission]:
-    try:
-        return list(submissions_generator)
-    except Redirect:
-        return []
-
-
-def _submission_is_image(submission: Submission) -> bool:
-    return submission.url.endswith(REDDIT_IMAGE_URL_SUFFIXES)
-
-
-def _submission_is_text(submission: Submission) -> bool:
-    return submission.selftext
+    submissions = _wrapper.user_submissions(username, limit, sort_type)
+    submissions = map(jsonify_submission, submissions)
+    return list(filter(lambda submission: submission["selftext"], submissions))

@@ -5,7 +5,7 @@ Module responsible for JSONifying Reddit submissions.
 from datetime import datetime
 from typing import Any
 
-from praw.models import Submission
+from reddit.wrapper import Submission
 
 
 def jsonify_submission(submission: Submission) -> dict[str, Any]:
@@ -15,7 +15,7 @@ def jsonify_submission(submission: Submission) -> dict[str, Any]:
      - id
      - url
      - title
-     - author, or None if author is unavailable
+     - author
      - nsfw
      - spoiler
      - selftext
@@ -32,16 +32,27 @@ def jsonify_submission(submission: Submission) -> dict[str, Any]:
         dict[str, Any]: dict containing JSONified submission
     """
     return {
-        "id": submission.id,
-        "url": submission.url,
-        "title": submission.title,
-        "author": submission.author.name if submission.author else None,
-        "nsfw": submission.over_18,
-        "spoiler": submission.spoiler,
-        "selftext": submission.selftext,
-        "score": submission.score,
-        "created_utc": datetime.utcfromtimestamp(submission.created_utc),
-        "shortlink": submission.shortlink,
-        "subreddit": submission.subreddit.display_name,
-        "stickied": submission.stickied,
+        "id": submission.get("id"),
+        "url": submission.get("url"),
+        "title": submission.get("title"),
+        "author": submission.get("author"),
+        "nsfw": submission.get("over_18", False),
+        "spoiler": submission.get("spoiler", False),
+        "selftext": submission.get("selftext"),
+        "score": submission.get("score"),
+        "created_utc": datetime.fromtimestamp(submission.get("created_utc", 0)),
+        "permalink": submission.get("permalink"),
+        "subreddit": submission.get("subreddit"),
+        "stickied": submission.get("stickied"),
+        "media_url": parse_media_url(submission),
     }
+
+
+# TODO Handle galleries.
+def parse_media_url(submission: Submission) -> str:
+    if "image" in submission.get("post_hint", ""):
+        return submission.get("url")
+    elif submission.get("is_video"):
+        return submission["media"]["reddit_video"]["fallback_url"].replace("?source=fallback", "")
+    else:
+        return None

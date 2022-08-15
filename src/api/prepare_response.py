@@ -8,7 +8,6 @@ from typing import Any, Callable
 from flask import abort
 
 from reddit.client import Submission
-from reddit.jsonify import jsonify_submission
 
 
 def prepare_list_response(
@@ -34,7 +33,6 @@ def prepare_list_response(
         dict[str, Any]: JSON containing list of generated submissions and their count.
     """
     submissions = _get_submissions_or_abort(source_name, load_count, sort, submissions_generator)
-    submissions = [jsonify_submission(submission) for submission in submissions]
     return {"count": len(submissions), "submissions": submissions}
 
 
@@ -61,8 +59,7 @@ def prepare_random_response(
         dict[str, Any]: JSON containing data of a random generated submission.
     """
     submissions = _get_submissions_or_abort(source_name, load_count, sort, submissions_generator)
-    random_submission = choice(submissions)
-    return jsonify_submission(random_submission)
+    return choice(submissions)
 
 
 def _get_submissions_or_abort(
