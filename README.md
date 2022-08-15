@@ -157,7 +157,7 @@ Endpoint:
  - `top`
  - `new`
  - `controversial`
- - anything else will get interpreted as `hot`
+ - `hot`
 
 `{load_count}` and `{sort_type}` can be ommited, but both have to be specified when you want to specify `{sort_type}`.
 
