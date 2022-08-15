@@ -7,8 +7,7 @@ from enum import Enum, auto
 from time import time_ns
 from typing import Any
 
-from requests import Response, get, post
-from requests.auth import HTTPBasicAuth
+from httpx import BasicAuth, get, post
 
 """Type of all returning submissions"""
 Submission = dict[str, Any]
@@ -42,28 +41,27 @@ class RedditApiWrapper:
     _AUTH_EXPIRY_OVERHEAD_SECONDS = 60
 
     def __init__(self, client_id: str, client_secret: str, user_agent: str) -> None:
-        self._client_id = client_id
-        self._client_secret = client_secret
-        self._user_agent = user_agent
-        self._authorize()
+        self._client_auth = BasicAuth(username=client_id, password=client_secret)
+        self._auth_headers = {"User-agent": user_agent}
+        self._access_token_expires_in = 0
 
-    def _authorize(self) -> None:
-        auth_headers = {"User-agent": self._user_agent}
+    async def _authorize(self) -> None:
         response = post(
             url=self._ACCESS_TOKEN_URL,
             params={"grant_type": "client_credentials"},
-            auth=HTTPBasicAuth(username=self._client_id, password=self._client_secret),
-            headers=auth_headers,
+            auth=self._client_auth,
+            headers=self._auth_headers,
         )
         assert response.status_code == 200
         response_content = response.json()
         access_token = response_content["access_token"]
-        auth_headers["Authorization"] = f"Bearer {access_token}"
-        self._auth_headers = auth_headers
+        self._auth_headers["Authorization"] = f"Bearer {access_token}"
         expires_in = response_content["expires_in"]
         self._access_token_expires_in = time_ns() + expires_in - self._AUTH_EXPIRY_OVERHEAD_SECONDS
 
-    def subreddit_submissions(self, subreddit: str, limit: int, sort: SortType) -> list[Submission]:
+    async def subreddit_submissions(
+        self, subreddit: str, limit: int, sort: SortType
+    ) -> list[Submission]:
         """Get a list of Reddit submissions from the given subreddit
 
         Args:
@@ -74,16 +72,11 @@ class RedditApiWrapper:
         Returns:
             list[Submission]: list of loaded submissions from the given subreddit
         """
-        if self._access_token_expires_in <= time_ns():
-            self._authorize()
         url = self._SUBREDDIT_SUBMISSIONS_URL.format(subreddit=subreddit, sort=sort.name)
-        response = get(url=url, params={"limit": limit}, headers=self._auth_headers)
-        if response.status_code in [401, 403]:
-            self._authorize()
-            response = get(url=url, params={"limit": limit}, headers=self._auth_headers)
-        return self._parse_api_response(response)
+        params = {"limit": limit}
+        return await self._get_submissions(url, params)
 
-    def user_submissions(self, user: str, limit: int, sort: SortType) -> list[Submission]:
+    async def user_submissions(self, user: str, limit: int, sort: SortType) -> list[Submission]:
         """Get a list of Reddit submissions from the given Reddit user
 
         Args:
@@ -94,12 +87,16 @@ class RedditApiWrapper:
         Returns:
             list[Submission]: list of loaded submissions from the Reddit user
         """
-        if self._access_token_expires_in <= time_ns():
-            self._authorize()
-        url = self._USER_SUBMISSIONS_URL.format(user=user, sort=sort.name)
-        response = get(url=url, params={"limit": limit, "sort": sort}, headers=self._auth_headers)
-        return self._parse_api_response(response)
+        url = self._USER_SUBMISSIONS_URL.format(user=user)
+        params = {"limit": limit, "sort": sort.name}
+        return await self._get_submissions(url, params)
 
-    def _parse_api_response(self, response: Response) -> list[Submission]:
+    async def _get_submissions(self, url: str, params: dict[str, Any]) -> list[Submission]:
+        if self._access_token_expires_in <= time_ns():
+            await self._authorize()
+        response = get(url, params=params, headers=self._auth_headers)
+        if response.status_code in [401, 403]:
+            await self._authorize()
+            response = get(url, params=params, headers=self._auth_headers)
         assert response.status_code == 200
         return [submission["data"] for submission in response.json()["data"]["children"]]

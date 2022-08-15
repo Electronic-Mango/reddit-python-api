@@ -18,7 +18,7 @@ blueprint = Blueprint("/subreddit/submission/random", __name__)
 @blueprint.route("/subreddit/submission/random/<subreddit>")
 @blueprint.route("/subreddit/submission/random/<subreddit>/<int:load_count>")
 @blueprint.route("/subreddit/submission/random/<subreddit>/<int:load_count>/<sort:sort>")
-def random_submission(
+async def subreddit_random_submission(
     subreddit: str = DEFAULT_SUBREDDIT,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: SortType = SortType.hot,
@@ -39,4 +39,4 @@ def random_submission(
     Returns:
         dict[str, Any]: JSON storing data of one random submission from given subreddit.
     """
-    return prepare_random_response(subreddit, load_count, sort, get_subreddit_submissions)
+    return await prepare_random_response(subreddit, load_count, sort, get_subreddit_submissions)

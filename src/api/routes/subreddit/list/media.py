@@ -18,7 +18,7 @@ blueprint = Blueprint("/subreddit/media", __name__)
 @blueprint.route("/subreddit/media/<subreddit>")
 @blueprint.route("/subreddit/media/<subreddit>/<int:load_count>")
 @blueprint.route("/subreddit/media/<subreddit>/<int:load_count>/<sort:sort>")
-def image_submissions(
+async def subreddit_image_submissions(
     subreddit: str = DEFAULT_SUBREDDIT,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: SortType = SortType.hot,
@@ -40,4 +40,4 @@ def image_submissions(
     Returns:
         dict[str, Any]: JSON storing list of loaded media submissions and total submission count.
     """
-    return prepare_list_response(subreddit, load_count, sort, get_subreddit_image_submissions)
+    return await prepare_list_response(subreddit, load_count, sort, get_subreddit_image_submissions)

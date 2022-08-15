@@ -17,7 +17,7 @@ blueprint = Blueprint("user/media/random", __name__)
 @blueprint.route("/user/media/random/<username>")
 @blueprint.route("/user/media/random/<username>/<int:load_count>")
 @blueprint.route("/user/media/random/<username>/<int:load_count>/<sort:sort>")
-def user_random_image_submission(
+async def user_random_image_submission(
     username: str,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: SortType = SortType.hot,
@@ -40,4 +40,4 @@ def user_random_image_submission(
     Returns:
         dict[str, Any]: JSON storing data of one random media submission from given user.
     """
-    return prepare_random_response(username, load_count, sort, get_user_image_submissions)
+    return await prepare_random_response(username, load_count, sort, get_user_image_submissions)

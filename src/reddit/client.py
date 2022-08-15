@@ -18,7 +18,7 @@ _wrapper = RedditApiWrapper(
 )
 
 
-def get_subreddit_submissions(subreddit: str, limit: int, sort: SortType) -> list[Submission]:
+async def get_subreddit_submissions(subreddit: str, limit: int, sort: SortType) -> list[Submission]:
     """Get a list of submissions from the given subreddit
 
     Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
@@ -31,11 +31,13 @@ def get_subreddit_submissions(subreddit: str, limit: int, sort: SortType) -> lis
     Returns:
         list[Submission]: list of all loaded submissions from given subreddit.
     """
-    submissions = _wrapper.subreddit_submissions(subreddit, limit, sort)
+    submissions = await _wrapper.subreddit_submissions(subreddit, limit, sort)
     return list(map(jsonify_submission, submissions))
 
 
-def get_subreddit_image_submissions(subreddit: str, limit: int, sort: SortType) -> list[Submission]:
+async def get_subreddit_image_submissions(
+    subreddit: str, limit: int, sort: SortType
+) -> list[Submission]:
     """Get a list of media submissions (images, GIFs) from the given subreddit
 
     Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
@@ -51,12 +53,14 @@ def get_subreddit_image_submissions(subreddit: str, limit: int, sort: SortType) 
     Returns:
         list[Submission]: list of all loaded media submissions from given subreddit.
     """
-    submissions = _wrapper.subreddit_submissions(subreddit, limit, sort)
+    submissions = await _wrapper.subreddit_submissions(subreddit, limit, sort)
     submissions = map(jsonify_submission, submissions)
     return list(filter(lambda submission: submission["media_url"], submissions))
 
 
-def get_subreddit_text_submissions(subreddit: str, limit: int, sort: SortType) -> list[Submission]:
+async def get_subreddit_text_submissions(
+    subreddit: str, limit: int, sort: SortType
+) -> list[Submission]:
     """Get a list of text submissions from the given subreddit
 
     Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
@@ -72,12 +76,12 @@ def get_subreddit_text_submissions(subreddit: str, limit: int, sort: SortType) -
     Returns:
         list[Submission]: list of all loaded text submissions from given subreddit.
     """
-    submissions = _wrapper.subreddit_submissions(subreddit, limit, sort)
+    submissions = await _wrapper.subreddit_submissions(subreddit, limit, sort)
     submissions = map(jsonify_submission, submissions)
     return list(filter(lambda submission: submission["selftext"], submissions))
 
 
-def get_user_submissions(username: str, limit: int, sort: SortType) -> list[Submission]:
+async def get_user_submissions(username: str, limit: int, sort: SortType) -> list[Submission]:
     """Get a list of submissions from the given user
 
     Resulting list can be shorter than "limit" argument if given user has fewer submissions.
@@ -90,11 +94,11 @@ def get_user_submissions(username: str, limit: int, sort: SortType) -> list[Subm
     Returns:
         list[Submission]: list of all loaded submissions from given user.
     """
-    submissions = _wrapper.user_submissions(username, limit, sort)
+    submissions = await _wrapper.user_submissions(username, limit, sort)
     return list(map(jsonify_submission, submissions))
 
 
-def get_user_image_submissions(username: str, limit: int, sort: SortType) -> list[Submission]:
+async def get_user_image_submissions(username: str, limit: int, sort: SortType) -> list[Submission]:
     """Get a list of media submissions (images, GIFs) from the given user
 
     Resulting list can be shorter than "limit" argument if given user has fewer submissions.
@@ -110,12 +114,12 @@ def get_user_image_submissions(username: str, limit: int, sort: SortType) -> lis
     Returns:
         list[Submission]: list of all loaded media submissions from given user.
     """
-    submissions = _wrapper.user_submissions(username, limit, sort)
+    submissions = await _wrapper.user_submissions(username, limit, sort)
     submissions = map(jsonify_submission, submissions)
     return list(filter(lambda submission: submission["media_url"], submissions))
 
 
-def get_user_text_submissions(username: str, limit: int, sort: SortType) -> list[Submission]:
+async def get_user_text_submissions(username: str, limit: int, sort: SortType) -> list[Submission]:
     """Get a list of text submissions from the given user
 
     Resulting list can be shorter than "limit" argument if given user has fewer submissions.
@@ -131,6 +135,6 @@ def get_user_text_submissions(username: str, limit: int, sort: SortType) -> list
     Returns:
         list[Submission]: list of all loaded text submissions from given user.
     """
-    submissions = _wrapper.user_submissions(username, limit, sort)
+    submissions = await _wrapper.user_submissions(username, limit, sort)
     submissions = map(jsonify_submission, submissions)
     return list(filter(lambda submission: submission["selftext"], submissions))

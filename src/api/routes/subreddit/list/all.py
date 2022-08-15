@@ -18,7 +18,7 @@ blueprint = Blueprint("/subreddit/submission", __name__)
 @blueprint.route("/subreddit/submission/<subreddit>")
 @blueprint.route("/subreddit/submission/<subreddit>/<int:load_count>")
 @blueprint.route("/subreddit/submission/<subreddit>/<int:load_count>/<sort:sort>")
-def submissions(
+async def subreddit_submissions(
     subreddit: str = DEFAULT_SUBREDDIT,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: SortType = SortType.hot,
@@ -40,4 +40,4 @@ def submissions(
     Returns:
         dict[str, Any]: JSON storing list of loaded submissions and total submission count.
     """
-    return prepare_list_response(subreddit, load_count, sort, get_subreddit_submissions)
+    return await prepare_list_response(subreddit, load_count, sort, get_subreddit_submissions)

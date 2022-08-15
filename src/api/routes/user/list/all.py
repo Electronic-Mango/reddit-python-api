@@ -17,7 +17,7 @@ blueprint = Blueprint("/user/submission", __name__)
 @blueprint.route("/user/submission/<username>")
 @blueprint.route("/user/submission/<username>/<int:load_count>")
 @blueprint.route("/user/submission/<username>/<int:load_count>/<sort:sort>")
-def user_submissions(
+async def user_submissions(
     username: str,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: SortType = SortType.hot,
@@ -38,4 +38,4 @@ def user_submissions(
     Returns:
         dict[str, Any]: JSON storing list of loaded submissions and total submission count
     """
-    return prepare_list_response(username, load_count, sort, get_user_submissions)
+    return await prepare_list_response(username, load_count, sort, get_user_submissions)

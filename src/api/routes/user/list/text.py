@@ -17,7 +17,7 @@ blueprint = Blueprint("/user/text", __name__)
 @blueprint.route("/user/text/<username>")
 @blueprint.route("/user/text/<username>/<int:load_count>")
 @blueprint.route("/user/text/<username>/<int:load_count>/<sort:sort>")
-def user_text_submissions(
+async def user_text_submissions(
     username: str,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: SortType = SortType.hot,
@@ -38,4 +38,4 @@ def user_text_submissions(
     Returns:
         dict[str, Any]: JSON storing list of loaded text submissions and total submission count.
     """
-    return prepare_list_response(username, load_count, sort, get_user_text_submissions)
+    return await prepare_list_response(username, load_count, sort, get_user_text_submissions)
