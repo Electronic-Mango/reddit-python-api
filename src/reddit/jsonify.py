@@ -51,9 +51,9 @@ def jsonify_submission(submission: Submission) -> dict[str, Any]:
 
 # TODO Handle galleries.
 def _parse_media_url(submission: Submission) -> str:
-    if "image" in submission.get("post_hint", ""):
+    if "i.redd.it" in submission.get("domain", "") or "image" in submission.get("post_hint", ""):
         return submission.get("url")
-    elif submission.get("is_video"):
+    elif "v.redd.it" in submission.get("domain", "") and submission.get("is_video"):
         return submission["media"]["reddit_video"]["fallback_url"].replace("?source=fallback", "")
     else:
         return None

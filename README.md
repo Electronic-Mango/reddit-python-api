@@ -351,12 +351,16 @@ Since both `{load_count}` and `{sort_type}` were omitted, the default values of 
 ## Filtering and submission types
 
 Other than all submissions, API allows for filtering submission types.
-The two filters are:
+The two filters are `text` and `media`.
 
- - `text` - all submissions where `selftext` is not empty
- - `media` - all submissions where parsed `media_url` field is not empty, which means either:
-   - `post_hint` field is equals to `image`, in this case media URL will be equal to submission URL
-   - `is_video` field is present and equal to `True`, in this case media URL will be taken from `media` - `reddit_video` - `fallback_url` with `?source=fallback` trimmed out from the URL
+For `text` all submissions where `selftext` is not empty are selected.
+
+For `media` there are two cases, one for images and one for videos:
+
+ - images are detected based on `i.redd.it` domain **OR** `post_hint` equal to `image`, since not all subreddits have `post_hint`
+ - videos are detected based on `v.redd.it` domain **AND** `is_video` equal to `True`, there are some posts where domain is `v.redd.it`, but there're no necessary URLs
+
+In case of videos, resulting `media_url` URL has `?source=fallback` trimmed out, so it ends with file extension.
 
 
 
