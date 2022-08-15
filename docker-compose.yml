@@ -5,10 +5,10 @@
 
 version: "3.9"
 services:
-  reddit-api:
-    image: reddit-api:latest
+  reddit-api-api:
+    image: reddit-api-api:latest
     build: .
-    container_name: reddit-api
+    container_name: reddit-api-api
     restart: unless-stopped
     ports:
       - 3001:8080
@@ -16,5 +16,5 @@ services:
       - CUSTOM_SETTINGS_PATH=custom_settings.yml
 networks:
   default:
-    name: reddit-api-network
+    name: reddit-api-api-network
     driver: bridge
