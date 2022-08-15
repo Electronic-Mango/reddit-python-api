@@ -7,7 +7,7 @@ from typing import Any
 
 from flask import abort
 
-from reddit.client import Submission
+from api.reddit_client import Submission
 
 
 def prepare_list_response_or_abort(submissions: list[Submission]) -> dict[str, Any]:
