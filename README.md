@@ -173,50 +173,56 @@ Example response:
   "count": 3,
   "submissions": [
     {
-      "author": "VictorJ45",
-      "created_utc": "Mon, 23 Sep 2019 19:51:51 GMT",
-      "id": "d8bvvm",
+      "author": "Boreol",
+      "created_utc": "Mon, 15 Aug 2022 11:22:19 GMT",
+      "id": "wov1zd",
+      "media_url": "https://i.redd.it/4xmwndm1iuh91.png",
       "nsfw": false,
-      "score": 206153,
+      "permalink": "/r/wholesomememes/comments/wov1zd/hes_gonna_be_getting_all_the_ladies/",
+      "score": 55263,
       "selftext": "",
-      "shortlink": "https://redd.it/d8bvvm",
       "spoiler": false,
       "stickied": false,
       "subreddit": "wholesomememes",
-      "title": "What a considerate man",
-      "url": "https://i.redd.it/eihhjg3veeo31.jpg"
+      "title": "He's gonna be getting all the ladies",
+      "url": "https://i.redd.it/4xmwndm1iuh91.png"
     },
     {
-      "author": "TisAubrey",
-      "created_utc": "Sat, 14 Mar 2020 11:51:52 GMT",
-      "id": "fih6k8",
+      "author": "deserr",
+      "created_utc": "Sun, 14 Aug 2022 22:57:27 GMT",
+      "id": "wogjes",
+      "media_url": "https://i.redd.it/ayi2nev5tqh91.jpg",
       "nsfw": false,
-      "score": 183474,
+      "permalink": "/r/wholesomememes/comments/wogjes/looking_for_my_sweet_potato/",
+      "score": 27241,
       "selftext": "",
-      "shortlink": "https://redd.it/fih6k8",
       "spoiler": false,
       "stickied": false,
       "subreddit": "wholesomememes",
-      "title": "Wholesome meeting from Tumblr",
-      "url": "https://i.redd.it/l9kr8x9xmmm41.jpg"
+      "title": "Looking for my sweet potato 🥺",
+      "url": "https://i.redd.it/ayi2nev5tqh91.jpg"
     },
     {
-      "author": "GolfDadNotes",
-      "created_utc": "Fri, 20 Nov 2020 04:05:54 GMT",
-      "id": "jxi6p6",
+      "author": "hackyandbird",
+      "created_utc": "Sun, 14 Aug 2022 23:40:27 GMT",
+      "id": "wohizo",
+      "media_url": "https://i.redd.it/vjbg1xcs0rh91.gif",
       "nsfw": false,
-      "score": 180824,
+      "permalink": "/r/wholesomememes/comments/wohizo/sign_me_up/",
+      "score": 22436,
       "selftext": "",
-      "shortlink": "https://redd.it/jxi6p6",
       "spoiler": false,
       "stickied": false,
       "subreddit": "wholesomememes",
-      "title": "As real as it gets : )",
-      "url": "https://i.redd.it/jr4p03glkb061.jpg"
+      "title": "Sign me up",
+      "url": "https://i.redd.it/vjbg1xcs0rh91.gif"
     }
   ]
 }
 ```
+
+For images and GIFs `media_url` field is the same as `url`.
+For videos it will be a different URL.
 
 
 ### Get one random submission from a subreddit
@@ -233,24 +239,25 @@ All parameters are the same as for [loading a list of submissions for a subreddi
 
 Example request:
 ```
-GET /subreddit/text/random/all/100/top
+GET /subreddit/text/random/explainlikeimfive/100/top
 ```
 
 Example response:
 ```json
 {
-  "author": "Yorkshire45",
-  "created_utc": "Sat, 09 Feb 2019 01:43:40 GMT",
-  "id": "aonp75",
+  "author": "streetpony445",
+  "created_utc": "Mon, 15 Aug 2022 00:59:12 GMT",
+  "id": "wojb18",
+  "media_url": null,
   "nsfw": false,
-  "score": 219186,
-  "selftext": "Damn... this got big...",
-  "shortlink": "https://redd.it/aonp75",
+  "permalink": "/r/explainlikeimfive/comments/wojb18/eli5_what_is_negative_pressure/",
+  "score": 1,
+  "selftext": "I was listening to an astronomy talk at an observatory and the speaker mentioned “negative pressure”. How is that even possible",
   "spoiler": false,
   "stickied": false,
-  "subreddit": "Showerthoughts",
-  "title": "Whoever created the tradition of not seeing the bride in the wedding dress beforehand saved countless husbands everywhere from hours of dress shopping and will forever be a hero to all men.",
-  "url": "https://www.reddit.com/r/Showerthoughts/comments/aonp75/whoever_created_the_tradition_of_not_seeing_the/"
+  "subreddit": "explainlikeimfive",
+  "title": "eli5: what is negative pressure?",
+  "url": "https://www.reddit.com/r/explainlikeimfive/comments/wojb18/eli5_what_is_negative_pressure/"
 }
 ```
 
@@ -277,12 +284,13 @@ Example response:
   "submissions": [
     {
       "author": "CME_T",
-      "created_utc": "Mon, 25 Jul 2022 16:08:12 GMT",
+      "created_utc": "Mon, 25 Jul 2022 18:08:12 GMT",
       "id": "w7stzz",
+      "media_url": "https://i.redd.it/fzworhhimqd91.jpg",
       "nsfw": false,
-      "score": 5284,
+      "permalink": "/r/TheWeeklyRoll/comments/w7stzz/ch_124_common_knowledge/",
+      "score": 5366,
       "selftext": "",
-      "shortlink": "https://redd.it/w7stzz",
       "spoiler": false,
       "stickied": false,
       "subreddit": "TheWeeklyRoll",
@@ -291,12 +299,13 @@ Example response:
     },
     {
       "author": "CME_T",
-      "created_utc": "Mon, 25 Jul 2022 16:08:00 GMT",
+      "created_utc": "Mon, 25 Jul 2022 18:08:00 GMT",
       "id": "w7stti",
+      "media_url": "https://i.redd.it/4kid37rjmqd91.jpg",
       "nsfw": false,
-      "score": 1901,
+      "permalink": "/r/DnD/comments/w7stti/artoc_the_weekly_roll_ch_124_common_knowledge/",
+      "score": 1913,
       "selftext": "",
-      "shortlink": "https://redd.it/w7stti",
       "spoiler": false,
       "stickied": false,
       "subreddit": "DnD",
@@ -331,17 +340,18 @@ Example response:
 ```json
 {
   "author": "CME_T",
-  "created_utc": "Mon, 25 Jul 2022 16:08:00 GMT",
-  "id": "w7stti",
+  "created_utc": "Sun, 17 Jul 2022 21:41:08 GMT",
+  "id": "w1fkap",
+  "media_url": "https://i.redd.it/2oikh0bvl6c91.jpg",
   "nsfw": false,
-  "score": 1900,
+  "permalink": "/r/TheWeeklyRoll/comments/w1fkap/ch_123_were_shorthanded_af/",
+  "score": 5600,
   "selftext": "",
-  "shortlink": "https://redd.it/w7stti",
   "spoiler": false,
   "stickied": false,
-  "subreddit": "DnD",
-  "title": "[Art][OC] The Weekly Roll Ch. 124. \"Common knowledge\"",
-  "url": "https://i.redd.it/4kid37rjmqd91.jpg"
+  "subreddit": "TheWeeklyRoll",
+  "title": "Ch. 123. \"We're short-handed af\"",
+  "url": "https://i.redd.it/2oikh0bvl6c91.jpg"
 }
 ```
 
