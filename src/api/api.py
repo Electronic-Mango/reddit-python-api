@@ -6,7 +6,7 @@ from flask import Flask
 
 from api.middleware.authorization import blueprint as authorization
 from api.middleware.log_request import blueprint as log_request
-from api.routes.sort_type_converter import SortTypeConverter
+from api.sort_type_converter import SortTypeConverter
 from api.routes.subreddit.list.all import blueprint as get_subreddit_submissions
 from api.routes.subreddit.list.media import blueprint as get_subreddit_media_submissions
 from api.routes.subreddit.list.text import blueprint as get_subreddit_text_submissions
