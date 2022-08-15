@@ -44,12 +44,12 @@ def jsonify_submission(submission: Submission) -> dict[str, Any]:
         "permalink": submission.get("permalink"),
         "subreddit": submission.get("subreddit"),
         "stickied": submission.get("stickied"),
-        "media_url": parse_media_url(submission),
+        "media_url": _parse_media_url(submission),
     }
 
 
 # TODO Handle galleries.
-def parse_media_url(submission: Submission) -> str:
+def _parse_media_url(submission: Submission) -> str:
     if "image" in submission.get("post_hint", ""):
         return submission.get("url")
     elif submission.get("is_video"):
