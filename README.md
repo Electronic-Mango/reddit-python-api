@@ -4,7 +4,7 @@
 [![Black](https://github.com/Electronic-Mango/reddit-api/actions/workflows/black.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api/actions/workflows/black.yml)
 [![Flake8](https://github.com/Electronic-Mango/reddit-api/actions/workflows/flake8.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api/actions/workflows/flake8.yml)
 
-A simple Reddit REST API allowing accessing both subreddit and user submissions, build with [`PRAW`](https://github.com/praw-dev/praw) and [`Flask`](https://github.com/pallets/flask/).
+A simple Reddit REST API allowing accessing both subreddit and user submissions, build with [`Flask`](https://github.com/pallets/flask/).
 
 
 
@@ -31,7 +31,7 @@ A simple Reddit REST API allowing accessing both subreddit and user submissions,
 
 ## Introduction and requirements
 
-This REST API was built using [`PRAW`](https://github.com/praw-dev/praw), [`Flask`](https://github.com/pallets/flask/) and `Python 3.10`.
+This REST API was built using [`Flask`](https://github.com/pallets/flask/) and `Python 3.10`.
 Python version at least `3.10` is required.
 
 Full list of Python requirements is in `requirements.txt` file.
