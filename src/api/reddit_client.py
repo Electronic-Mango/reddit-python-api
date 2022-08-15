@@ -35,10 +35,10 @@ async def get_subreddit_submissions(subreddit: str, limit: int, sort: SortType) 
     return list(map(parse_submission, submissions))
 
 
-async def get_subreddit_image_submissions(
+async def get_subreddit_media_submissions(
     subreddit: str, limit: int, sort: SortType
 ) -> list[Submission]:
-    """Get a list of media submissions (images, GIFs) from the given subreddit
+    """Get a list of media submissions (images, GIFs, videos) from the given subreddit
 
     Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
     Additionally "limit" only defines how many submissions are loaded from given subreddit,
@@ -99,7 +99,7 @@ async def get_user_submissions(username: str, limit: int, sort: SortType) -> lis
 
 
 async def get_user_image_submissions(username: str, limit: int, sort: SortType) -> list[Submission]:
-    """Get a list of media submissions (images, GIFs) from the given user
+    """Get a list of media submissions (images, GIFs, videos) from the given user
 
     Resulting list can be shorter than "limit" argument if given user has fewer submissions.
     Additionally "limit" only defines how many submissions are loaded from given user,

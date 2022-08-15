@@ -7,7 +7,7 @@ from typing import Any
 from flask import Blueprint
 
 from api.prepare_response import prepare_list_response_or_abort
-from api.reddit_client import get_subreddit_image_submissions
+from api.reddit_client import get_subreddit_media_submissions
 from reddit.wrapper import SortType
 from settings import DEFAULT_LOAD_COUNT, DEFAULT_SUBREDDIT
 
@@ -40,5 +40,5 @@ async def subreddit_image_submissions(
     Returns:
         dict[str, Any]: JSON storing list of loaded media submissions and total submission count.
     """
-    submissions = await get_subreddit_image_submissions(subreddit, load_count, sort)
+    submissions = await get_subreddit_media_submissions(subreddit, load_count, sort)
     return prepare_list_response_or_abort(submissions)
