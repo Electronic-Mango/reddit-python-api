@@ -8,6 +8,7 @@ from flask import Blueprint
 
 from api.prepare_response import prepare_list_response
 from reddit.client import get_user_text_submissions
+from reddit.wrapper import SortType
 from settings import DEFAULT_LOAD_COUNT
 
 blueprint = Blueprint("/user/text", __name__)
@@ -15,11 +16,11 @@ blueprint = Blueprint("/user/text", __name__)
 
 @blueprint.route("/user/text/<username>")
 @blueprint.route("/user/text/<username>/<int:load_count>")
-@blueprint.route("/user/text/<username>/<int:load_count>/<sort>")
+@blueprint.route("/user/text/<username>/<int:load_count>/<sort:sort>")
 def user_text_submissions(
     username: str,
     load_count: int = DEFAULT_LOAD_COUNT,
-    sort: str = None,
+    sort: SortType = SortType.hot,
 ) -> dict[str, Any]:
     """Endpoint returning a list of text submissions from the given user
 
@@ -31,8 +32,8 @@ def user_text_submissions(
         username (str): user to load data from.
         load_count (int, optional): how many submissions should be loaded.
                                     Defaults to DEFAULT_LOAD_COUNT from .env.
-        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
-                              Defaults to None, which will be interpreter as "hot".
+        sort (SortType, optional): "hot", "top", "new", "controversial".
+                                   Defaults to "hot".
 
     Returns:
         dict[str, Any]: JSON storing list of loaded text submissions and total submission count.

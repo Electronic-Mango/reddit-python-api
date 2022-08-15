@@ -1,3 +1,4 @@
+from enum import Enum, auto
 from time import time_ns
 from typing import Any
 
@@ -5,6 +6,13 @@ from requests import Response, get, post
 from requests.auth import HTTPBasicAuth
 
 Submission = dict[str, Any]
+
+
+class SortType(Enum):
+    hot = auto()
+    top = auto()
+    new = auto()
+    controversial = auto()
 
 
 class RedditApiWrapper:
@@ -35,20 +43,20 @@ class RedditApiWrapper:
         expires_in = response_content["expires_in"]
         self._access_token_expires_in = time_ns() + expires_in - self.AUTH_EXPIRY_OVERHEAD_SECONDS
 
-    def subreddit_submissions(self, subreddit: str, count: int, sort: str) -> list[Submission]:
+    def subreddit_submissions(self, subreddit: str, count: int, sort: SortType) -> list[Submission]:
         if self._access_token_expires_in <= time_ns():
             self.authorize()
-        url = self.SUBREDDIT_SUBMISSIONS_URL.format(subreddit=subreddit, sort=sort)
+        url = self.SUBREDDIT_SUBMISSIONS_URL.format(subreddit=subreddit, sort=sort.name)
         response = get(url=url, params={"limit": count}, headers=self._auth_headers)
         if response.status_code in [401, 403]:
             self.authorize()
             response = get(url=url, params={"limit": count}, headers=self._auth_headers)
         return self.parse_api_response(response)
 
-    def user_submissions(self, user: str, count: int, sort: str) -> list[Submission]:
+    def user_submissions(self, user: str, count: int, sort: SortType) -> list[Submission]:
         if self._access_token_expires_in <= time_ns():
             self.authorize()
-        url = self.USER_SUBMISSIONS_URL.format(user=user, sort=sort)
+        url = self.USER_SUBMISSIONS_URL.format(user=user, sort=sort.name)
         response = get(url=url, params={"limit": count, "sort": sort}, headers=self._auth_headers)
         return self.parse_api_response(response)
 

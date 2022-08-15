@@ -8,13 +8,14 @@ from typing import Any, Callable
 from flask import abort
 
 from reddit.client import Submission
+from reddit.wrapper import SortType
 
 
 def prepare_list_response(
     source_name: str,
     load_count: int,
-    sort: str,
-    submissions_generator: Callable[[str, int, str], list[Submission]],
+    sort: SortType,
+    submissions_generator: Callable[[str, int, SortType], list[Submission]],
 ) -> dict[str, Any]:
     """Prepare JSONified list of Reddit submissions
 
@@ -23,8 +24,8 @@ def prepare_list_response(
                            Is later used by submissions_generator.
         load_count (int): How many submissions should be loaded.
                           Is later used by submissions_generator.
-        sort (str): Sort type, like "hot", "new", "top", "controversial".
-                    Is later used by submissions_generator.
+        sort (SortType): Sort type to use when accessing submissions.
+                         Is later used by submissions_generator.
         submissions_generator (Callable[[str, int, str], list[Submission]]): Callback generating
                 a list of submissions based on previous arguments. source_name is used as first,
                 load_count as second and sort as last.
@@ -39,8 +40,8 @@ def prepare_list_response(
 def prepare_random_response(
     source_name: str,
     load_count: int,
-    sort: str,
-    submissions_generator: Callable[[str, int, str], list[Submission]],
+    sort: SortType,
+    submissions_generator: Callable[[str, int, SortType], list[Submission]],
 ) -> dict[str, Any]:
     """_summary_
 
@@ -49,8 +50,8 @@ def prepare_random_response(
                            Is later used by submissions_generator.
         load_count (int): How many submissions should be loaded, a random one is picked from them.
                           Is later used by submissions_generator.
-                          Is later used by submissions_generator.
-        sort (str): Sort type, like "hot", "new", "top", "controversial".
+        sort (SortType): Sort type to use when accessing submissions.
+                         Is later used by submissions_generator.
         submissions_generator (Callable[[str, int, str], list[Submission]]): Callback generating
                 a list of submissions based on previous arguments. source_name is used as first,
                 load_count as second and sort as last.
@@ -65,8 +66,8 @@ def prepare_random_response(
 def _get_submissions_or_abort(
     source_name: str,
     load_count: int,
-    sort: str,
-    submissions_generator: Callable[[str, int, str], list[Submission]],
+    sort: SortType,
+    submissions_generator: Callable[[str, int, SortType], list[Submission]],
 ) -> list[Submission]:
     submissions = submissions_generator(source_name, load_count, sort)
     if not submissions:

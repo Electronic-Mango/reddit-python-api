@@ -8,6 +8,7 @@ from flask import Blueprint
 
 from api.prepare_response import prepare_random_response
 from reddit.client import get_user_image_submissions
+from reddit.wrapper import SortType
 from settings import DEFAULT_LOAD_COUNT
 
 blueprint = Blueprint("user/image/random", __name__)
@@ -15,11 +16,11 @@ blueprint = Blueprint("user/image/random", __name__)
 
 @blueprint.route("/user/image/random/<username>")
 @blueprint.route("/user/image/random/<username>/<int:load_count>")
-@blueprint.route("/user/image/random/<username>/<int:load_count>/<sort>")
+@blueprint.route("/user/image/random/<username>/<int:load_count>/<sort:sort>")
 def user_random_image_submission(
     username: str,
     load_count: int = DEFAULT_LOAD_COUNT,
-    sort: str = None,
+    sort: SortType = SortType.hot,
 ) -> dict[str, Any]:
     """Endpoint returning a random image submission (image, GIF) from the given user
 
@@ -33,8 +34,8 @@ def user_random_image_submission(
         username (str): user to load data from.
         load_count (int, optional): how many submissions should be loaded before one is selected.
                                     Defaults to DEFAULT_LOAD_COUNT from .env.
-        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
-                              Defaults to None, which will be interpreter as "hot".
+        sort (SortType, optional): "hot", "top", "new", "controversial".
+                                   Defaults to "hot".
 
     Returns:
         dict[str, Any]: JSON storing data of one random image submission from given user.

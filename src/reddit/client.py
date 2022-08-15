@@ -3,7 +3,7 @@ Module responsible for accessing Reddit API via PRAW.
 """
 
 from reddit.jsonify import jsonify_submission
-from reddit.wrapper import RedditApiWrapper, Submission
+from reddit.wrapper import RedditApiWrapper, SortType, Submission
 
 from settings import (
     REDDIT_CLIENT_ID,
@@ -18,7 +18,7 @@ _wrapper = RedditApiWrapper(
 )
 
 
-def get_subreddit_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
+def get_subreddit_submissions(subreddit: str, limit: int, sort_type: SortType) -> list[Submission]:
     """Get a list of submissions from the given subreddit
 
     Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
@@ -26,7 +26,7 @@ def get_subreddit_submissions(subreddit: str, limit: int, sort_type: str) -> lis
     Args:
         subreddit (str): name of subreddit to get data from
         limit (int): how many submissions should be loaded
-        sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
+        sort_type (SortType): sort type to use when accessing submissions
 
     Returns:
         list[Submission]: list of all loaded submissions from given subreddit.
@@ -35,7 +35,7 @@ def get_subreddit_submissions(subreddit: str, limit: int, sort_type: str) -> lis
     return list(map(jsonify_submission, submissions))
 
 
-def get_subreddit_image_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
+def get_subreddit_image_submissions(subreddit: str, limit: int, sort_type: SortType) -> list[Submission]:
     """Get a list of image submissions (images, GIFs) from the given subreddit
 
     Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
@@ -46,7 +46,7 @@ def get_subreddit_image_submissions(subreddit: str, limit: int, sort_type: str) 
     Args:
         subreddit (str): name of subreddit to get data from
         limit (int): how many submissions should be loaded
-        sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
+        sort_type (SortType): sort type to use when accessing submissions
 
     Returns:
         list[Submission]: list of all loaded image submissions from given subreddit.
@@ -56,7 +56,7 @@ def get_subreddit_image_submissions(subreddit: str, limit: int, sort_type: str) 
     return list(filter(lambda submission: submission["media_url"], submissions))
 
 
-def get_subreddit_text_submissions(subreddit: str, limit: int, sort_type: str) -> list[Submission]:
+def get_subreddit_text_submissions(subreddit: str, limit: int, sort_type: SortType) -> list[Submission]:
     """Get a list of text submissions from the given subreddit
 
     Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
@@ -67,7 +67,7 @@ def get_subreddit_text_submissions(subreddit: str, limit: int, sort_type: str) -
     Args:
         subreddit (str): name of subreddit to get data from
         limit (int): how many submissions should be loaded
-        sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
+        sort_type (SortType): sort type to use when accessing submissions
 
     Returns:
         list[Submission]: list of all loaded text submissions from given subreddit.
@@ -77,7 +77,7 @@ def get_subreddit_text_submissions(subreddit: str, limit: int, sort_type: str) -
     return list(filter(lambda submission: submission["selftext"], submissions))
 
 
-def get_user_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
+def get_user_submissions(username: str, limit: int, sort_type: SortType) -> list[Submission]:
     """Get a list of submissions from the given user
 
     Resulting list can be shorter than "limit" argument if given user has fewer submissions.
@@ -85,7 +85,7 @@ def get_user_submissions(username: str, limit: int, sort_type: str) -> list[Subm
     Args:
         username (str): name of user to get data from
         limit (int): how many submissions should be loaded
-        sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
+        sort_type (SortType): sort type to use when accessing submissions
 
     Returns:
         list[Submission]: list of all loaded submissions from given user.
@@ -94,7 +94,7 @@ def get_user_submissions(username: str, limit: int, sort_type: str) -> list[Subm
     return list(map(jsonify_submission, submissions))
 
 
-def get_user_image_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
+def get_user_image_submissions(username: str, limit: int, sort_type: SortType) -> list[Submission]:
     """Get a list of image submissions (images, GIFs) from the given user
 
     Resulting list can be shorter than "limit" argument if given user has fewer submissions.
@@ -105,7 +105,7 @@ def get_user_image_submissions(username: str, limit: int, sort_type: str) -> lis
     Args:
         username (str): name of user to get data from
         limit (int): how many submissions should be loaded
-        sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
+        sort_type (SortType): sort type to use when accessing submissions
 
     Returns:
         list[Submission]: list of all loaded image submissions from given user.
@@ -115,7 +115,7 @@ def get_user_image_submissions(username: str, limit: int, sort_type: str) -> lis
     return list(filter(lambda submission: submission["media_url"], submissions))
 
 
-def get_user_text_submissions(username: str, limit: int, sort_type: str) -> list[Submission]:
+def get_user_text_submissions(username: str, limit: int, sort_type: SortType) -> list[Submission]:
     """Get a list of text submissions from the given user
 
     Resulting list can be shorter than "limit" argument if given user has fewer submissions.
@@ -126,7 +126,7 @@ def get_user_text_submissions(username: str, limit: int, sort_type: str) -> list
     Args:
         username (str): name of user to get data from
         limit (int): how many submissions should be loaded
-        sort_type (str): "controversial", "top", "new", others are interpreted as "hot"
+        sort_type (SortType): sort type to use when accessing submissions
 
     Returns:
         list[Submission]: list of all loaded text submissions from given user.

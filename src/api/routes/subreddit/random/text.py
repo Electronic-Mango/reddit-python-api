@@ -8,6 +8,7 @@ from flask import Blueprint
 
 from api.prepare_response import prepare_random_response
 from reddit.client import get_subreddit_text_submissions
+from reddit.wrapper import SortType
 from settings import DEFAULT_LOAD_COUNT, DEFAULT_SUBREDDIT
 
 blueprint = Blueprint("/subreddit/text/random", __name__)
@@ -16,11 +17,11 @@ blueprint = Blueprint("/subreddit/text/random", __name__)
 @blueprint.route("/subreddit/text/random")
 @blueprint.route("/subreddit/text/random/<subreddit>")
 @blueprint.route("/subreddit/text/random/<subreddit>/<int:load_count>")
-@blueprint.route("/subreddit/text/random/<subreddit>/<int:load_count>/<sort>")
+@blueprint.route("/subreddit/text/random/<subreddit>/<int:load_count>/<sort:sort>")
 def random_text_submission(
     subreddit: str = DEFAULT_SUBREDDIT,
     load_count: int = DEFAULT_LOAD_COUNT,
-    sort: str = None,
+    sort: SortType = SortType.hot,
 ) -> dict[str, Any]:
     """Endpoint returning a random text submission from the given subreddit
 
@@ -35,8 +36,8 @@ def random_text_submission(
                                    Defaults to DEFAULT_SUBREDDIT from .env.
         load_count (int, optional): how many submissions should be loaded before one is selected.
                                     Defaults to DEFAULT_LOAD_COUNT from .env.
-        sort (str, optional): "controversial", "top", "new", others are interpreted as "hot".
-                              Defaults to None, which will be interpreter as "hot".
+        sort (SortType, optional): "hot", "top", "new", "controversial".
+                                   Defaults to "hot".
 
     Returns:
         dict[str, Any]: JSON storing data of one random text submission from given subreddit.
