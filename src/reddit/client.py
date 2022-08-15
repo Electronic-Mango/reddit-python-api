@@ -2,7 +2,7 @@
 Module responsible for accessing Reddit API via PRAW.
 """
 
-from reddit.jsonify import jsonify_submission
+from reddit.parser import parse_submission
 from reddit.wrapper import RedditApiWrapper, SortType, Submission
 
 from settings import (
@@ -32,7 +32,7 @@ async def get_subreddit_submissions(subreddit: str, limit: int, sort: SortType) 
         list[Submission]: list of all loaded submissions from given subreddit.
     """
     submissions = await _wrapper.subreddit_submissions(subreddit, limit, sort)
-    return list(map(jsonify_submission, submissions))
+    return list(map(parse_submission, submissions))
 
 
 async def get_subreddit_image_submissions(
@@ -54,7 +54,7 @@ async def get_subreddit_image_submissions(
         list[Submission]: list of all loaded media submissions from given subreddit.
     """
     submissions = await _wrapper.subreddit_submissions(subreddit, limit, sort)
-    submissions = map(jsonify_submission, submissions)
+    submissions = map(parse_submission, submissions)
     return list(filter(lambda submission: submission["media_url"], submissions))
 
 
@@ -77,7 +77,7 @@ async def get_subreddit_text_submissions(
         list[Submission]: list of all loaded text submissions from given subreddit.
     """
     submissions = await _wrapper.subreddit_submissions(subreddit, limit, sort)
-    submissions = map(jsonify_submission, submissions)
+    submissions = map(parse_submission, submissions)
     return list(filter(lambda submission: submission["selftext"], submissions))
 
 
@@ -95,7 +95,7 @@ async def get_user_submissions(username: str, limit: int, sort: SortType) -> lis
         list[Submission]: list of all loaded submissions from given user.
     """
     submissions = await _wrapper.user_submissions(username, limit, sort)
-    return list(map(jsonify_submission, submissions))
+    return list(map(parse_submission, submissions))
 
 
 async def get_user_image_submissions(username: str, limit: int, sort: SortType) -> list[Submission]:
@@ -115,7 +115,7 @@ async def get_user_image_submissions(username: str, limit: int, sort: SortType) 
         list[Submission]: list of all loaded media submissions from given user.
     """
     submissions = await _wrapper.user_submissions(username, limit, sort)
-    submissions = map(jsonify_submission, submissions)
+    submissions = map(parse_submission, submissions)
     return list(filter(lambda submission: submission["media_url"], submissions))
 
 
@@ -136,5 +136,5 @@ async def get_user_text_submissions(username: str, limit: int, sort: SortType) -
         list[Submission]: list of all loaded text submissions from given user.
     """
     submissions = await _wrapper.user_submissions(username, limit, sort)
-    submissions = map(jsonify_submission, submissions)
+    submissions = map(parse_submission, submissions)
     return list(filter(lambda submission: submission["selftext"], submissions))

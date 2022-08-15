@@ -8,7 +8,7 @@ from typing import Any
 from reddit.wrapper import Submission
 
 
-def jsonify_submission(submission: Submission) -> dict[str, Any]:
+def parse_submission(submission: Submission) -> dict[str, Any]:
     """Change Reddit submission to a JSON-like dict
 
     Only a selected values are present in resulting JSON:
