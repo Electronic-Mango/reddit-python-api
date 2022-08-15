@@ -20,10 +20,11 @@ def jsonify_submission(submission: Submission) -> dict[str, Any]:
      - spoiler
      - selftext
      - score
-     - created_utc
+     - created_utc - in human-readable format, not UNIX time
      - shortlink
      - subreddit
      - stickied
+     - media_url - custom parameter storing URL for media submissions
 
     Args:
         submission (Submission): Reddit submission to JSONify

@@ -17,7 +17,7 @@ def prepare_list_response(
     sort: SortType,
     submissions_generator: Callable[[str, int, SortType], list[Submission]],
 ) -> dict[str, Any]:
-    """Prepare JSONified list of Reddit submissions
+    """Prepare a list of Reddit submissions
 
     Args:
         source_name (str): Name for a given source, like subreddit, or user.
@@ -43,7 +43,7 @@ def prepare_random_response(
     sort: SortType,
     submissions_generator: Callable[[str, int, SortType], list[Submission]],
 ) -> dict[str, Any]:
-    """_summary_
+    """Prepare one random Reddit submission
 
     Args:
         source_name (str): Name for a given source, like subreddit, or user.

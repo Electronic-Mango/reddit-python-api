@@ -1,3 +1,7 @@
+"""
+Custom converter used for converting string endpoint paramters to SortType.
+"""
+
 from werkzeug.routing import BaseConverter
 
 from reddit.wrapper import SortType
