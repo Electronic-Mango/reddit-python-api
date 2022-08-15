@@ -13,8 +13,10 @@ from requests.auth import HTTPBasicAuth
 """Type of all returning submissions"""
 Submission = dict[str, Any]
 
+
 class SortType(Enum):
     """Enum with all viable sorting types"""
+
     hot = auto()
     top = auto()
     new = auto()
@@ -23,11 +25,11 @@ class SortType(Enum):
 
 class RedditApiWrapper:
     """Class wrapping Reddit API
-    
+
     Class wrapping calls to Reddit API.
     Handles all necessary URLs, parameters, headers, etc.
     Also handles requesting new OAuth 2.0 access tokens and authorization in general.
-    
+
     Args:
         client_id (str): Reddit app client ID to use for authorization
         client_secret (str): Reddit app client secret to use for authorization
