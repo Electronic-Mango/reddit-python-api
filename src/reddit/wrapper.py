@@ -39,7 +39,7 @@ class RedditApiWrapper:
     _ACCESS_TOKEN_URL = "https://www.reddit.com/api/v1/access_token"
     _SUBREDDIT_SUBMISSIONS_URL = "https://oauth.reddit.com/r/{subreddit}/{sort}"
     _USER_SUBMISSIONS_URL = "https://oauth.reddit.com/user/{user}/submitted"
-    _AUTH_EXPIRY_OVERHEAD_SECONDS = 60
+    _AUTH_EXPIRY_OVERHEAD_NS = 60_000_000_000
 
     def __init__(self, client_id: str, client_secret: str, user_agent: str) -> None:
         self._client_auth = BasicAuth(username=client_id, password=client_secret)
@@ -59,8 +59,8 @@ class RedditApiWrapper:
         response_content = response.json()
         access_token = response_content["access_token"]
         self._auth_headers["Authorization"] = f"Bearer {access_token}"
-        expires_in = response_content["expires_in"]
-        self._access_token_expires_in = time_ns() + expires_in - self._AUTH_EXPIRY_OVERHEAD_SECONDS
+        expires_in = response_content["expires_in"] * 1_000_000_000
+        self._access_token_expires_in = time_ns() + expires_in - self._AUTH_EXPIRY_OVERHEAD_NS
 
     async def subreddit_submissions(
         self, subreddit: str, limit: int, sort: SortType
