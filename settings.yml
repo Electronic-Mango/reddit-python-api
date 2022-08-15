@@ -26,4 +26,4 @@ reddit:
     # Reddit dev app secret used by Reddit client
     secret:
     # User agent used by Reddit client
-    user_agent: api
+    user_agent: Reddit API API (by Electronic-Mango on GitHub)
