@@ -149,7 +149,7 @@ Endpoint:
 `{submission_type}` can be one of the following:
 
  - `submission` - all submissions
- - `image` - only image submissions, submissions are classified as `image` based on URL suffixes defined in `settings.yml`
+ - `media` - only media submissions
  - `text` - only submissions where `selftext` is not empty
 
 `{sort_type}` can be one of the following:
@@ -267,7 +267,7 @@ Username parameter is required, unlike subreddit.
 
 Example request:
 ```
-GET /user/image/cme_t/3
+GET /user/media/cme_t/3
 ```
 
 Example response:
@@ -307,7 +307,7 @@ Example response:
 }
 ```
 
-Notice that 3 image submissions were requested, but response only contains 2.
+Notice that 3 media submissions were requested, but response only contains 2.
 It's because out of 3 loaded submissions only 2 were images.
 
 Also, since `{sort_type}` was omitted default value of `hot` was used.
@@ -324,7 +324,7 @@ All parameters are the same as for [loading a list of submissions for a Reddit u
 
 Example request:
 ```
-GET /user/image/random/cme_t/
+GET /user/media/random/cme_t/
 ```
 
 Example response:
@@ -354,7 +354,9 @@ Other than all submissions, API allows for filtering submission types.
 The two filters are:
 
  - `text` - all submissions where `selftext` is not empty
- - `image` - all submissions where URL ends with values from `settings.yml`, by default `.jpg`, `.jpeg`, `.png` and `.gif`
+ - `media` - all submissions where parsed `media_url` field is not empty, which means either:
+   - `post_hint` field is equals to `image`, in this case media URL will be equal to submission URL
+   - `is_video` field is present and equal to `True`, in this case media URL will be taken from `media` - `reddit_video` - `fallback_url` with `?source=fallback` trimmed out from the URL
 
 
 
@@ -364,7 +366,7 @@ When specifying how many submissions should be loaded the final count can be low
 
 For all submissions this can occur if a given subreddit or user has less submissions than specified.
 
-For text and image submissions the passed value only determines how many submissions are loaded from Reddit overall.
+For text and media submissions the passed value only determines how many submissions are loaded from Reddit overall.
 This value can be later lowered as only specific type of submissions are filtered from the list of all submissions.
 Not additional submissions are loaded after filtering.
 

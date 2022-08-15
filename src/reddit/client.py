@@ -36,12 +36,12 @@ def get_subreddit_submissions(subreddit: str, limit: int, sort: SortType) -> lis
 
 
 def get_subreddit_image_submissions(subreddit: str, limit: int, sort: SortType) -> list[Submission]:
-    """Get a list of image submissions (images, GIFs) from the given subreddit
+    """Get a list of media submissions (images, GIFs) from the given subreddit
 
     Resulting list can be shorter than "limit" argument if given subreddit has fewer submissions.
     Additionally "limit" only defines how many submissions are loaded from given subreddit,
-    more submissions will be dropped as part of "image" filtering.
-    Submissions are classified as "image" based on their URL suffix.
+    more submissions will be dropped as part of "media" filtering.
+    Submissions are classified as "media" based on present "media_url" key in parsed submission.
 
     Args:
         subreddit (str): name of subreddit to get data from
@@ -49,7 +49,7 @@ def get_subreddit_image_submissions(subreddit: str, limit: int, sort: SortType) 
         sort (SortType): sort type to use when accessing submissions
 
     Returns:
-        list[Submission]: list of all loaded image submissions from given subreddit.
+        list[Submission]: list of all loaded media submissions from given subreddit.
     """
     submissions = _wrapper.subreddit_submissions(subreddit, limit, sort)
     submissions = map(jsonify_submission, submissions)
@@ -95,12 +95,12 @@ def get_user_submissions(username: str, limit: int, sort: SortType) -> list[Subm
 
 
 def get_user_image_submissions(username: str, limit: int, sort: SortType) -> list[Submission]:
-    """Get a list of image submissions (images, GIFs) from the given user
+    """Get a list of media submissions (images, GIFs) from the given user
 
     Resulting list can be shorter than "limit" argument if given user has fewer submissions.
     Additionally "limit" only defines how many submissions are loaded from given user,
-    more submissions will be dropped as part of "image" filtering.
-    Submissions are classified as "image" based on their URL suffix.
+    more submissions will be dropped as part of "media" filtering.
+    Submissions are classified as "media" based on present "media_url" key in parsed submission.
 
     Args:
         username (str): name of user to get data from
@@ -108,7 +108,7 @@ def get_user_image_submissions(username: str, limit: int, sort: SortType) -> lis
         sort (SortType): sort type to use when accessing submissions
 
     Returns:
-        list[Submission]: list of all loaded image submissions from given user.
+        list[Submission]: list of all loaded media submissions from given user.
     """
     submissions = _wrapper.user_submissions(username, limit, sort)
     submissions = map(jsonify_submission, submissions)

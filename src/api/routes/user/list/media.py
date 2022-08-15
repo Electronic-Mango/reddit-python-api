@@ -1,5 +1,5 @@
 """
-Blueprint of API endpoint returning a list of image submissions for a user.
+Blueprint of API endpoint returning a list of media submissions for a user.
 """
 
 from typing import Any
@@ -11,22 +11,22 @@ from reddit.client import get_user_image_submissions
 from reddit.wrapper import SortType
 from settings import DEFAULT_LOAD_COUNT
 
-blueprint = Blueprint("/user/image", __name__)
+blueprint = Blueprint("/user/media", __name__)
 
 
-@blueprint.route("/user/image/<username>")
-@blueprint.route("/user/image/<username>/<int:load_count>")
-@blueprint.route("/user/image/<username>/<int:load_count>/<sort:sort>")
+@blueprint.route("/user/media/<username>")
+@blueprint.route("/user/media/<username>/<int:load_count>")
+@blueprint.route("/user/media/<username>/<int:load_count>/<sort:sort>")
 def user_image_submissions(
     username: str,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: SortType = SortType.hot,
 ) -> dict[str, Any]:
-    """Endpoint returning a list of image submissions (images, GIFs) from the given user
+    """Endpoint returning a list of media submissions (images, GIFs) from the given user
 
     Argument "load_count" specifies only how many submissions are loaded from user.
     Final count of submissions can be lower than "load_count" argument if given user has fewer
-    submissions and due to filtering only image submissions.
+    submissions and due to filtering only media submissions.
 
     Args:
         username (str): user to load data from.
@@ -36,6 +36,6 @@ def user_image_submissions(
                                    Defaults to "hot".
 
     Returns:
-        dict[str, Any]: JSON storing list of loaded image submissions and total submission count.
+        dict[str, Any]: JSON storing list of loaded media submissions and total submission count.
     """
     return prepare_list_response(username, load_count, sort, get_user_image_submissions)

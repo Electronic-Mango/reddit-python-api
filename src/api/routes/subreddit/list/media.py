@@ -1,5 +1,5 @@
 """
-Blueprint of API endpoint returning a list of image submissions for a subreddit.
+Blueprint of API endpoint returning a list of media submissions for a subreddit.
 """
 
 from typing import Any
@@ -11,23 +11,23 @@ from reddit.client import get_subreddit_image_submissions
 from reddit.wrapper import SortType
 from settings import DEFAULT_LOAD_COUNT, DEFAULT_SUBREDDIT
 
-blueprint = Blueprint("/subreddit/image", __name__)
+blueprint = Blueprint("/subreddit/media", __name__)
 
 
-@blueprint.route("/subreddit/image")
-@blueprint.route("/subreddit/image/<subreddit>")
-@blueprint.route("/subreddit/image/<subreddit>/<int:load_count>")
-@blueprint.route("/subreddit/image/<subreddit>/<int:load_count>/<sort:sort>")
+@blueprint.route("/subreddit/media")
+@blueprint.route("/subreddit/media/<subreddit>")
+@blueprint.route("/subreddit/media/<subreddit>/<int:load_count>")
+@blueprint.route("/subreddit/media/<subreddit>/<int:load_count>/<sort:sort>")
 def image_submissions(
     subreddit: str = DEFAULT_SUBREDDIT,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: SortType = SortType.hot,
 ) -> dict[str, Any]:
-    """Endpoint returning a list of image submissions (images, GIFs) from the given subreddit
+    """Endpoint returning a list of media submissions (images, GIFs) from the given subreddit
 
     Argument "load_count" specifies only how many submissions are loaded from subreddit.
     Final count of submissions can be lower than "load_count" argument if given subreddit has fewer
-    submissions and due to filtering only image submissions.
+    submissions and due to filtering only media submissions.
 
     Args:
         subreddit (str, optional): subreddit to load data from.
@@ -38,6 +38,6 @@ def image_submissions(
                                    Defaults to "hot".
 
     Returns:
-        dict[str, Any]: JSON storing list of loaded image submissions and total submission count.
+        dict[str, Any]: JSON storing list of loaded media submissions and total submission count.
     """
     return prepare_list_response(subreddit, load_count, sort, get_subreddit_image_submissions)

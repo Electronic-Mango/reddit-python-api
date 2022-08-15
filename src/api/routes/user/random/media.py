@@ -1,5 +1,5 @@
 """
-Blueprint of API endpoint returning a random image submission from a user.
+Blueprint of API endpoint returning a random media submission from a user.
 """
 
 from typing import Any
@@ -11,22 +11,22 @@ from reddit.client import get_user_image_submissions
 from reddit.wrapper import SortType
 from settings import DEFAULT_LOAD_COUNT
 
-blueprint = Blueprint("user/image/random", __name__)
+blueprint = Blueprint("user/media/random", __name__)
 
 
-@blueprint.route("/user/image/random/<username>")
-@blueprint.route("/user/image/random/<username>/<int:load_count>")
-@blueprint.route("/user/image/random/<username>/<int:load_count>/<sort:sort>")
+@blueprint.route("/user/media/random/<username>")
+@blueprint.route("/user/media/random/<username>/<int:load_count>")
+@blueprint.route("/user/media/random/<username>/<int:load_count>/<sort:sort>")
 def user_random_image_submission(
     username: str,
     load_count: int = DEFAULT_LOAD_COUNT,
     sort: SortType = SortType.hot,
 ) -> dict[str, Any]:
-    """Endpoint returning a random image submission (image, GIF) from the given user
+    """Endpoint returning a random media submission (media, GIF) from the given user
 
-    Up to "load_count" image submissions are loaded from user, then a random one is selected.
+    Up to "load_count" media submissions are loaded from user, then a random one is selected.
     Number of loaded submissions can be lower if user has fewer submissions and due to filtering
-    only image submissions from the loaded ones.
+    only media submissions from the loaded ones.
     Still, the higher the "load_count" the lower the chance of returning the same submission
     on repeated calls.
 
@@ -38,6 +38,6 @@ def user_random_image_submission(
                                    Defaults to "hot".
 
     Returns:
-        dict[str, Any]: JSON storing data of one random image submission from given user.
+        dict[str, Any]: JSON storing data of one random media submission from given user.
     """
     return prepare_random_response(username, load_count, sort, get_user_image_submissions)
