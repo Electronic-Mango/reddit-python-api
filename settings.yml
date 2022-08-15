@@ -27,9 +27,3 @@ reddit:
     secret:
     # User agent used by Reddit client
     user_agent: api
-  # Submissions with URLs ending with these will be classified as "image"
-  image_url_suffixes:
-    - .png
-    - .jpg
-    - .jpeg
-    - .gif
