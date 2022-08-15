@@ -49,7 +49,6 @@ def parse_submission(submission: Submission) -> dict[str, Any]:
     }
 
 
-# TODO Handle galleries.
 def _parse_media_url(submission: Submission) -> str:
     if "i.redd.it" in submission.get("domain", "") or "image" in submission.get("post_hint", ""):
         return submission.get("url")

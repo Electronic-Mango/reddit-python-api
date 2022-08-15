@@ -25,6 +25,7 @@ A simple Reddit REST API allowing accessing both subreddit and user submissions,
    - [Get a list of submissions from a Reddit user](#get-a-list-of-submissions-from-a-reddit-user)
    - [Get a random submission from a Reddit user](#get-a-random-submission-from-a-reddit-user)
  - [Filtering and submission types](#filtering-and-submission-types)
+   - [Reddit galleries](#reddit-galleries)
  - [Load count](#load-count)
 
 
@@ -371,6 +372,11 @@ For `media` there are two cases, one for images and one for videos:
  - videos are detected based on `v.redd.it` domain **AND** `is_video` equal to `True`, there are some posts where domain is `v.redd.it`, but there're no necessary URLs
 
 In case of videos, resulting `media_url` URL has `?source=fallback` trimmed out, so it ends with file extension.
+
+
+### Reddit galleries
+
+Currently galleries won't be filtered into `media` category and their media URLs aren't easily accessible.
 
 
 
