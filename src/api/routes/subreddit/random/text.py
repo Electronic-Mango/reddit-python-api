@@ -43,4 +43,4 @@ async def subreddit_random_text_submission(
         dict[str, Any]: JSON storing data of one random text submission from given subreddit.
     """
     submissions = await get_subreddit_text_submissions(subreddit, load_count, sort)
-    return await prepare_random_response_or_abort(submissions)
+    return prepare_random_response_or_abort(submissions)
