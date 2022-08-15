@@ -6,7 +6,7 @@ from typing import Any
 
 from flask import Blueprint
 
-from api.prepare_response import prepare_random_response
+from api.routes.prepare_response import prepare_random_response_or_abort
 from reddit.client import get_user_submissions
 from reddit.wrapper import SortType
 from settings import DEFAULT_LOAD_COUNT
@@ -37,4 +37,5 @@ async def user_random_submission(
     Returns:
         dict[str, Any]: JSON storing data of one random submission from given user.
     """
-    return await prepare_random_response(username, load_count, sort, get_user_submissions)
+    submissions = await get_user_submissions(username, load_count, sort)
+    return prepare_random_response_or_abort(submissions)

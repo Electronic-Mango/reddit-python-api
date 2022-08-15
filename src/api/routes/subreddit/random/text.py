@@ -6,7 +6,7 @@ from typing import Any
 
 from flask import Blueprint
 
-from api.prepare_response import prepare_random_response
+from api.routes.prepare_response import prepare_random_response_or_abort
 from reddit.client import get_subreddit_text_submissions
 from reddit.wrapper import SortType
 from settings import DEFAULT_LOAD_COUNT, DEFAULT_SUBREDDIT
@@ -42,6 +42,5 @@ async def subreddit_random_text_submission(
     Returns:
         dict[str, Any]: JSON storing data of one random text submission from given subreddit.
     """
-    return await prepare_random_response(
-        subreddit, load_count, sort, get_subreddit_text_submissions
-    )
+    submissions = await get_subreddit_text_submissions(subreddit, load_count, sort)
+    return await prepare_random_response_or_abort(submissions)

@@ -6,7 +6,7 @@ from typing import Any
 
 from flask import Blueprint
 
-from api.prepare_response import prepare_list_response
+from api.routes.prepare_response import prepare_list_response_or_abort
 from reddit.client import get_user_text_submissions
 from reddit.wrapper import SortType
 from settings import DEFAULT_LOAD_COUNT
@@ -38,4 +38,5 @@ async def user_text_submissions(
     Returns:
         dict[str, Any]: JSON storing list of loaded text submissions and total submission count.
     """
-    return await prepare_list_response(username, load_count, sort, get_user_text_submissions)
+    submissions = await get_user_text_submissions(username, load_count, sort)
+    return prepare_list_response_or_abort(submissions)
