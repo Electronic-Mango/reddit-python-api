@@ -41,6 +41,8 @@ However, accessing Reddit API itself through external services is quite cumberso
 This API allows external services to access API through simple HTTP requests, without worrying about access tokens, Reddit app client, etc.
 It also allows for simple access to specific services, like reading only one random submission or reading only media or text submissions, without any additional processing.
 
+No additional API wrapper was used, this API accesses Reddit API directly.
+
 No data is stored by the API.
 Reddit is accessed in `read-only` mode.
 API requests can optionally be authenticated based on request header.
