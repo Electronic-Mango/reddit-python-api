@@ -8,7 +8,7 @@ from logging import getLogger
 from time import time_ns
 from typing import Any
 
-from httpx import BasicAuth, get, post
+from httpx import AsyncClient, BasicAuth, Response
 
 """Type of all returning submissions"""
 Submission = dict[str, Any]
@@ -49,18 +49,22 @@ class RedditApiWrapper:
 
     async def _authorize(self) -> None:
         self._logger.info("Authorizing")
-        response = post(
-            url=self._ACCESS_TOKEN_URL,
-            params={"grant_type": "client_credentials"},
-            auth=self._client_auth,
-            headers=self._auth_headers,
-        )
+        response = await self._request_access_token()
         assert response.status_code == 200
         response_content = response.json()
         access_token = response_content["access_token"]
         self._auth_headers["Authorization"] = f"Bearer {access_token}"
         expires_in = response_content["expires_in"] * 1_000_000_000
         self._access_token_expires_in = time_ns() + expires_in - self._AUTH_EXPIRY_OVERHEAD_NS
+
+    async def _request_access_token(self) -> Response:
+        async with AsyncClient() as client:
+            return await client.post(
+                url=self._ACCESS_TOKEN_URL,
+                params={"grant_type": "client_credentials"},
+                auth=self._client_auth,
+                headers=self._auth_headers,
+            )
 
     async def subreddit_submissions(
         self, subreddit: str, limit: int, sort: SortType
@@ -100,10 +104,14 @@ class RedditApiWrapper:
         if self._access_token_expires_in <= time_ns():
             self._logger.info("Access token expired, requesting new one")
             await self._authorize()
-        response = get(url, params=params, headers=self._auth_headers)
+        response = await self._request_submissions(url, params)
         if response.status_code in [401, 403]:
             self._logger.info(f"Response returned code [{response.status_code}], re-authorizing")
             await self._authorize()
-            response = get(url, params=params, headers=self._auth_headers)
+            response = await self._request_submissions(url, params)
         assert response.status_code == 200
         return [submission["data"] for submission in response.json()["data"]["children"]]
+
+    async def _request_submissions(self, url: str, params: dict[str, Any]) -> Response:
+        async with AsyncClient() as client:
+            return await client.get(url=url, params=params, headers=self._auth_headers)
