@@ -48,6 +48,8 @@ No data is stored by the API.
 Reddit is accessed in `read-only` mode.
 API requests can optionally be authenticated based on request header.
 
+You can check my other repository [Memes Discord bot Docker deployment](https://github.com/Electronic-Mango/memes-discord-bot-docker-deployment) for an example of how you can use this API in a Discord bot, deployed via Docker Compose.
+
 
 
 ## Configuration
