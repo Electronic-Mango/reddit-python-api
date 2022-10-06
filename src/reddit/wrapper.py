@@ -50,7 +50,7 @@ class RedditApiWrapper:
     async def _authorize(self) -> None:
         self._logger.info("Authorizing")
         response = await self._request_access_token()
-        assert response.status_code == 200
+        response.raise_for_status()
         response_content = response.json()
         access_token = response_content["access_token"]
         self._auth_headers["Authorization"] = f"Bearer {access_token}"
@@ -109,7 +109,7 @@ class RedditApiWrapper:
             self._logger.info(f"Response returned code [{response.status_code}], re-authorizing")
             await self._authorize()
             response = await self._request_submissions(url, params)
-        assert response.status_code == 200
+        response.raise_for_status()
         return [submission["data"] for submission in response.json()["data"]["children"]]
 
     async def _request_submissions(self, url: str, params: dict[str, Any]) -> Response:
