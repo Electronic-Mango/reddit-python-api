@@ -3,6 +3,7 @@
 [![CodeQL](https://github.com/Electronic-Mango/reddit-python-api/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api-api/actions/workflows/codeql-analysis.yml)
 [![Black](https://github.com/Electronic-Mango/reddit-python-api/actions/workflows/black.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api-api/actions/workflows/black.yml)
 [![Flake8](https://github.com/Electronic-Mango/reddit-python-api/actions/workflows/flake8.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api-api/actions/workflows/flake8.yml)
+[![PyPI version](https://badge.fury.io/py/reddit-python-api.svg)](https://badge.fury.io/py/reddit-python-api)
 
 A simple Reddit Python API allowing accessing both subreddit and user submissions, build with [`httpx`](https://www.python-httpx.org/).
 
@@ -12,6 +13,7 @@ A simple Reddit Python API allowing accessing both subreddit and user submission
 
   * [Table of contents](#table-of-contents)
   * [Introduction and requirements](#introduction-and-requirements)
+  * [Installation](#installation)
   * [Reddit app & configuration](#reddit-app--configuration)
   * [Usage](#usage)
     * [Create the API](#create-the-api)
@@ -38,6 +40,15 @@ No data is stored.
 
 Currently, this API allows access to submissions in either subreddits or from users.
 It doesn't access comments.
+
+
+
+## Installation
+
+Project is available in [PyPi](https://pypi.org/project/reddit-python-api/):
+```bash
+pip install reddit-python-api
+```
 
 
 
