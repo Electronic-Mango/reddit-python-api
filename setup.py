@@ -5,7 +5,7 @@ setup(
     packages=["reddit-python-api"],
     version="0.1",
     license="GPLv3",
-    description="Reddit Python API",
+    description="A simple Reddit Python API",
     author="Electronic Mango",
     author_email="78230210+Electronic-Mango@users.noreply.github.com",
     url="https://github.com/Electronic-Mango/reddit-python-api",
