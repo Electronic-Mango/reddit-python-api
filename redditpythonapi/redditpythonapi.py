@@ -13,6 +13,7 @@ from httpx import AsyncClient, BasicAuth, Response
 
 class SortType(Enum):
     """Enum with all viable sorting types"""
+
     HOT = auto()
     TOP = auto()
     NEW = auto()
