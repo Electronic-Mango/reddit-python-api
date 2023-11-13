@@ -1,4 +1,4 @@
-# Reddit API API
+# Reddit Python API
 
 [![CodeQL](https://github.com/Electronic-Mango/reddit-python-api/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api-api/actions/workflows/codeql-analysis.yml)
 [![Black](https://github.com/Electronic-Mango/reddit-python-api/actions/workflows/black.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api-api/actions/workflows/black.yml)
