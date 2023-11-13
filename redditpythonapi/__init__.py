@@ -1,1 +1,1 @@
-from redditpythonapi.redditpythonapi import Reddit, SortType
+from redditpythonapi.reddit import Reddit, SortType
