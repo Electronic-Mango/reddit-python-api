@@ -62,18 +62,12 @@ class Reddit:
         Returns:
             list[Submission]: list of loaded submissions from the given subreddit
         """
-        self._logger.info(
-            f"Loading subreddit submissions [{subreddit}] [{limit}] [{sort.name}]"
-        )
-        url = self._SUBREDDIT_SUBMISSIONS_URL.format(
-            subreddit=subreddit, sort=sort.name.lower()
-        )
+        self._logger.info(f"Loading subreddit submissions [{subreddit}] [{limit}] [{sort.name}]")
+        url = self._SUBREDDIT_SUBMISSIONS_URL.format(subreddit=subreddit, sort=sort.name.lower())
         params = {"limit": limit}
         return await self._get_submissions(url, params)
 
-    async def user_submissions(
-        self, user: str, limit: int, sort: SortType
-    ) -> list[dict[str, Any]]:
+    async def user_submissions(self, user: str, limit: int, sort: SortType) -> list[dict[str, Any]]:
         """Get a list of Reddit submissions from the given Reddit user
 
         Args:
@@ -97,9 +91,7 @@ class Reddit:
         access_token = response_content["access_token"]
         self._auth_headers["Authorization"] = f"Bearer {access_token}"
         expires_in = response_content["expires_in"] * 1_000_000_000
-        self._access_token_expires_in = (
-            time_ns() + expires_in - self._AUTH_EXPIRY_OVERHEAD_NS
-        )
+        self._access_token_expires_in = time_ns() + expires_in - self._AUTH_EXPIRY_OVERHEAD_NS
 
     async def _request_access_token(self) -> Response:
         async with AsyncClient() as client:
@@ -110,23 +102,17 @@ class Reddit:
                 headers=self._auth_headers,
             )
 
-    async def _get_submissions(
-        self, url: str, params: dict[str, Any]
-    ) -> list[dict[str, Any]]:
+    async def _get_submissions(self, url: str, params: dict[str, Any]) -> list[dict[str, Any]]:
         if self._access_token_expires_in <= time_ns():
             self._logger.info("Access token expired, requesting new one")
             await self._authorize()
         response = await self._request_submissions(url, params)
         if response.status_code in [401, 403]:
-            self._logger.info(
-                f"Response returned code [{response.status_code}], re-authorizing"
-            )
+            self._logger.info(f"Response returned code [{response.status_code}], re-authorizing")
             await self._authorize()
             response = await self._request_submissions(url, params)
         response.raise_for_status()
-        return [
-            submission["data"] for submission in response.json()["data"]["children"]
-        ]
+        return [submission["data"] for submission in response.json()["data"]["children"]]
 
     async def _request_submissions(self, url: str, params: dict[str, Any]) -> Response:
         async with AsyncClient() as client:
