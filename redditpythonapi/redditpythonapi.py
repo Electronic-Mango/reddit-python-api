@@ -66,7 +66,7 @@ class Reddit:
             f"Loading subreddit submissions [{subreddit}] [{limit}] [{sort.name}]"
         )
         url = self._SUBREDDIT_SUBMISSIONS_URL.format(
-            subreddit=subreddit, sort=sort.name
+            subreddit=subreddit, sort=sort.name.lower()
         )
         params = {"limit": limit}
         return await self._get_submissions(url, params)
@@ -86,7 +86,7 @@ class Reddit:
         """
         self._logger.info(f"Loading user submissions [{user}] [{limit}] [{sort.name}]")
         url = self._USER_SUBMISSIONS_URL.format(user=user)
-        params = {"limit": limit, "sort": sort.name}
+        params = {"limit": limit, "sort": sort.name.lower()}
         return await self._get_submissions(url, params)
 
     async def _authorize(self) -> None:
