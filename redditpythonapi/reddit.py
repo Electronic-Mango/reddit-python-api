@@ -68,7 +68,9 @@ class Reddit:
         params = {"limit": limit}
         return await self._get_articles(url, params)
 
-    async def user_articles(self, user: str, limit: int, sort: ArticlesSortType) -> list[dict[str, Any]]:
+    async def user_articles(
+        self, user: str, limit: int, sort: ArticlesSortType
+    ) -> list[dict[str, Any]]:
         """Get a list of Reddit articles from the given Reddit user
 
         Args:
