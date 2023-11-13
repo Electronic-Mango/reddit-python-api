@@ -11,7 +11,7 @@ from typing import Any
 from httpx import AsyncClient, BasicAuth, Response
 
 
-class SortType(Enum):
+class ArticlesSortType(Enum):
     """Enum with all viable sorting types"""
 
     HOT = auto()
@@ -51,14 +51,14 @@ class Reddit:
         self._logger = getLogger(__name__)
 
     async def subreddit_articles(
-        self, subreddit: str, limit: int, sort: SortType
+        self, subreddit: str, limit: int, sort: ArticlesSortType
     ) -> list[dict[str, Any]]:
         """Get a list of Reddit articles from the given subreddit
 
         Args:
             subreddit (str): subreddit to load articles from
             limit (int): up to how many articles should be loaded
-            sort (SortType): sort type to use when loading articles
+            sort (ArticlesSortType): sort type to use when loading articles
 
         Returns:
             list[dict[str, Any]: list of loaded articles from the given subreddit
@@ -68,13 +68,13 @@ class Reddit:
         params = {"limit": limit}
         return await self._get_articles(url, params)
 
-    async def user_articles(self, user: str, limit: int, sort: SortType) -> list[dict[str, Any]]:
+    async def user_articles(self, user: str, limit: int, sort: ArticlesSortType) -> list[dict[str, Any]]:
         """Get a list of Reddit articles from the given Reddit user
 
         Args:
             user (str): Reddit user to load articles from
             limit (int): up to how many articles should be loaded
-            sort (SortType): sort type to use when loading articles
+            sort (ArticlesSortType): sort type to use when loading articles
 
         Returns:
             list[dict[str, Any]: list of loaded articles from the Reddit user

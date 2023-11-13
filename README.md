@@ -90,7 +90,7 @@ reddit = Reddit("your client ID", "your app secret", "custom user agent")
 ```python
 reddit = Reddit("your client ID", "your app secret")
 # reddit.subreddit_articles("subreddit name", load_count, sort_type)
-articles = reddit.subreddit_articles("Python", 10, SortType.HOT)
+articles = reddit.subreddit_articles("Python", 10, ArticlesSortType.HOT)
 ```
 First argument is a name of a subreddit.
 
@@ -100,11 +100,11 @@ API can return lower number if there are fewer articles in a given subreddit tha
 Third argument specifies sort type.
 Following sort types are supported:
 ```python
-SortType.HOT
-SortType.NEW
-SortType.RISING
-SortType.TOP
-SortType.CONTROVERSIAL
+ArticlesSortType.HOT
+ArticlesSortType.NEW
+ArticlesSortType.RISING
+ArticlesSortType.TOP
+ArticlesSortType.CONTROVERSIAL
 ```
 
 
@@ -113,20 +113,20 @@ SortType.CONTROVERSIAL
 ```python
 reddit = Reddit("your client ID", "your app secret")
 # reddit.user_articles("username", load_count, sort_type)
-articles = reddit.user_articles("spez", 20, SortType.CONTROVERSIAL)
+articles = reddit.user_articles("spez", 20, ArticlesSortType.CONTROVERSIAL)
 ```
 General usage is the same as for subreddits.
 
 
 ### Sort types
 
-Sort types are available in `SortType` enum. These sort types are available:
+Sort types are available in `ArticlesSortType` enum. These sort types are available:
 ```python
-SortType.HOT
-SortType.NEW
-SortType.RISING
-SortType.TOP
-SortType.CONTROVERSIAL
+ArticlesSortType.HOT
+ArticlesSortType.NEW
+ArticlesSortType.RISING
+ArticlesSortType.TOP
+ArticlesSortType.CONTROVERSIAL
 ```
 
 
