@@ -15,8 +15,9 @@ class SortType(Enum):
     """Enum with all viable sorting types"""
 
     HOT = auto()
-    TOP = auto()
     NEW = auto()
+    RISING = auto()
+    TOP = auto()
     CONTROVERSIAL = auto()
 
 

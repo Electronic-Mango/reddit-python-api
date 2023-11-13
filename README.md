@@ -101,8 +101,9 @@ Third argument specifies sort type.
 Following sort types are supported:
 ```python
 SortType.HOT
-SortType.TOP
 SortType.NEW
+SortType.RISING
+SortType.TOP
 SortType.CONTROVERSIAL
 ```
 
@@ -122,8 +123,9 @@ General usage is the same as for subreddits.
 Sort types are available in `SortType` enum. These sort types are available:
 ```python
 SortType.HOT
-SortType.TOP
 SortType.NEW
+SortType.RISING
+SortType.TOP
 SortType.CONTROVERSIAL
 ```
 
