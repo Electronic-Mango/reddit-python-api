@@ -15,7 +15,7 @@ setup(
     author="Electronic Mango",
     author_email="78230210+Electronic-Mango@users.noreply.github.com",
     url="https://github.com/Electronic-Mango/reddit-python-api",
-    download_url="https://github.com/Electronic-Mango/reddit-python-api/releases/tag/0.6",
+    download_url="https://github.com/Electronic-Mango/reddit-python-api/releases/",
     keywords=["reddit", "api"],
     install_requires=["httpx"],
     classifiers=[
