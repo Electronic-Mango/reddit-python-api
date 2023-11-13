@@ -3,7 +3,8 @@
 [![CodeQL](https://github.com/Electronic-Mango/reddit-python-api/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api-api/actions/workflows/codeql-analysis.yml)
 [![Black](https://github.com/Electronic-Mango/reddit-python-api/actions/workflows/black.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api-api/actions/workflows/black.yml)
 [![Flake8](https://github.com/Electronic-Mango/reddit-python-api/actions/workflows/flake8.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api-api/actions/workflows/flake8.yml)
-[![PyPI version](https://badge.fury.io/py/reddit-python-api.svg)](https://badge.fury.io/py/reddit-python-api)
+[![PyPI - Version](https://img.shields.io/pypi/v/reddit-python-api)](https://pypi.org/project/reddit-python-api/)
+
 
 A simple read-only Reddit Python API allowing access to both subreddit and user articles, build with [`httpx`](https://www.python-httpx.org/).
 
