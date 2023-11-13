@@ -35,8 +35,8 @@ class Reddit:
     """
 
     _ACCESS_TOKEN_URL = "https://www.reddit.com/api/v1/access_token"
-    _SUBREDDIT_SUBMISSIONS_URL = "https://oauth.reddit.com/r/{subreddit}/{sort}"
-    _USER_SUBMISSIONS_URL = "https://oauth.reddit.com/user/{user}/submitted"
+    _SUBREDDIT_ARTICLES_URL = "https://oauth.reddit.com/r/{subreddit}/{sort}"
+    _USER_ARTICLES_URL = "https://oauth.reddit.com/user/{user}/submitted"
     _AUTH_EXPIRY_OVERHEAD_NS = 60_000_000_000
 
     def __init__(
@@ -50,39 +50,39 @@ class Reddit:
         self._access_token_expires_in = 0
         self._logger = getLogger(__name__)
 
-    async def subreddit_submissions(
+    async def subreddit_articles(
         self, subreddit: str, limit: int, sort: SortType
     ) -> list[dict[str, Any]]:
-        """Get a list of Reddit submissions from the given subreddit
+        """Get a list of Reddit articles from the given subreddit
 
         Args:
-            subreddit (str): subreddit to load submissions from
-            limit (int): up to how many submissions should be loaded
-            sort (SortType): sort type to use when loading submissions
+            subreddit (str): subreddit to load articles from
+            limit (int): up to how many articles should be loaded
+            sort (SortType): sort type to use when loading articles
 
         Returns:
-            list[Submission]: list of loaded submissions from the given subreddit
+            list[dict[str, Any]: list of loaded articles from the given subreddit
         """
-        self._logger.info(f"Loading subreddit submissions [{subreddit}] [{limit}] [{sort.name}]")
-        url = self._SUBREDDIT_SUBMISSIONS_URL.format(subreddit=subreddit, sort=sort.name.lower())
+        self._logger.info(f"Loading subreddit articles [{subreddit}] [{limit}] [{sort.name}]")
+        url = self._SUBREDDIT_ARTICLES_URL.format(subreddit=subreddit, sort=sort.name.lower())
         params = {"limit": limit}
-        return await self._get_submissions(url, params)
+        return await self._get_articles(url, params)
 
-    async def user_submissions(self, user: str, limit: int, sort: SortType) -> list[dict[str, Any]]:
-        """Get a list of Reddit submissions from the given Reddit user
+    async def user_articles(self, user: str, limit: int, sort: SortType) -> list[dict[str, Any]]:
+        """Get a list of Reddit articles from the given Reddit user
 
         Args:
-            user (str): Reddit user to load submissions from
-            limit (int): up to how many submissions should be loaded
-            sort (SortType): sort type to use when loading submissions
+            user (str): Reddit user to load articles from
+            limit (int): up to how many articles should be loaded
+            sort (SortType): sort type to use when loading articles
 
         Returns:
-            list[Submission]: list of loaded submissions from the Reddit user
+            list[dict[str, Any]: list of loaded articles from the Reddit user
         """
-        self._logger.info(f"Loading user submissions [{user}] [{limit}] [{sort.name}]")
-        url = self._USER_SUBMISSIONS_URL.format(user=user)
+        self._logger.info(f"Loading user articles [{user}] [{limit}] [{sort.name}]")
+        url = self._USER_ARTICLES_URL.format(user=user)
         params = {"limit": limit, "sort": sort.name.lower()}
-        return await self._get_submissions(url, params)
+        return await self._get_articles(url, params)
 
     async def _authorize(self) -> None:
         self._logger.info("Authorizing")
@@ -103,18 +103,18 @@ class Reddit:
                 headers=self._auth_headers,
             )
 
-    async def _get_submissions(self, url: str, params: dict[str, Any]) -> list[dict[str, Any]]:
+    async def _get_articles(self, url: str, params: dict[str, Any]) -> list[dict[str, Any]]:
         if self._access_token_expires_in <= time_ns():
             self._logger.info("Access token expired, requesting new one")
             await self._authorize()
-        response = await self._request_submissions(url, params)
+        response = await self._request_articles(url, params)
         if response.status_code in [401, 403]:
             self._logger.info(f"Response returned code [{response.status_code}], re-authorizing")
             await self._authorize()
-            response = await self._request_submissions(url, params)
+            response = await self._request_articles(url, params)
         response.raise_for_status()
-        return [submission["data"] for submission in response.json()["data"]["children"]]
+        return [article["data"] for article in response.json()["data"]["children"]]
 
-    async def _request_submissions(self, url: str, params: dict[str, Any]) -> Response:
+    async def _request_articles(self, url: str, params: dict[str, Any]) -> Response:
         async with AsyncClient() as client:
             return await client.get(url=url, params=params, headers=self._auth_headers)

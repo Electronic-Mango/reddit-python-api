@@ -5,7 +5,7 @@
 [![Flake8](https://github.com/Electronic-Mango/reddit-python-api/actions/workflows/flake8.yml/badge.svg)](https://github.com/Electronic-Mango/reddit-api-api/actions/workflows/flake8.yml)
 [![PyPI version](https://badge.fury.io/py/reddit-python-api.svg)](https://badge.fury.io/py/reddit-python-api)
 
-A simple read-only Reddit Python API allowing access to both subreddit and user submissions, build with [`httpx`](https://www.python-httpx.org/).
+A simple read-only Reddit Python API allowing access to both subreddit and user articles, build with [`httpx`](https://www.python-httpx.org/).
 
 
 
@@ -17,10 +17,10 @@ A simple read-only Reddit Python API allowing access to both subreddit and user 
   * [Reddit app & configuration](#reddit-app--configuration)
   * [Usage](#usage)
     * [Create the API](#create-the-api)
-    * [Get a list of submissions in a subreddit](#get-a-list-of-submissions-in-a-subreddit)
-    * [Get a list of user submissions](#get-a-list-of-user-submissions)
+    * [Get a list of articles in a subreddit](#get-a-list-of-articles-in-a-subreddit)
+    * [Get a list of user articles](#get-a-list-of-user-articles)
     * [Sort types](#sort-types)
-    * [Returned submissions type](#returned-submissions-type)
+    * [Returned articles type](#returned-articles-type)
 
 
 
@@ -32,13 +32,13 @@ Python version at least `3.10` is required.
 Full list of Python requirements is in `requirements.txt` file.
 
 No additional API wrapper was used (like [PRAW](https://github.com/praw-dev/praw)), Reddit API is accessed directly.
-It should be much faster when accessing a list of submissions.
+It should be much faster when accessing a list of articles.
 
 No data is stored.
 **Reddit is accessed in `read-only` mode.**
 
 
-Currently, this API allows access to submissions in either subreddits or from users.
+Currently, this API allows access to articles in either subreddits or from users.
 It doesn't access comments.
 
 
@@ -85,17 +85,17 @@ reddit = Reddit("your client ID", "your app secret", "custom user agent")
 ```
 
 
-### Get a list of submissions in a subreddit
+### Get a list of articles in a subreddit
 
 ```python
 reddit = Reddit("your client ID", "your app secret")
-# reddit.subreddit_submissions("subreddit name", load_count, sort_type)
-submissions = reddit.subreddit_submissions("Python", 10, SortType.HOT)
+# reddit.subreddit_articles("subreddit name", load_count, sort_type)
+articles = reddit.subreddit_articles("Python", 10, SortType.HOT)
 ```
 First argument is a name of a subreddit.
 
-Second argument specifies how many submissions should be loaded.
-API can return lower number if there are fewer submissions in a given subreddit than provided.
+Second argument specifies how many articles should be loaded.
+API can return lower number if there are fewer articles in a given subreddit than provided.
 
 Third argument specifies sort type.
 Following sort types are supported:
@@ -108,12 +108,12 @@ SortType.CONTROVERSIAL
 ```
 
 
-### Get a list of user submissions
+### Get a list of user articles
 
 ```python
 reddit = Reddit("your client ID", "your app secret")
-# reddit.user_submissions("username", load_count, sort_type)
-submissions = reddit.user_submissions("spez", 20, SortType.CONTROVERSIAL)
+# reddit.user_articles("username", load_count, sort_type)
+articles = reddit.user_articles("spez", 20, SortType.CONTROVERSIAL)
 ```
 General usage is the same as for subreddits.
 
@@ -130,17 +130,17 @@ SortType.CONTROVERSIAL
 ```
 
 
-### Returned submissions type
+### Returned articles type
 
-Returned type is a list of submissions, where each submission is a `dict`/`json` directly returned by official Reddit API.
+Returned type is a list of articles, where each article is a `dict`/`json` directly returned by official Reddit API.
 
 You can check official Reddit API documentation for:
  * users - https://www.reddit.com/dev/api/#GET_user_{username}_submitted
  * subreddits - https://www.reddit.com/dev/api/#GET_hot (and other endpoints for different sort types)
 
 Returned dicts are [`listings`](https://www.reddit.com/dev/api/#listings) directly from official Reddit API.
-Submission contents are quite long, but I've left their additional parsing the user.
-Here is an example of one submission dict:
+Article contents are quite long, but I've left their additional parsing the user.
+Here is an example of one article dict:
 ```python
 {
     'approved_at_utc': None,
