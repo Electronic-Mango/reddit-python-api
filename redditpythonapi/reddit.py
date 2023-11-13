@@ -10,7 +10,7 @@ from typing import Any
 
 from httpx import AsyncClient, BasicAuth, Response
 
-Submission = dict[str, Any]
+Article = dict[str, Any]
 
 
 class ArticlesSortType(Enum):
@@ -54,7 +54,7 @@ class Reddit:
 
     async def subreddit_articles(
         self, subreddit: str, limit: int, sort: ArticlesSortType
-    ) -> list[Submission]:
+    ) -> list[Article]:
         """Get a list of Reddit articles from the given subreddit
 
         Args:
@@ -63,16 +63,14 @@ class Reddit:
             sort (ArticlesSortType): sort type to use when loading articles
 
         Returns:
-            list[Submission]: list of loaded articles from the given subreddit
+            list[Article]: list of loaded articles from the given subreddit
         """
         self._logger.info(f"Loading subreddit articles [{subreddit}] [{limit}] [{sort.name}]")
         url = self._SUBREDDIT_ARTICLES_URL.format(subreddit=subreddit, sort=sort.name.lower())
         params = {"limit": limit}
         return await self._get_articles(url, params)
 
-    async def user_articles(
-        self, user: str, limit: int, sort: ArticlesSortType
-    ) -> list[Submission]:
+    async def user_articles(self, user: str, limit: int, sort: ArticlesSortType) -> list[Article]:
         """Get a list of Reddit articles from the given Reddit user
 
         Args:
@@ -81,7 +79,7 @@ class Reddit:
             sort (ArticlesSortType): sort type to use when loading articles
 
         Returns:
-            list[Submission]: list of loaded articles from the Reddit user
+            list[Article]: list of loaded articles from the Reddit user
         """
         self._logger.info(f"Loading user articles [{user}] [{limit}] [{sort.name}]")
         url = self._USER_ARTICLES_URL.format(user=user)
@@ -107,7 +105,7 @@ class Reddit:
                 headers=self._auth_headers,
             )
 
-    async def _get_articles(self, url: str, params: dict[str, Any]) -> list[Submission]:
+    async def _get_articles(self, url: str, params: dict[str, Any]) -> list[Article]:
         if self._access_token_expires_in <= time_ns():
             self._logger.info("Access token expired, requesting new one")
             await self._authorize()
