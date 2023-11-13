@@ -10,9 +10,6 @@ from typing import Any
 
 from httpx import AsyncClient, BasicAuth, Response
 
-"""Type of all returning submissions"""
-Submission = dict[str, Any]
-
 
 class SortType(Enum):
     """Enum with all viable sorting types"""
@@ -68,7 +65,7 @@ class Reddit:
 
     async def subreddit_submissions(
         self, subreddit: str, limit: int, sort: SortType
-    ) -> list[Submission]:
+    ) -> list[dict[str, Any]]:
         """Get a list of Reddit submissions from the given subreddit
 
         Args:
@@ -84,7 +81,7 @@ class Reddit:
         params = {"limit": limit}
         return await self._get_submissions(url, params)
 
-    async def user_submissions(self, user: str, limit: int, sort: SortType) -> list[Submission]:
+    async def user_submissions(self, user: str, limit: int, sort: SortType) -> list[dict[str, Any]]:
         """Get a list of Reddit submissions from the given Reddit user
 
         Args:
@@ -100,7 +97,7 @@ class Reddit:
         params = {"limit": limit, "sort": sort.name}
         return await self._get_submissions(url, params)
 
-    async def _get_submissions(self, url: str, params: dict[str, Any]) -> list[Submission]:
+    async def _get_submissions(self, url: str, params: dict[str, Any]) -> list[dict[str, Any]]:
         if self._access_token_expires_in <= time_ns():
             self._logger.info("Access token expired, requesting new one")
             await self._authorize()
