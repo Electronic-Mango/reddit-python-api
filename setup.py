@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 setup(
     name="reddit-python-api",
     packages=["redditpythonapi"],
-    version="0.3",
+    version="0.4",
     license="GPLv3",
     description="A simple Reddit Python API",
     long_description=long_description,
@@ -15,7 +15,7 @@ setup(
     author="Electronic Mango",
     author_email="78230210+Electronic-Mango@users.noreply.github.com",
     url="https://github.com/Electronic-Mango/reddit-python-api",
-    download_url="https://github.com/Electronic-Mango/reddit-python-api/releases/tag/0.3",
+    download_url="https://github.com/Electronic-Mango/reddit-python-api/releases/tag/0.4",
     keywords=["reddit", "api"],
     install_requires=["httpx"],
     classifiers=[
