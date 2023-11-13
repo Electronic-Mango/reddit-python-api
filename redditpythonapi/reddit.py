@@ -23,7 +23,7 @@ class SortType(Enum):
     controversial = auto()
 
 
-class RedditApiWrapper:
+class Reddit:
     """Class wrapping Reddit API
 
     Class wrapping calls to Reddit API.
