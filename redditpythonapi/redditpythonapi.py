@@ -43,25 +43,6 @@ class Reddit:
         self._access_token_expires_in = 0
         self._logger = getLogger(__name__)
 
-    async def _authorize(self) -> None:
-        self._logger.info("Authorizing")
-        response = await self._request_access_token()
-        response.raise_for_status()
-        response_content = response.json()
-        access_token = response_content["access_token"]
-        self._auth_headers["Authorization"] = f"Bearer {access_token}"
-        expires_in = response_content["expires_in"] * 1_000_000_000
-        self._access_token_expires_in = time_ns() + expires_in - self._AUTH_EXPIRY_OVERHEAD_NS
-
-    async def _request_access_token(self) -> Response:
-        async with AsyncClient() as client:
-            return await client.post(
-                url=self._ACCESS_TOKEN_URL,
-                params={"grant_type": "client_credentials"},
-                auth=self._client_auth,
-                headers=self._auth_headers,
-            )
-
     async def subreddit_submissions(
         self, subreddit: str, limit: int, sort: SortType
     ) -> list[dict[str, Any]]:
@@ -95,6 +76,25 @@ class Reddit:
         url = self._USER_SUBMISSIONS_URL.format(user=user)
         params = {"limit": limit, "sort": sort.name}
         return await self._get_submissions(url, params)
+
+    async def _authorize(self) -> None:
+        self._logger.info("Authorizing")
+        response = await self._request_access_token()
+        response.raise_for_status()
+        response_content = response.json()
+        access_token = response_content["access_token"]
+        self._auth_headers["Authorization"] = f"Bearer {access_token}"
+        expires_in = response_content["expires_in"] * 1_000_000_000
+        self._access_token_expires_in = time_ns() + expires_in - self._AUTH_EXPIRY_OVERHEAD_NS
+
+    async def _request_access_token(self) -> Response:
+        async with AsyncClient() as client:
+            return await client.post(
+                url=self._ACCESS_TOKEN_URL,
+                params={"grant_type": "client_credentials"},
+                auth=self._client_auth,
+                headers=self._auth_headers,
+            )
 
     async def _get_submissions(self, url: str, params: dict[str, Any]) -> list[dict[str, Any]]:
         if self._access_token_expires_in <= time_ns():
