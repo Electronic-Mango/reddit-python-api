@@ -317,6 +317,6 @@ Here is an example of one article dict:
 
 ## Disclaimer
 
-This API is in no way affiliated, associated, authorized, endorsed by, or in any way officially connected with JustWatch.
+This API is in no way affiliated, associated, authorized, endorsed by, or in any way officially connected with Reddit.
 This is an independent and unofficial project.
 Use at your own risk.
