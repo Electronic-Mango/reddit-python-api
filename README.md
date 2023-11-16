@@ -6,13 +6,12 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/reddit-python-api)](https://pypi.org/project/reddit-python-api/)
 
 
-A simple read-only Reddit Python API allowing access to both subreddit and user articles, build with [`httpx`](https://www.python-httpx.org/).
+A simple unofficial read-only Reddit Python API allowing access to both subreddit and user articles, build with [`httpx`](https://www.python-httpx.org/).
 
 
 
 ## Table of contents
 
-  * [Table of contents](#table-of-contents)
   * [Introduction and requirements](#introduction-and-requirements)
   * [Installation](#installation)
   * [Reddit app & configuration](#reddit-app--configuration)
@@ -22,6 +21,7 @@ A simple read-only Reddit Python API allowing access to both subreddit and user 
     * [Get a list of user articles](#get-a-list-of-user-articles)
     * [Sort types](#sort-types)
     * [Returned articles type](#returned-articles-type)
+  * [Disclaimer](#disclaimer)
 
 
 
@@ -312,3 +312,11 @@ Here is an example of one article dict:
     'is_video': False
 }
 ```
+
+
+
+## Disclaimer
+
+This API is in no way affiliated, associated, authorized, endorsed by, or in any way officially connected with JustWatch.
+This is an independent and unofficial project.
+Use at your own risk.
