@@ -1,7 +1,7 @@
-# Workflow verifying that project is correctly formatted, using Black.
-# (and setting line length to 100)
+# Workflow verifying that project's imports are correctly organized, using isort.
+# (with line length of 100 and using a Black profile)
 
-name: Black
+name: isort
 
 on:
   push:
