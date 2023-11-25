@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 setup(
     name="reddit-python-api",
     packages=["redditpythonapi"],
-    version="0.7",
+    version="0.8",
     license="GPLv3",
     description="A simple Reddit Python API",
     long_description=long_description,
