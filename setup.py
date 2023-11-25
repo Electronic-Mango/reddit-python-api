@@ -17,8 +17,8 @@ setup(
     url="https://github.com/Electronic-Mango/reddit-python-api",
     download_url="https://github.com/Electronic-Mango/reddit-python-api/releases/",
     project_urls={
-        'Documentation': 'https://electronic-mango.github.io/reddit-python-api',
-        'Source': 'https://github.com/Electronic-Mango/reddit-python-api',
+        "Documentation": "https://electronic-mango.github.io/reddit-python-api",
+        "Source": "https://github.com/Electronic-Mango/reddit-python-api",
     },
     keywords=["reddit", "api"],
     install_requires=["httpx"],
