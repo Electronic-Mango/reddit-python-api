@@ -83,7 +83,7 @@ class Reddit:
         Returns:
             list[Article]: list of loaded articles from the given subreddit
         """
-        self._logger.info(f"Loading subreddit articles [{subreddit}] [{limit}] [{sort.name}]")
+        self._logger.info(f"Loading subreddit articles [{subreddit}] [{sort}] [{time}] [{limit}]")
         url = self._SUBREDDIT_ARTICLES_URL.format(subreddit=subreddit, sort=sort.name.lower())
         params = self._prepare_params(limit=limit, time=time)
         return await self._get_articles(url, params)
@@ -109,7 +109,7 @@ class Reddit:
         Returns:
             list[Article]: list of loaded articles from the Reddit user
         """
-        self._logger.info(f"Loading user articles [{user}] [{limit}] [{sort.name}]")
+        self._logger.info(f"Loading user articles [{user}] [{sort}] [{time}] [{limit}]")
         url = self._USER_ARTICLES_URL.format(user=user)
         params = self._prepare_params(limit=limit, sort=sort, time=time)
         return await self._get_articles(url, params)
