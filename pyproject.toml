@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reddit-python-api"
+authors = [{name = "Electronic Mango", email = "78230210+Electronic-Mango@users.noreply.github.com"}]
+version = "0.9"
+description="A simple Reddit Python API"
+readme = "README.md"
+license = {file = "LICENSE"}
+dependencies = ["httpx"]
+requires-python = ">= 3.11"
+keywords = ["reddit", "api"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+
+[project.urls]
+Homepage = "https://github.com/Electronic-Mango/reddit-python-api"
+Documentation = "https://electronic-mango.github.io/reddit-python-api"
+Repository = "https://github.com/Electronic-Mango/reddit-python-api"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
