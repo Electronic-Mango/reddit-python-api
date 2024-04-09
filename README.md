@@ -92,14 +92,12 @@ reddit = Reddit("your client ID", "your app secret", "custom user agent")
 ```python
 reddit = Reddit("your client ID", "your app secret")
 # reddit.subreddit_articles("subreddit name", load_count, sort_type)
-articles = reddit.subreddit_articles("Python", ArticlesSortType.HOT, 10)
+articles = reddit.subreddit_articles("Python", ArticlesSortType.HOT, ArticlesSortTime.WEEK, 10)
 ```
 First argument is a name of a subreddit.
+**This is the only required argument.**
 
-Second argument specifies how many articles should be loaded.
-API can return lower number if there are fewer articles in a given subreddit than provided.
-
-Third argument specifies sort type.
+Second argument specifies sort type.
 Following sort types are supported:
 ```python
 ArticlesSortType.HOT
@@ -109,9 +107,23 @@ ArticlesSortType.TOP
 ArticlesSortType.CONTROVERSIAL
 ```
 
-Load count and sort types are optional.
-Default sort type is `hot`.
-Default load count is 25, as per Reddit API.
+Third argument specifies sort time.
+Following values are supported:
+```python
+ArticlesSortType.HOUR
+ArticlesSortType.DAY
+ArticlesSortType.WEEK
+ArticlesSortType.MONTH
+ArticlesSortType.YEAR
+ArticlesSortType.ALL
+```
+
+Fourth argument specifies how many articles should be loaded.
+API can return lower number if there are fewer articles in a given subreddit than provided.
+
+Load count, sort type and sort time are optional.
+Default sort type for **subreddits** is `hot`.
+For other values if they are not specified, then they are not passed onto Reddit API at all.
 
 
 ### Get a list of user articles
@@ -119,8 +131,11 @@ Default load count is 25, as per Reddit API.
 ```python
 reddit = Reddit("your client ID", "your app secret")
 # reddit.user_articles("username", load_count, sort_type)
-articles = reddit.user_articles("spez", ArticlesSortType.CONTROVERSIAL, 20)
+articles = reddit.user_articles("spez", ArticlesSortType.CONTROVERSIAL, ArticlesSortTime.ALL 20)
 ```
+First argument is a username.
+**This is the only required argument.**
+
 General usage is the same as for subreddits.
 
 
