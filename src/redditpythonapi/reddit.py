@@ -66,7 +66,7 @@ class Reddit:
     async def subreddit_articles(
         self,
         subreddit: str,
-        sort: ArticlesSortType | None = ArticlesSortType.HOT,
+        sort: ArticlesSortType | None = None,
         time: ArticlesSortTime | None = None,
         limit: int | None = None,
     ) -> list[Article]:
@@ -84,7 +84,8 @@ class Reddit:
             list[Article]: list of loaded articles from the given subreddit
         """
         self._logger.info(f"Loading subreddit articles [{subreddit}] [{sort}] [{time}] [{limit}]")
-        url = self._SUBREDDIT_ARTICLES_URL.format(subreddit=subreddit, sort=sort.name.lower())
+        sort = sort or ArticlesSortType.HOT
+        url = self._SUBREDDIT_ARTICLES_URL.format(subreddit=subreddit, sort=sort.value)
         params = self._prepare_params(limit=limit, time=time)
         return await self._get_articles(url, params)
 
