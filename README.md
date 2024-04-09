@@ -92,7 +92,7 @@ reddit = Reddit("your client ID", "your app secret", "custom user agent")
 ```python
 reddit = Reddit("your client ID", "your app secret")
 # reddit.subreddit_articles("subreddit name", load_count, sort_type)
-articles = reddit.subreddit_articles("Python", 10, ArticlesSortType.HOT)
+articles = reddit.subreddit_articles("Python", ArticlesSortType.HOT, 10)
 ```
 First argument is a name of a subreddit.
 
@@ -109,27 +109,19 @@ ArticlesSortType.TOP
 ArticlesSortType.CONTROVERSIAL
 ```
 
+Load count and sort types are optional.
+Default sort type is `hot`.
+Default load count is 25, as per Reddit API.
+
 
 ### Get a list of user articles
 
 ```python
 reddit = Reddit("your client ID", "your app secret")
 # reddit.user_articles("username", load_count, sort_type)
-articles = reddit.user_articles("spez", 20, ArticlesSortType.CONTROVERSIAL)
+articles = reddit.user_articles("spez", ArticlesSortType.CONTROVERSIAL, 20)
 ```
 General usage is the same as for subreddits.
-
-
-### Sort types
-
-Sort types are available in `ArticlesSortType` enum. These sort types are available:
-```python
-ArticlesSortType.HOT
-ArticlesSortType.NEW
-ArticlesSortType.RISING
-ArticlesSortType.TOP
-ArticlesSortType.CONTROVERSIAL
-```
 
 
 ### Returned articles type

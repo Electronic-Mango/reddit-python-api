@@ -53,7 +53,7 @@ class Reddit:
         self._logger = getLogger(__name__)
 
     async def subreddit_articles(
-        self, subreddit: str, limit: int, sort: ArticlesSortType
+        self, subreddit: str, sort: ArticlesSortType | None = ArticlesSortType.HOT, limit: int | None = None
     ) -> list[Article]:
         """Get a list of Reddit articles from the given subreddit
 
@@ -67,10 +67,10 @@ class Reddit:
         """
         self._logger.info(f"Loading subreddit articles [{subreddit}] [{limit}] [{sort.name}]")
         url = self._SUBREDDIT_ARTICLES_URL.format(subreddit=subreddit, sort=sort.name.lower())
-        params = {"limit": limit}
+        params = self._prepare_params(limit=limit, time=time)
         return await self._get_articles(url, params)
 
-    async def user_articles(self, user: str, limit: int, sort: ArticlesSortType) -> list[Article]:
+    async def user_articles(self, user: str, sort: ArticlesSortType | None = None, limit: int | None = None) -> list[Article]:
         """Get a list of Reddit articles from the given Reddit user
 
         Args:
@@ -83,7 +83,7 @@ class Reddit:
         """
         self._logger.info(f"Loading user articles [{user}] [{limit}] [{sort.name}]")
         url = self._USER_ARTICLES_URL.format(user=user)
-        params = {"limit": limit, "sort": sort.name.lower()}
+        params = self._prepare_params(limit=limit, sort=sort)
         return await self._get_articles(url, params)
 
     async def _authorize(self) -> None:
@@ -104,6 +104,14 @@ class Reddit:
                 auth=self._client_auth,
                 headers=self._auth_headers,
             )
+
+    def _prepare_params(self, limit: int | None, sort: ArticlesSortType | None):
+        params = dict()
+        if limit is not None:
+            params["limit"] = limit
+        if sort is not None:
+            params["sort"] = sort.name.lower()
+        return params
 
     async def _get_articles(self, url: str, params: dict[str, Any]) -> list[Article]:
         if self._access_token_expires_in <= time_ns():
