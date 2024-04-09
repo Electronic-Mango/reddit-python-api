@@ -20,7 +20,6 @@ A simple unofficial read-only Reddit Python API allowing access to both subreddi
     * [Create the API](#create-the-api)
     * [Get a list of articles in a subreddit](#get-a-list-of-articles-in-a-subreddit)
     * [Get a list of user articles](#get-a-list-of-user-articles)
-    * [Sort types](#sort-types)
     * [Returned articles type](#returned-articles-type)
   * [Disclaimer](#disclaimer)
 
@@ -131,7 +130,7 @@ For other values if they are not specified, then they are not passed onto Reddit
 ```python
 reddit = Reddit("your client ID", "your app secret")
 # reddit.user_articles("username", load_count, sort_type)
-articles = reddit.user_articles("spez", ArticlesSortType.CONTROVERSIAL, ArticlesSortTime.ALL 20)
+articles = reddit.user_articles("spez", ArticlesSortType.CONTROVERSIAL, ArticlesSortTime.ALL, 20)
 ```
 First argument is a username.
 **This is the only required argument.**
