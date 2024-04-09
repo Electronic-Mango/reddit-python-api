@@ -134,8 +134,8 @@ ArticlesSortType.CONTROVERSIAL
 
 ### Returned articles type
 
-Returned type is a list of articles, where each article is a `Submission`.
-`Submission` is just an alias to `dict[str, Any]`.
+Returned type is a list of articles, where each article is a `Article`.
+`Article` is just an alias to `dict[str, Any]`.
 Returned data is directly representing JSON returned by official Reddit API, there are no modification to responses.
 
 You can check official Reddit API documentation for:
