@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "reddit-python-api"
 authors = [{name = "Electronic Mango", email = "78230210+Electronic-Mango@users.noreply.github.com"}]
-version = "0.9"
+version = "0.10"
 description="A simple Reddit Python API"
 readme = "README.md"
 license = {file = "LICENSE"}
