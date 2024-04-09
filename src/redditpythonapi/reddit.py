@@ -3,7 +3,7 @@ Wrapper for Reddit API.
 Using a wrapper simplifies accessing the API, mostly due to handling OAuth.
 """
 
-from enum import Enum, auto
+from enum import StrEnum
 from logging import getLogger
 from time import time_ns
 from typing import Any
@@ -13,25 +13,25 @@ from httpx import AsyncClient, BasicAuth, Response
 Article = dict[str, Any]
 
 
-class ArticlesSortType(Enum):
+class ArticlesSortType(StrEnum):
     """Enum with all viable sorting types"""
 
-    HOT = auto()
-    NEW = auto()
-    RISING = auto()
-    TOP = auto()
-    CONTROVERSIAL = auto()
+    HOT = "hot"
+    NEW = "new"
+    RISING = "rising"
+    TOP = "top"
+    CONTROVERSIAL = "controversial"
 
 
-class ArticlesSortTime(Enum):
+class ArticlesSortTime(StrEnum):
     """Enum with all viable sort times"""
 
-    HOUR = auto()
-    DAY = auto()
-    WEEK = auto()
-    MONTH = auto()
-    YEAR = auto()
-    ALL = auto()
+    HOUR = "hour"
+    DAY = "day"
+    WEEK = "week"
+    MONTH = "month"
+    YEAR = "year"
+    ALL = "all"
 
 
 class Reddit:
@@ -139,14 +139,11 @@ class Reddit:
         time: ArticlesSortTime | None = None,
         limit: int | None = None,
     ):
-        params = dict()
-        if sort is not None:
-            params["sort"] = sort.name.lower()
-        if time is not None:
-            params["t"] = time.name.lower()
-        if limit is not None:
-            params["limit"] = limit
-        return params
+        return {
+            **({"sort": sort.value} if sort is not None else {}),
+            **({"t": time.value} if time is not None else {}),
+            **({"limit": limit} if limit is not None else {}),
+        }
 
     async def _get_articles(self, url: str, params: dict[str, Any]) -> list[Article]:
         if self._access_token_expires_in <= time_ns():
