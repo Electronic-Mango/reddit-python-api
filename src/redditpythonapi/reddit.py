@@ -74,8 +74,11 @@ class Reddit:
 
         Args:
             subreddit (str): subreddit to load articles from
-            limit (int): up to how many articles should be loaded
-            sort (ArticlesSortType): sort type to use when loading articles
+            sort (ArticlesSortType | None): sort type to use when loading articles, "hot" by default
+            time (ArticlesSortTime | None): sort time to use when loading articles,
+                                            by default not passed onto Reddit API
+            limit (int | None): up to how many articles should be loaded,
+                                by default not passed onto Reddit API
 
         Returns:
             list[Article]: list of loaded articles from the given subreddit
@@ -96,8 +99,12 @@ class Reddit:
 
         Args:
             user (str): Reddit user to load articles from
-            limit (int): up to how many articles should be loaded
-            sort (ArticlesSortType): sort type to use when loading articles
+            sort (ArticlesSortType | None): sort type to use when loading articles,
+                                            by default not passed onto Reddit API
+            time (ArticlesSortTime | None): sort time to use when loading articles,
+                                            by default not passed onto Reddit API
+            limit (int | None): up to how many articles should be loaded,
+                                by default not passed onto Reddit API
 
         Returns:
             list[Article]: list of loaded articles from the Reddit user
