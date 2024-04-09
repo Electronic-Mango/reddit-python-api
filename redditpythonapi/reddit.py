@@ -23,6 +23,17 @@ class ArticlesSortType(Enum):
     CONTROVERSIAL = auto()
 
 
+class ArticlesSortTime(Enum):
+    """Enum with all viable sort times"""
+
+    HOUR = auto()
+    DAY = auto()
+    WEEK = auto()
+    MONTH = auto()
+    YEAR = auto()
+    ALL = auto()
+
+
 class Reddit:
     """Class wrapping Reddit API
 
@@ -53,7 +64,11 @@ class Reddit:
         self._logger = getLogger(__name__)
 
     async def subreddit_articles(
-        self, subreddit: str, sort: ArticlesSortType | None = ArticlesSortType.HOT, limit: int | None = None
+        self,
+        subreddit: str,
+        sort: ArticlesSortType | None = ArticlesSortType.HOT,
+        time: ArticlesSortTime | None = None,
+        limit: int | None = None,
     ) -> list[Article]:
         """Get a list of Reddit articles from the given subreddit
 
@@ -70,7 +85,13 @@ class Reddit:
         params = self._prepare_params(limit=limit, time=time)
         return await self._get_articles(url, params)
 
-    async def user_articles(self, user: str, sort: ArticlesSortType | None = None, limit: int | None = None) -> list[Article]:
+    async def user_articles(
+        self,
+        user: str,
+        sort: ArticlesSortType | None = None,
+        time: ArticlesSortTime | None = None,
+        limit: int | None = None,
+    ) -> list[Article]:
         """Get a list of Reddit articles from the given Reddit user
 
         Args:
@@ -83,7 +104,7 @@ class Reddit:
         """
         self._logger.info(f"Loading user articles [{user}] [{limit}] [{sort.name}]")
         url = self._USER_ARTICLES_URL.format(user=user)
-        params = self._prepare_params(limit=limit, sort=sort)
+        params = self._prepare_params(limit=limit, sort=sort, time=time)
         return await self._get_articles(url, params)
 
     async def _authorize(self) -> None:
@@ -105,12 +126,19 @@ class Reddit:
                 headers=self._auth_headers,
             )
 
-    def _prepare_params(self, limit: int | None, sort: ArticlesSortType | None):
+    def _prepare_params(
+        self,
+        sort: ArticlesSortType | None = None,
+        time: ArticlesSortTime | None = None,
+        limit: int | None = None,
+    ):
         params = dict()
-        if limit is not None:
-            params["limit"] = limit
         if sort is not None:
             params["sort"] = sort.name.lower()
+        if time is not None:
+            params["t"] = time.name.lower()
+        if limit is not None:
+            params["limit"] = limit
         return params
 
     async def _get_articles(self, url: str, params: dict[str, Any]) -> list[Article]:
