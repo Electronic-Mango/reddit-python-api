@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>redditpythonapi package &mdash; Reddit Python API  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="redditpythonapi" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Reddit Python API
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">redditpythonapi</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">redditpythonapi package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-redditpythonapi.reddit">redditpythonapi.reddit module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#redditpythonapi.reddit.ArticlesSortTime"><code class="docutils literal notranslate"><span class="pre">ArticlesSortTime</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#redditpythonapi.reddit.ArticlesSortType"><code class="docutils literal notranslate"><span class="pre">ArticlesSortType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#redditpythonapi.reddit.Reddit"><code class="docutils literal notranslate"><span class="pre">Reddit</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-redditpythonapi">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Reddit Python API</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">redditpythonapi</a></li>
+      <li class="breadcrumb-item active">redditpythonapi package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/redditpythonapi.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="redditpythonapi-package">
+<h1>redditpythonapi package<a class="headerlink" href="#redditpythonapi-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-redditpythonapi.reddit">
+<span id="redditpythonapi-reddit-module"></span><h2>redditpythonapi.reddit module<a class="headerlink" href="#module-redditpythonapi.reddit" title="Link to this heading"></a></h2>
+<p>Wrapper for Reddit API.
+Using a wrapper simplifies accessing the API, mostly due to handling OAuth.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortTime">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">redditpythonapi.reddit.</span></span><span class="sig-name descname"><span class="pre">ArticlesSortTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names=&lt;not</span> <span class="pre">given&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redditpythonapi/reddit.html#ArticlesSortTime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortTime" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StrEnum</span></code></p>
+<p>Enum with all viable sort times</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortTime.ALL">
+<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'all'</span></em><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortTime.ALL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortTime.DAY">
+<span class="sig-name descname"><span class="pre">DAY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'day'</span></em><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortTime.DAY" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortTime.HOUR">
+<span class="sig-name descname"><span class="pre">HOUR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'hour'</span></em><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortTime.HOUR" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortTime.MONTH">
+<span class="sig-name descname"><span class="pre">MONTH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'month'</span></em><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortTime.MONTH" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortTime.WEEK">
+<span class="sig-name descname"><span class="pre">WEEK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'week'</span></em><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortTime.WEEK" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortTime.YEAR">
+<span class="sig-name descname"><span class="pre">YEAR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'year'</span></em><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortTime.YEAR" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">redditpythonapi.reddit.</span></span><span class="sig-name descname"><span class="pre">ArticlesSortType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names=&lt;not</span> <span class="pre">given&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redditpythonapi/reddit.html#ArticlesSortType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortType" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StrEnum</span></code></p>
+<p>Enum with all viable sorting types</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortType.CONTROVERSIAL">
+<span class="sig-name descname"><span class="pre">CONTROVERSIAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'controversial'</span></em><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortType.CONTROVERSIAL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortType.HOT">
+<span class="sig-name descname"><span class="pre">HOT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'hot'</span></em><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortType.HOT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortType.NEW">
+<span class="sig-name descname"><span class="pre">NEW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'new'</span></em><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortType.NEW" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortType.RISING">
+<span class="sig-name descname"><span class="pre">RISING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'rising'</span></em><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortType.RISING" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.ArticlesSortType.TOP">
+<span class="sig-name descname"><span class="pre">TOP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'top'</span></em><a class="headerlink" href="#redditpythonapi.reddit.ArticlesSortType.TOP" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.Reddit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">redditpythonapi.reddit.</span></span><span class="sig-name descname"><span class="pre">Reddit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Reddit</span> <span class="pre">Python</span> <span class="pre">API</span> <span class="pre">(by</span> <span class="pre">Electronic-Mango</span> <span class="pre">on</span> <span class="pre">GitHub)'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redditpythonapi/reddit.html#Reddit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redditpythonapi.reddit.Reddit" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class wrapping Reddit API</p>
+<p>Class wrapping calls to Reddit API.
+Handles all necessary URLs, parameters, headers, etc.
+Also handles requesting new OAuth 2.0 access tokens and authorization in general.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_id</strong> (<em>str</em>) – Reddit app client ID to use for authorization</p></li>
+<li><p><strong>client_secret</strong> (<em>str</em>) – Reddit app client secret to use for authorization</p></li>
+<li><p><strong>user_agent</strong> (<em>str</em>) – user agent used in all Reddit API requests</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.Reddit.subreddit_articles">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">subreddit_articles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subreddit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#redditpythonapi.reddit.ArticlesSortType" title="redditpythonapi.reddit.ArticlesSortType"><span class="pre">ArticlesSortType</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#redditpythonapi.reddit.ArticlesSortTime" title="redditpythonapi.reddit.ArticlesSortTime"><span class="pre">ArticlesSortTime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/redditpythonapi/reddit.html#Reddit.subreddit_articles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redditpythonapi.reddit.Reddit.subreddit_articles" title="Link to this definition"></a></dt>
+<dd><p>Get a list of Reddit articles from the given subreddit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>subreddit</strong> (<em>str</em>) – subreddit to load articles from</p></li>
+<li><p><strong>sort</strong> (<a class="reference internal" href="#redditpythonapi.reddit.ArticlesSortType" title="redditpythonapi.reddit.ArticlesSortType"><em>ArticlesSortType</em></a><em> | </em><em>None</em>) – sort type to use when loading articles, “hot” by default</p></li>
+<li><p><strong>time</strong> (<a class="reference internal" href="#redditpythonapi.reddit.ArticlesSortTime" title="redditpythonapi.reddit.ArticlesSortTime"><em>ArticlesSortTime</em></a><em> | </em><em>None</em>) – sort time to use when loading articles,
+by default not passed onto Reddit API</p></li>
+<li><p><strong>limit</strong> (<em>int</em><em> | </em><em>None</em>) – up to how many articles should be loaded,
+by default not passed onto Reddit API</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of loaded articles from the given subreddit</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[Article]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redditpythonapi.reddit.Reddit.user_articles">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">user_articles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#redditpythonapi.reddit.ArticlesSortType" title="redditpythonapi.reddit.ArticlesSortType"><span class="pre">ArticlesSortType</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#redditpythonapi.reddit.ArticlesSortTime" title="redditpythonapi.reddit.ArticlesSortTime"><span class="pre">ArticlesSortTime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/redditpythonapi/reddit.html#Reddit.user_articles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redditpythonapi.reddit.Reddit.user_articles" title="Link to this definition"></a></dt>
+<dd><p>Get a list of Reddit articles from the given Reddit user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<em>str</em>) – Reddit user to load articles from</p></li>
+<li><p><strong>sort</strong> (<a class="reference internal" href="#redditpythonapi.reddit.ArticlesSortType" title="redditpythonapi.reddit.ArticlesSortType"><em>ArticlesSortType</em></a><em> | </em><em>None</em>) – sort type to use when loading articles,
+by default not passed onto Reddit API</p></li>
+<li><p><strong>time</strong> (<a class="reference internal" href="#redditpythonapi.reddit.ArticlesSortTime" title="redditpythonapi.reddit.ArticlesSortTime"><em>ArticlesSortTime</em></a><em> | </em><em>None</em>) – sort time to use when loading articles,
+by default not passed onto Reddit API</p></li>
+<li><p><strong>limit</strong> (<em>int</em><em> | </em><em>None</em>) – up to how many articles should be loaded,
+by default not passed onto Reddit API</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of loaded articles from the Reddit user</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[Article]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-redditpythonapi">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-redditpythonapi" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="redditpythonapi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Electronic-Mango.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

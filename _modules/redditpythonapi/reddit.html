@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>redditpythonapi.reddit &mdash; Reddit Python API  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Reddit Python API
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">redditpythonapi</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Reddit Python API</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">redditpythonapi.reddit</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for redditpythonapi.reddit</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Wrapper for Reddit API.</span>
+<span class="sd">Using a wrapper simplifies accessing the API, mostly due to handling OAuth.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">StrEnum</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time_ns</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">httpx</span> <span class="kn">import</span> <span class="n">AsyncClient</span><span class="p">,</span> <span class="n">BasicAuth</span><span class="p">,</span> <span class="n">Response</span>
+
+<span class="n">Article</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="ArticlesSortType">
+<a class="viewcode-back" href="../../redditpythonapi.html#redditpythonapi.reddit.ArticlesSortType">[docs]</a>
+<span class="k">class</span> <span class="nc">ArticlesSortType</span><span class="p">(</span><span class="n">StrEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enum with all viable sorting types&quot;&quot;&quot;</span>
+
+    <span class="n">HOT</span> <span class="o">=</span> <span class="s2">&quot;hot&quot;</span>
+    <span class="n">NEW</span> <span class="o">=</span> <span class="s2">&quot;new&quot;</span>
+    <span class="n">RISING</span> <span class="o">=</span> <span class="s2">&quot;rising&quot;</span>
+    <span class="n">TOP</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span>
+    <span class="n">CONTROVERSIAL</span> <span class="o">=</span> <span class="s2">&quot;controversial&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ArticlesSortTime">
+<a class="viewcode-back" href="../../redditpythonapi.html#redditpythonapi.reddit.ArticlesSortTime">[docs]</a>
+<span class="k">class</span> <span class="nc">ArticlesSortTime</span><span class="p">(</span><span class="n">StrEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enum with all viable sort times&quot;&quot;&quot;</span>
+
+    <span class="n">HOUR</span> <span class="o">=</span> <span class="s2">&quot;hour&quot;</span>
+    <span class="n">DAY</span> <span class="o">=</span> <span class="s2">&quot;day&quot;</span>
+    <span class="n">WEEK</span> <span class="o">=</span> <span class="s2">&quot;week&quot;</span>
+    <span class="n">MONTH</span> <span class="o">=</span> <span class="s2">&quot;month&quot;</span>
+    <span class="n">YEAR</span> <span class="o">=</span> <span class="s2">&quot;year&quot;</span>
+    <span class="n">ALL</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="Reddit">
+<a class="viewcode-back" href="../../redditpythonapi.html#redditpythonapi.reddit.Reddit">[docs]</a>
+<span class="k">class</span> <span class="nc">Reddit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class wrapping Reddit API</span>
+
+<span class="sd">    Class wrapping calls to Reddit API.</span>
+<span class="sd">    Handles all necessary URLs, parameters, headers, etc.</span>
+<span class="sd">    Also handles requesting new OAuth 2.0 access tokens and authorization in general.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        client_id (str): Reddit app client ID to use for authorization</span>
+<span class="sd">        client_secret (str): Reddit app client secret to use for authorization</span>
+<span class="sd">        user_agent (str): user agent used in all Reddit API requests</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_ACCESS_TOKEN_URL</span> <span class="o">=</span> <span class="s2">&quot;https://www.reddit.com/api/v1/access_token&quot;</span>
+    <span class="n">_SUBREDDIT_ARTICLES_URL</span> <span class="o">=</span> <span class="s2">&quot;https://oauth.reddit.com/r/</span><span class="si">{subreddit}</span><span class="s2">/</span><span class="si">{sort}</span><span class="s2">&quot;</span>
+    <span class="n">_USER_ARTICLES_URL</span> <span class="o">=</span> <span class="s2">&quot;https://oauth.reddit.com/user/</span><span class="si">{user}</span><span class="s2">/submitted&quot;</span>
+    <span class="n">_AUTH_EXPIRY_OVERHEAD_NS</span> <span class="o">=</span> <span class="mi">60_000_000_000</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">client_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">client_secret</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Reddit Python API (by Electronic-Mango on GitHub)&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client_auth</span> <span class="o">=</span> <span class="n">BasicAuth</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">client_id</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">client_secret</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth_headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-agent&quot;</span><span class="p">:</span> <span class="n">user_agent</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_access_token_expires_in</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Reddit.subreddit_articles">
+<a class="viewcode-back" href="../../redditpythonapi.html#redditpythonapi.reddit.Reddit.subreddit_articles">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">subreddit_articles</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">subreddit</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">sort</span><span class="p">:</span> <span class="n">ArticlesSortType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">time</span><span class="p">:</span> <span class="n">ArticlesSortTime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Article</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a list of Reddit articles from the given subreddit</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subreddit (str): subreddit to load articles from</span>
+<span class="sd">            sort (ArticlesSortType | None): sort type to use when loading articles, &quot;hot&quot; by default</span>
+<span class="sd">            time (ArticlesSortTime | None): sort time to use when loading articles,</span>
+<span class="sd">                                            by default not passed onto Reddit API</span>
+<span class="sd">            limit (int | None): up to how many articles should be loaded,</span>
+<span class="sd">                                by default not passed onto Reddit API</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[Article]: list of loaded articles from the given subreddit</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading subreddit articles [</span><span class="si">{</span><span class="n">subreddit</span><span class="si">}</span><span class="s2">] [</span><span class="si">{</span><span class="n">sort</span><span class="si">}</span><span class="s2">] [</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">] [</span><span class="si">{</span><span class="n">limit</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+        <span class="n">sort</span> <span class="o">=</span> <span class="n">sort</span> <span class="ow">or</span> <span class="n">ArticlesSortType</span><span class="o">.</span><span class="n">HOT</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SUBREDDIT_ARTICLES_URL</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">subreddit</span><span class="o">=</span><span class="n">subreddit</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_params</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_articles</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Reddit.user_articles">
+<a class="viewcode-back" href="../../redditpythonapi.html#redditpythonapi.reddit.Reddit.user_articles">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">user_articles</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">sort</span><span class="p">:</span> <span class="n">ArticlesSortType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">time</span><span class="p">:</span> <span class="n">ArticlesSortTime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Article</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a list of Reddit articles from the given Reddit user</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user (str): Reddit user to load articles from</span>
+<span class="sd">            sort (ArticlesSortType | None): sort type to use when loading articles,</span>
+<span class="sd">                                            by default not passed onto Reddit API</span>
+<span class="sd">            time (ArticlesSortTime | None): sort time to use when loading articles,</span>
+<span class="sd">                                            by default not passed onto Reddit API</span>
+<span class="sd">            limit (int | None): up to how many articles should be loaded,</span>
+<span class="sd">                                by default not passed onto Reddit API</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[Article]: list of loaded articles from the Reddit user</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading user articles [</span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s2">] [</span><span class="si">{</span><span class="n">sort</span><span class="si">}</span><span class="s2">] [</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">] [</span><span class="si">{</span><span class="n">limit</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_USER_ARTICLES_URL</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_params</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_articles</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div>
+
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_authorize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Authorizing&quot;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_access_token</span><span class="p">()</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="n">response_content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">access_token</span> <span class="o">=</span> <span class="n">response_content</span><span class="p">[</span><span class="s2">&quot;access_token&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth_headers</span><span class="p">[</span><span class="s2">&quot;Authorization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">access_token</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">expires_in</span> <span class="o">=</span> <span class="n">response_content</span><span class="p">[</span><span class="s2">&quot;expires_in&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1_000_000_000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_access_token_expires_in</span> <span class="o">=</span> <span class="n">time_ns</span><span class="p">()</span> <span class="o">+</span> <span class="n">expires_in</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_AUTH_EXPIRY_OVERHEAD_NS</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_request_access_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">AsyncClient</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ACCESS_TOKEN_URL</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;grant_type&quot;</span><span class="p">:</span> <span class="s2">&quot;client_credentials&quot;</span><span class="p">},</span>
+                <span class="n">auth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_auth</span><span class="p">,</span>
+                <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_auth_headers</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_prepare_params</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">sort</span><span class="p">:</span> <span class="n">ArticlesSortType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">time</span><span class="p">:</span> <span class="n">ArticlesSortTime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="o">**</span><span class="p">({</span><span class="s2">&quot;sort&quot;</span><span class="p">:</span> <span class="n">sort</span><span class="o">.</span><span class="n">value</span><span class="p">}</span> <span class="k">if</span> <span class="n">sort</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}),</span>
+            <span class="o">**</span><span class="p">({</span><span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">value</span><span class="p">}</span> <span class="k">if</span> <span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}),</span>
+            <span class="o">**</span><span class="p">({</span><span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">}</span> <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}),</span>
+        <span class="p">}</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_articles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Article</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_access_token_expires_in</span> <span class="o">&lt;=</span> <span class="n">time_ns</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Access token expired, requesting new one&quot;</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_authorize</span><span class="p">()</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_articles</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">401</span><span class="p">,</span> <span class="mi">403</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Response returned code [</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">], re-authorizing&quot;</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_authorize</span><span class="p">()</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_articles</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">article</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">article</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;children&quot;</span><span class="p">]]</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_request_articles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">AsyncClient</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_auth_headers</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Electronic-Mango.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
